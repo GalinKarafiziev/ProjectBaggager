@@ -12,7 +12,7 @@ namespace ProCP.ViewModels
 
         public ConveyerLineManager()
         {
-            this.Conveyer = new ConveyerLine(10, 100, 100);
+            this.Conveyer = new ConveyerLine(10, 750, 100);
         }
     }
 }
