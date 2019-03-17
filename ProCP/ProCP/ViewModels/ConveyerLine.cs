@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace ProCP.ViewModels
 {
     public class ConveyerSlots : Figure
-    { 
+    {
         public ConveyerSlots(int size, int x, int y) : base(size, x, y)
         {
         }
@@ -20,9 +20,9 @@ namespace ProCP.ViewModels
         public ConveyerLine(int size, int x, int y) : base(size, x, y)
         {
             conveyerSlots = new LinkedList<ConveyerSlots>();
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 7; i++)
             {
-                conveyerSlots.AddFirst(new ConveyerSlots(40, x, y + i*40));
+                conveyerSlots.AddFirst(new ConveyerSlots(40, x + (i*40), y));
             }
             this.Slots = conveyerSlots;
         }

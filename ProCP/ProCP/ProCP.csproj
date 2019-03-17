@@ -55,8 +55,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModels\Baggage.cs" />
+    <Compile Include="ViewModels\CheckInDesk.cs" />
     <Compile Include="ViewModels\ConveyerLine.cs" />
     <Compile Include="ViewModels\ConveyerLineManager.cs" />
+    <Compile Include="ViewModels\DropOffPlatformcs.cs" />
     <Compile Include="ViewModels\Figure.cs" />
     <Compile Include="Views\ConveyerLine.xaml.cs">
       <DependentUpon>ConveyerLine.xaml</DependentUpon>

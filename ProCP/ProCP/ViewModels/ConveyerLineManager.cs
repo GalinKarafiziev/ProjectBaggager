@@ -8,11 +8,15 @@ namespace ProCP.ViewModels
 {
     public class ConveyerLineManager
     {
-        public ConveyerLine Conveyer { get; set; }
+        public ConveyerLine ConveyerFromCheckin { get; set; }
+        public ConveyerLine ConveyerToGateA { get; set; }
+        public ConveyerLine ConveyerToGeteB { get; set; }
 
         public ConveyerLineManager()
         {
-            this.Conveyer = new ConveyerLine(10, 750, 100);
+            this.ConveyerFromCheckin = new ConveyerLine(10, 600, 200);
+            this.ConveyerToGateA = new ConveyerLine(10, 900, 50);
+            this.ConveyerToGeteB = new ConveyerLine(10, 900, 400);
         }
     }
 }

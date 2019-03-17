@@ -9,8 +9,8 @@
     <UserControl.DataContext>
         <viewModels:ConveyerLineManager />
     </UserControl.DataContext>
-    <Grid DataContext="{Binding Conveyer}">
-        <ListView ItemsSource="{Binding Slots}">
+    <Grid>
+        <ListView DataContext="{Binding ConveyerToGateA}" ItemsSource="{Binding Slots}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Canvas/>
@@ -20,7 +20,8 @@
                 <DataTemplate>
                     <Rectangle  Width="{Binding Size}" 
                                     Height="{Binding Size}"  
-                                    Stroke="Black" />
+                                    Stroke="Black"
+                                    Fill="RoyalBlue"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
             <ListView.ItemContainerStyle>

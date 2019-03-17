@@ -7,7 +7,7 @@
         xmlns:Views="clr-namespace:ProCP.Views"
         mc:Ignorable="d"
         Title="MainWindow" WindowState="Maximized" WindowStyle="ThreeDBorderWindow">
-    <Grid>
-        <Views:ConveyerLine/>
-    </Grid>
+    <DockPanel>
+        <Views:ConveyerLine />
+    </DockPanel>
 </Window>
