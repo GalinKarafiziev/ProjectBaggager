@@ -14,9 +14,9 @@ namespace ProCP.ViewModels
 
         public Figure(int size, int x, int y)
         {
-            X = x;
-            Y = y;
-            Size = size;
+            this.Size = size;
+            this.X = x;
+            this.Y = y;
         }
     }
 }

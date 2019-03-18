@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace ProCP.ViewModels
 {
-    public class ConveyerLineManager
+    public class Engine
     {
         public ConveyerLine ConveyerFromCheckin { get; set; }
         public ConveyerLine ConveyerToGateA { get; set; }
         public ConveyerLine ConveyerToGeteB { get; set; }
 
-        public ConveyerLineManager()
+        public Engine()
         {
             this.ConveyerFromCheckin = new ConveyerLine(10, 600, 200);
             this.ConveyerToGateA = new ConveyerLine(10, 900, 50);

@@ -6,23 +6,17 @@ using System.Threading.Tasks;
 
 namespace ProCP.ViewModels
 {
-    public class ConveyerSlots : Figure
-    {
-        public ConveyerSlots(int size, int x, int y) : base(size, x, y)
-        {
-        }
-    }
     public class ConveyerLine : Figure
     {
-        public LinkedList<ConveyerSlots> conveyerSlots;
-        public IEnumerable<ConveyerSlots> Slots { get; protected set; }
+        public LinkedList<ConveyerSlot> conveyerSlots;
+        public IEnumerable<ConveyerSlot> Slots { get; protected set; }
 
         public ConveyerLine(int size, int x, int y) : base(size, x, y)
         {
-            conveyerSlots = new LinkedList<ConveyerSlots>();
+            conveyerSlots = new LinkedList<ConveyerSlot>();
             for (int i = 0; i < 7; i++)
             {
-                conveyerSlots.AddFirst(new ConveyerSlots(40, x + (i*40), y));
+                conveyerSlots.AddFirst(new ConveyerSlot(40, x + (i*40), y));
             }
             this.Slots = conveyerSlots;
         }

@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.DataContext>
-        <viewModels:ConveyerLineManager />
+        <viewModels:Engine />
     </UserControl.DataContext>
     <Grid>
         <ListView DataContext="{Binding ConveyerToGateA}" ItemsSource="{Binding Slots}">
