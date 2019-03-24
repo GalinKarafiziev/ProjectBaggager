@@ -1,0 +1,7 @@
+C:\Users\Borko-chan\source\repos\TryingConveyerStuff\TryingConveyerStuff\obj\Debug\TryingConveyerStuff.csprojAssemblyReference.cache
+C:\Users\Borko-chan\source\repos\TryingConveyerStuff\TryingConveyerStuff\obj\Debug\TryingConveyerStuff.csproj.CoreCompileInputs.cache
+C:\Users\Borko-chan\source\repos\TryingConveyerStuff\TryingConveyerStuff\bin\Debug\TryingConveyerStuff.exe.config
+C:\Users\Borko-chan\source\repos\TryingConveyerStuff\TryingConveyerStuff\bin\Debug\TryingConveyerStuff.exe
+C:\Users\Borko-chan\source\repos\TryingConveyerStuff\TryingConveyerStuff\bin\Debug\TryingConveyerStuff.pdb
+C:\Users\Borko-chan\source\repos\TryingConveyerStuff\TryingConveyerStuff\obj\Debug\TryingConveyerStuff.exe
+C:\Users\Borko-chan\source\repos\TryingConveyerStuff\TryingConveyerStuff\obj\Debug\TryingConveyerStuff.pdb
