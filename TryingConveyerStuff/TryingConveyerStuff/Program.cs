@@ -42,12 +42,11 @@ namespace TryingConveyerStuff
                 Console.Clear();
                 DisplayEveryNode();
                 LoadConveyer();
+                //MoveBelt();
                 MoveBelt();
                 DisplayDropOffInfo();
                 DisplayCheckInInfo();
             }
-
-
 
             //Only creating the conveyer belt really... probably should include adding check-in desks, baggages etc in here
             Initialize();
@@ -102,7 +101,7 @@ namespace TryingConveyerStuff
                 foreach (CheckInDesk d in checkInDesks)
                 {
                     d.timer += 1;
-                    if(d.timer >= d.interval && d.HasBaggage())
+                    if(d.timer >= d.interval && d.HasBaggages())
                     {
                         onConveyerLine.Add(d.SendBaggage());
                         d.timer = 0;
@@ -114,7 +113,7 @@ namespace TryingConveyerStuff
             {
                 // Notice .ToList() ! Later on in the loop, we remove items from onConveyerLine while we are still looping through it.
                 // ToList() ensures that we can safely remove items without an error. 
-                foreach(Baggage b in onConveyerLine.ToList())
+                foreach (Baggage b in onConveyerLine.ToList())
                 {
                     MoveBaggage(b);
                 }
@@ -126,29 +125,33 @@ namespace TryingConveyerStuff
 
                 while (current.next != null)
                 {
-                    if (thisKufar.x == current.x && thisKufar.y == current.y)
+                    if (current.baggageHeld != null && current.baggageHeld.baggageID == thisKufar.baggageID)
                     {
-                        thisKufar.x = current.next.x;
-                        thisKufar.y = current.next.y;
+                       if(current.next.baggageHeld == null)
+                       {
+                            current.next.baggageHeld = current.baggageHeld;
+                            current.baggageHeld = null;
+                       }
 
                         Console.SetCursorPosition(current.x, current.y);
-                        Console.Write("|0|" + thisKufar.baggageID);
+                        Console.Write("|0|" + current.next.baggageHeld.baggageID);
                         break;
                     }
-                    else
-                    {
+                    
                         current = current.next;
-                    }
+                    
                 }
                 if (current is DropOffPoint)
                 {
-                    if (thisKufar.x == current.x && thisKufar.y == current.y)
+                    if (current.baggageHeld != null)
                     {
                         Console.SetCursorPosition(current.x, current.y);
                         Console.Write("|0|");
 
-                        onConveyerLine.Remove(thisKufar);
-                        dropOffOne.AddBaggage(thisKufar);
+                        onConveyerLine.Remove(current.baggageHeld);
+                        dropOffOne.AddBaggage(current.baggageHeld);
+
+                        current.baggageHeld = null;
                     }
                 }
             }

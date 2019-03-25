@@ -11,7 +11,7 @@ namespace TryingConveyerStuff
         List<Baggage> baggages;
 
         //are there any baggages to be checked in
-        bool hasBaggage;
+        bool hasBaggages;
 
         //baggage is ready to be sent
         bool baggageReady;
@@ -25,22 +25,22 @@ namespace TryingConveyerStuff
         public CheckInDesk(int x, int y, int i) : base(x, y)
         {
             baggages = new List<Baggage>();
-            hasBaggage = false;
+            hasBaggages = false;
             baggageReady = false;
             interval = i;
         }
 
-        public bool HasBaggage()
+        public bool HasBaggages()
         {
-            return hasBaggage;
+            return hasBaggages;
         }
 
         //the location of the baggage is the location of the desk
         public void AddBaggage(string id)
         {
-            Baggage b = new Baggage(this.x, this.y, id);
+            Baggage b = new Baggage( /*this.x, this.y, */ id);
             baggages.Add(b);
-            hasBaggage = true;
+            hasBaggages = true;
             timer = 0;
         }
 
@@ -51,9 +51,10 @@ namespace TryingConveyerStuff
             
             if(!baggages.Any())
             {
-                hasBaggage = false;
+                hasBaggages = false;
                
-            }            
+            }
+            baggageHeld = send;
             return send;
         }
        

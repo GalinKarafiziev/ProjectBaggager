@@ -12,6 +12,8 @@ namespace TryingConveyerStuff
         public int x;
         public int y;
 
+        public Baggage baggageHeld;
+        
         public Node(int x, int y)
         {
             this.x = x;

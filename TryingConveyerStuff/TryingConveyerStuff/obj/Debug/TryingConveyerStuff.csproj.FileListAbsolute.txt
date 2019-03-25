@@ -5,3 +5,10 @@ C:\Users\Borko-chan\source\repos\TryingConveyerStuff\TryingConveyerStuff\bin\Deb
 C:\Users\Borko-chan\source\repos\TryingConveyerStuff\TryingConveyerStuff\bin\Debug\TryingConveyerStuff.pdb
 C:\Users\Borko-chan\source\repos\TryingConveyerStuff\TryingConveyerStuff\obj\Debug\TryingConveyerStuff.exe
 C:\Users\Borko-chan\source\repos\TryingConveyerStuff\TryingConveyerStuff\obj\Debug\TryingConveyerStuff.pdb
+F:\ProCP\procp-baggager\TryingConveyerStuff\TryingConveyerStuff\obj\Debug\TryingConveyerStuff.csprojAssemblyReference.cache
+F:\ProCP\procp-baggager\TryingConveyerStuff\TryingConveyerStuff\obj\Debug\TryingConveyerStuff.csproj.CoreCompileInputs.cache
+F:\ProCP\procp-baggager\TryingConveyerStuff\TryingConveyerStuff\obj\Debug\TryingConveyerStuff.exe
+F:\ProCP\procp-baggager\TryingConveyerStuff\TryingConveyerStuff\obj\Debug\TryingConveyerStuff.pdb
+F:\ProCP\procp-baggager\TryingConveyerStuff\TryingConveyerStuff\bin\Debug\TryingConveyerStuff.exe.config
+F:\ProCP\procp-baggager\TryingConveyerStuff\TryingConveyerStuff\bin\Debug\TryingConveyerStuff.exe
+F:\ProCP\procp-baggager\TryingConveyerStuff\TryingConveyerStuff\bin\Debug\TryingConveyerStuff.pdb
