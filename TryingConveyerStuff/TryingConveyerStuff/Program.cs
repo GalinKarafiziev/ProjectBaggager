@@ -14,10 +14,11 @@ namespace TryingConveyerStuff
             CheckInDesk checkInOne = new CheckInDesk(3, 3, 3);
             DropOffPoint dropOffOne = new DropOffPoint(3, 12);
 
-            LinkedList<Node> conveyerLine = new LinkedList<Node>();
-            List<Baggage> onConveyerLine = new List<Baggage>();
+            ConveyorLine firstConveyor = new ConveyorLine(checkInOne, dropOffOne);
+
             List<CheckInDesk> checkInDesks = new List<CheckInDesk>();
-            List<DropOffPoint> dropOffPoints = new List<DropOffPoint>(); 
+            List<DropOffPoint> dropOffPoints = new List<DropOffPoint>();
+            List<ConveyorLine> conveyorLines = new List<ConveyorLine>(); 
 
             // adding baggage to check in desk one
             checkInOne.AddBaggage("b001");
@@ -42,8 +43,7 @@ namespace TryingConveyerStuff
                 Console.Clear();
                 DisplayEveryNode();
                 LoadConveyer();
-                //MoveBelt();
-                MoveBelt();
+                MoveBelts();
                 DisplayDropOffInfo();
                 DisplayCheckInInfo();
             }
@@ -54,45 +54,18 @@ namespace TryingConveyerStuff
             // Methods 
             void Initialize()
             {
-                conveyerLine.AddFirst(checkInOne);
-                
-                AddNodeToConveyer(new Node(3, 4));
-                AddNodeToConveyer(new Node(3, 5));
-                AddNodeToConveyer(new Node(3, 6));
-                AddNodeToConveyer(new Node(3, 7));
-                AddNodeToConveyer(new Node(3, 8));
-                AddNodeToConveyer(new Node(3, 9));
-                AddNodeToConveyer(new Node(3, 10));
-                AddNodeToConveyer(new Node(3, 11));
+                conveyorLines.Add(firstConveyor);
 
-                AddNodeToConveyer(dropOffOne);
-            }
+                firstConveyor.AddNodeToConveyer(new Node(3, 4));
+                firstConveyor.AddNodeToConveyer(new Node(3, 5));
+                firstConveyor.AddNodeToConveyer(new Node(3, 6));
+                firstConveyor.AddNodeToConveyer(new Node(3, 7));
+                firstConveyor.AddNodeToConveyer(new Node(3, 8));
+                firstConveyor.AddNodeToConveyer(new Node(3, 9));
+                firstConveyor.AddNodeToConveyer(new Node(3, 10));
+                firstConveyor.AddNodeToConveyer(new Node(3, 11));
 
-            void AddNodeToConveyer(Node data)
-            {
-                Node toAdd = data;
-
-                Node current = checkInOne;
-                while (current.next != null)
-                {
-                    current = current.next;
-                }
-                current.next = toAdd;
-            }
-
-            void DisplayEveryNode()
-            {
-                Node current = checkInOne;
-                while (current.next != null)
-                {
-                    Console.SetCursorPosition(current.x, current.y);
-                    Console.Write("| |");
-                    current = current.next;
-                }
-
-                //drop off point
-                Console.SetCursorPosition(current.x, current.y);
-                Console.Write("| |");
+               // firstConveyor.AddNodeToConveyer(dropOffOne);
             }
 
             //in this method, should more than one check-in desks exist, one must check if there are two baggages released at the same time
@@ -103,60 +76,26 @@ namespace TryingConveyerStuff
                     d.timer += 1;
                     if(d.timer >= d.interval && d.HasBaggages())
                     {
-                        onConveyerLine.Add(d.SendBaggage());
+                        firstConveyor.SendBaggageDownConveyer(d.SendBaggage());
                         d.timer = 0;
                     }
                 }
             }
 
-            void MoveBelt()
+            void MoveBelts()
             {
-                // Notice .ToList() ! Later on in the loop, we remove items from onConveyerLine while we are still looping through it.
-                // ToList() ensures that we can safely remove items without an error. 
-                foreach (Baggage b in onConveyerLine.ToList())
-                {
-                    MoveBaggage(b);
-                }
-            }
-
-            void MoveBaggage(Baggage thisKufar)
-            {
-                Node current = checkInOne;
-
-                while (current.next != null)
-                {
-                    if (current.baggageHeld != null && current.baggageHeld.baggageID == thisKufar.baggageID)
-                    {
-                       if(current.next.baggageHeld == null)
-                       {
-                            current.next.baggageHeld = current.baggageHeld;
-                            current.baggageHeld = null;
-                       }
-
-                        Console.SetCursorPosition(current.x, current.y);
-                        Console.Write("|0|" + current.next.baggageHeld.baggageID);
-                        break;
-                    }
-                    
-                        current = current.next;
-                    
-                }
-                if (current is DropOffPoint)
-                {
-                    if (current.baggageHeld != null)
-                    {
-                        Console.SetCursorPosition(current.x, current.y);
-                        Console.Write("|0|");
-
-                        onConveyerLine.Remove(current.baggageHeld);
-                        dropOffOne.AddBaggage(current.baggageHeld);
-
-                        current.baggageHeld = null;
-                    }
-                }
+                firstConveyor.MoveBelt();
             }
 
 
+            void DisplayEveryNode()
+            {
+                foreach (ConveyorLine l in conveyorLines)
+                {
+                    l.DisplayEveryNode();
+                }
+            }
+        
             void DisplayDropOffInfo()
             {
                 Console.SetCursorPosition(3, 16);

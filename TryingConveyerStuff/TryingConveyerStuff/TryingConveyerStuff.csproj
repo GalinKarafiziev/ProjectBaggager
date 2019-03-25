@@ -46,7 +46,7 @@
     <Compile Include="Baggage.cs" />
     <Compile Include="CheckInDesk.cs" />
     <Compile Include="DropOffPoint.cs" />
-    <Compile Include="Line.cs" />
+    <Compile Include="ConveyorLine.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
