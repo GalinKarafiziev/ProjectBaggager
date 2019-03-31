@@ -4,16 +4,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProCP.ViewModels
+namespace ProCP.viewModels
 {
     public class Baggage
     {
-        public int DestinationGate { get; private set; }
+        private Random random;
+        private int randomGate;
+        private int secure;
+        public int Secure { get; set; }
+        public int DestinationGate { get; set; }
+        public string Id { get; set; }
 
-        public Baggage(int destinationGate)
+        public Baggage()
         {
-            this.DestinationGate = destinationGate;
+            Id = Guid.NewGuid().ToString().Substring(0, 5);
+            random = new Random();
+            randomGate = random.Next(1, 4);
+            secure = random.Next(1, 10);
+            DestinationGate = randomGate;
+            Secure = secure;
         }
-
     }
 }

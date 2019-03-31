@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D191A216-2312-4C15-8823-9EC9EF4D12EF}</ProjectGuid>
+    <ProjectGuid>{77BCA6F5-66DC-4739-B8BA-E409A72C2859}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>ProCP</RootNamespace>
     <AssemblyName>ProCP</AssemblyName>
@@ -55,17 +55,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ViewModels\Baggage.cs" />
-    <Compile Include="ViewModels\CheckInDesk.cs" />
-    <Compile Include="ViewModels\ConveyerLine.cs" />
-    <Compile Include="ViewModels\Engine.cs" />
-    <Compile Include="ViewModels\ConveyerSlot.cs" />
-    <Compile Include="ViewModels\DropOffPlatform.cs" />
-    <Compile Include="ViewModels\Figure.cs" />
-    <Compile Include="ViewModels\SecuritySlot.cs" />
-    <Compile Include="Views\ConveyerLine.xaml.cs">
-      <DependentUpon>ConveyerLine.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="viewModels\Baggage.cs" />
+    <Compile Include="viewModels\Checkin.cs" />
+    <Compile Include="viewModels\ConveyorLine.cs" />
+    <Compile Include="viewModels\Dropoff.cs" />
+    <Compile Include="viewModels\Engine.cs" />
+    <Compile Include="viewModels\MainProcessArea.cs" />
+    <Compile Include="viewModels\Node.cs" />
+    <Compile Include="viewModels\ProcessUnit.cs" />
+    <Compile Include="viewModels\Security.cs" />
+    <Compile Include="viewModels\TransportUnit.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -78,10 +77,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\ConveyerLine.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -109,6 +104,8 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="views\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

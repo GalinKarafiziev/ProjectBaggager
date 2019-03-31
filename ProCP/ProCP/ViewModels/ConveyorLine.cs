@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Timers;
 
-namespace Test
+namespace ProCP.viewModels
 {
-    public class ConveyerLine : Node
+    public class ConveyorLine:Node
     {
         public List<Baggage> conveyorBelt;
         Baggage lastBag;
-        public ConveyerLine()
+        public ConveyorLine()
         {
             conveyorBelt = new List<Baggage>();
-        }
+        }   
         public void Move()
         {
             lastBag = conveyorBelt.Last();
@@ -22,7 +21,7 @@ namespace Test
             {
                 nextNode.PassBaggage(lastBag);
                 conveyorBelt.Remove(lastBag);
-            }        
+            }
         }
         public override void PassBaggage(Baggage lastbaggage)
         {
