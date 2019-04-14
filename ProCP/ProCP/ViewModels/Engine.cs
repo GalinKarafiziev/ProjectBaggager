@@ -23,10 +23,10 @@ namespace ProCP.viewModels
             checkIn = new Checkin(1000);
             drop1 = new Dropoff();
             drop2 = new Dropoff();
-            conveyorFromCheckin = new ConveyorLine();
-            conveyorAfterSecurity = new ConveyorLine();
-            conveyorToDropOff1 = new ConveyorLine();
-            conveyorToDropOff2 = new ConveyorLine();
+            conveyorFromCheckin = new ConveyorLine(2500);
+            conveyorAfterSecurity = new ConveyorLine(2500);
+            conveyorToDropOff1 = new ConveyorLine(2500);
+            conveyorToDropOff2 = new ConveyorLine(2500);
             mainProcessingUnit = new MainProcessArea(conveyorToDropOff1, conveyorToDropOff2);
             security = new Security(2000);
         }
@@ -40,10 +40,9 @@ namespace ProCP.viewModels
             conveyorToDropOff1.nextNode = drop1;
             conveyorToDropOff2.nextNode = drop2;
         }
-        public void AddBaggage()
+        public void AddBaggage(int number)
         {
-            Console.WriteLine("Number of baggage to be processed: ");
-            int numberOfBaggage = Convert.ToInt32(Console.ReadLine());
+            var numberOfBaggage = number;
 
             for (int i = 0; i < numberOfBaggage; i++)
             {

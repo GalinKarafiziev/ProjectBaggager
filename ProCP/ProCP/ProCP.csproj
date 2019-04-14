@@ -64,7 +64,6 @@
     <Compile Include="viewModels\Node.cs" />
     <Compile Include="viewModels\ProcessUnit.cs" />
     <Compile Include="viewModels\Security.cs" />
-    <Compile Include="viewModels\TransportUnit.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -96,6 +95,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="ClassDiagram.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

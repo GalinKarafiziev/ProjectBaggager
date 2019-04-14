@@ -2,32 +2,51 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ProCP.viewModels
 {
-    public class ConveyorLine:Node
+    public class ConveyorLine : Node
     {
         public List<Baggage> conveyorBelt;
+        private int capacity;
         Baggage lastBag;
-        public ConveyorLine()
+
+        public ConveyorLine(int conveyorLineCapacity)
         {
             conveyorBelt = new List<Baggage>();
-        }   
+            capacity = conveyorLineCapacity;
+            conveyorBelt.Capacity = capacity;
+        }
         public void Move()
         {
+            Status = BaggageStatus.Busy;
             lastBag = conveyorBelt.Last();
-            if (lastBag != null && nextNode != null)
+
+            if (conveyorBelt.Count == conveyorBelt.Capacity)
             {
-                nextNode.PassBaggage(lastBag);
-                conveyorBelt.Remove(lastBag);
+                foreach (Baggage b in conveyorBelt.ToList())
+                {
+                    if (nextNode.Status == BaggageStatus.Free)
+                    {
+                        Thread.Sleep(1000);
+                        nextNode.PassBaggage(lastBag);
+                        conveyorBelt.Remove(lastBag);
+                        Status = BaggageStatus.Free;
+                    }
+                }
+            }
+            else
+            {
+                Thread.Sleep(1000);
+                Status = BaggageStatus.Free;
             }
         }
         public override void PassBaggage(Baggage lastbaggage)
         {
             conveyorBelt.Add(lastbaggage);
-            Move();
-            Status = BaggageStatus.Free;
+            Parallel.Invoke(() => Move());
         }
     }
 }

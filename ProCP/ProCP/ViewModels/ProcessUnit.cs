@@ -9,6 +9,6 @@ namespace ProCP.viewModels
 {
     public abstract class ProcessUnit: Node
     {
-        public abstract Baggage ProcessBaggage(Baggage baggage);
+        public abstract void ProcessBaggage();
     }
 }

@@ -9,33 +9,36 @@ namespace ProCP.viewModels
 {
     public class Checkin : ProcessUnit
     {
-        public Baggage baggage;
+        public Baggage baggage { get; set; }
+        public int ProcessTime { get; set; }
         public bool IsActive { get; set; }
-
-        public int ProcessingTime { get; set; }
-
-        public Checkin(double processingTime)
+        public Checkin(int processingTime)
         {
-            //timer.Interval = processingTime;
+            this.ProcessTime = processingTime;
             this.IsActive = true;
         }
 
-        public override Baggage ProcessBaggage(Baggage baggage)
+        public override void ProcessBaggage()
         {
-            this.baggage = baggage;
-            if (baggage != null)
+            Status = BaggageStatus.Busy;
+
+            if (nextNode.Status == BaggageStatus.Free)
             {
-                Thread.Sleep(1000);
-                return baggage;
+                Thread.Sleep(ProcessTime);
+                nextNode.PassBaggage(baggage);
+                Status = BaggageStatus.Free;
             }
-            return null;
+            else
+            {
+                Thread.Sleep(500);
+                Status = BaggageStatus.Free;
+            }
         }
 
         public override void PassBaggage(Baggage Lastbaggage)
         {
-            ProcessBaggage(Lastbaggage);
-            nextNode.PassBaggage(Lastbaggage);
-            Status = BaggageStatus.Free;
+            baggage = Lastbaggage;
+            Parallel.Invoke(() => ProcessBaggage());
         }
     }
 }

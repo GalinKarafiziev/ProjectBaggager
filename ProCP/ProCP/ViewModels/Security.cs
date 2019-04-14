@@ -9,38 +9,48 @@ namespace ProCP.viewModels
 {
     public class Security: ProcessUnit
     {
-        public Baggage baggage;
+        public Baggage baggage { get; set; }
 
         public List<Baggage> bufferNotSecure;
         public int ProcessingTime { get; set; }
 
-        public Security(double processingTime)
+        public SecurityUnit(int processingTime)
         {
-            //timer.Interval = processingTime;
+            ProcessingTime = processingTime;
             bufferNotSecure = new List<Baggage>();
         }
 
-        public override Baggage ProcessBaggage(Baggage baggage)
+        public override void ProcessBaggage()
         {
+            Status = BaggageStatus.Busy;
             this.baggage = baggage;
-            if (baggage.Secure == 5 && baggage.Secure == 7)
+
+            if (nextNode.Status == BaggageStatus.Free)
             {
-                Thread.Sleep(2000);
-                bufferNotSecure.Add(baggage);
+                if (baggage.Secure == 5 && baggage.Secure == 7)
+                {
+                    Thread.Sleep(ProcessingTime);
+                    bufferNotSecure.Add(baggage);
+                    this.Status = BaggageStatus.Free;
+                }
+                else
+                {
+                    Thread.Sleep(ProcessingTime);
+                    nextNode.PassBaggage(baggage);
+                    this.Status = BaggageStatus.Free;
+                }
             }
             else
             {
-                Thread.Sleep(2000);
-                return baggage;
+                Thread.Sleep(1000);
+                ProcessBaggage();
             }
-            return null;
         }
 
         public override void PassBaggage(Baggage Lastbaggage)
         {
-            ProcessBaggage(Lastbaggage);
-            nextNode.PassBaggage(Lastbaggage);
-            Status = BaggageStatus.Free;
+            this.baggage = Lastbaggage;
+            ProcessBaggage();
         }
     }
 }

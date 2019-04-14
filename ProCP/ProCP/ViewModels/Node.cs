@@ -8,30 +8,18 @@ namespace ProCP.viewModels
 {
     public enum BaggageStatus
     {
-        Free
+        Free, Busy
     }
     public abstract class Node
     {
         private BaggageStatus status;
-
-        public BaggageStatus Status
-        {
-            get
-            {
-                return status;
-            }
-            set
-            {
-                status = value;
-                if (value == BaggageStatus.Free)
-                {
-
-                }
-            }
-        }
+        public BaggageStatus Status { get; set; }
         public Node nextNode { get; set; }
-        public Action OnStatusChangedToFree;
-        public Node() { }
+        public Node()
+        {
+            Status = BaggageStatus.Free;
+        }
         public abstract void PassBaggage(Baggage Lastbaggage);
+        public Action OnNodeStatusChangedToFree;
     }
 }
