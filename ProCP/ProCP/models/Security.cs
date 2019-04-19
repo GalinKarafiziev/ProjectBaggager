@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ProCP.viewModels
+namespace ProCP.models
 {
-    public class Security: ProcessUnit
+    public class SecurityUnit: ProcessUnit
     {
-        public Baggage baggage { get; set; }
+        public Baggage Baggage { get; set; }
 
         public List<Baggage> bufferNotSecure;
         public int ProcessingTime { get; set; }
@@ -23,20 +23,20 @@ namespace ProCP.viewModels
         public override void ProcessBaggage()
         {
             Status = BaggageStatus.Busy;
-            this.baggage = baggage;
+            this.Baggage = Baggage;
 
-            if (nextNode.Status == BaggageStatus.Free)
+            if (NextNode.Status == BaggageStatus.Free)
             {
-                if (baggage.Secure == 5 && baggage.Secure == 7)
+                if (Baggage.Secure == 5 && Baggage.Secure == 7)
                 {
                     Thread.Sleep(ProcessingTime);
-                    bufferNotSecure.Add(baggage);
+                    bufferNotSecure.Add(Baggage);
                     this.Status = BaggageStatus.Free;
                 }
                 else
                 {
                     Thread.Sleep(ProcessingTime);
-                    nextNode.PassBaggage(baggage);
+                    NextNode.PassBaggage(Baggage);
                     this.Status = BaggageStatus.Free;
                 }
             }
@@ -49,7 +49,7 @@ namespace ProCP.viewModels
 
         public override void PassBaggage(Baggage Lastbaggage)
         {
-            this.baggage = Lastbaggage;
+            this.Baggage = Lastbaggage;
             ProcessBaggage();
         }
     }

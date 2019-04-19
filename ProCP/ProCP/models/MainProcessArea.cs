@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ProCP.viewModels
+namespace ProCP.models
 {
     public class MainProcessArea: Node
     {
@@ -25,8 +25,8 @@ namespace ProCP.viewModels
             if (baggage.DestinationGate == 1 || baggage.DestinationGate == 2)
             {
                 Thread.Sleep(1000);
-                nextNode = convToDrop1;
-                if (nextNode.Status == BaggageStatus.Free)
+                NextNode = convToDrop1;
+                if (NextNode.Status == BaggageStatus.Free)
                 {
                     convToDrop1.PassBaggage(baggage);
                     Status = BaggageStatus.Free;
@@ -39,8 +39,8 @@ namespace ProCP.viewModels
             else
             {
                 Thread.Sleep(1000);
-                nextNode = convToDrop2;
-                if (nextNode.Status == BaggageStatus.Free)
+                NextNode = convToDrop2;
+                if (NextNode.Status == BaggageStatus.Free)
                 {
                     convToDrop2.PassBaggage(baggage);
                     Status = BaggageStatus.Free;

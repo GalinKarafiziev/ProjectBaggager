@@ -35,6 +35,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="MaterialDesignColors, Version=1.1.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignColors.1.1.3\lib\net45\MaterialDesignColors.dll</HintPath>
+    </Reference>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=2.5.1.1345, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignThemes.2.5.1\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -55,15 +67,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="viewModels\Baggage.cs" />
-    <Compile Include="viewModels\Checkin.cs" />
-    <Compile Include="viewModels\ConveyorLine.cs" />
-    <Compile Include="viewModels\Dropoff.cs" />
+    <Compile Include="models\Baggage.cs" />
+    <Compile Include="models\Checkin.cs" />
+    <Compile Include="models\ConveyorLine.cs" />
+    <Compile Include="models\Dropoff.cs" />
     <Compile Include="viewModels\Engine.cs" />
-    <Compile Include="viewModels\MainProcessArea.cs" />
-    <Compile Include="viewModels\Node.cs" />
-    <Compile Include="viewModels\ProcessUnit.cs" />
-    <Compile Include="viewModels\Security.cs" />
+    <Compile Include="models\MainProcessArea.cs" />
+    <Compile Include="models\Node.cs" />
+    <Compile Include="models\ProcessUnit.cs" />
+    <Compile Include="models\Security.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -96,6 +108,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="ClassDiagram.cd" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -106,6 +119,16 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="views\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="img\conveyor.png" />
+    <Resource Include="img\desk.png" />
+    <Resource Include="img\luggage.png" />
+    <Resource Include="img\luggage2.png" />
+    <Resource Include="img\luggage3.png" />
+    <Resource Include="img\luggage4.png" />
+    <Resource Include="img\mpa.png" />
+    <Resource Include="img\security.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

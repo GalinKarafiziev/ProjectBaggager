@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 
-namespace ProCP.viewModels
+namespace ProCP.models
 {
     public abstract class ProcessUnit: Node
     {

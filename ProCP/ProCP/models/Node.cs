@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProCP.viewModels
+namespace ProCP.models
 {
     public enum BaggageStatus
     {
@@ -14,7 +14,7 @@ namespace ProCP.viewModels
     {
         private BaggageStatus status;
         public BaggageStatus Status { get; set; }
-        public Node nextNode { get; set; }
+        public Node NextNode { get; set; }
         public Node()
         {
             Status = BaggageStatus.Free;

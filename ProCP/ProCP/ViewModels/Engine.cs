@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ProCP.models;
 
 namespace ProCP.viewModels
 {
@@ -16,7 +17,7 @@ namespace ProCP.viewModels
         public ConveyorLine conveyorToDropOff1;
         public ConveyorLine conveyorToDropOff2;
         public MainProcessArea mainProcessingUnit;
-        public Security security = new Security(2000);
+        public SecurityUnit security = new SecurityUnit(2000);
 
         public Engine()
         {
@@ -28,17 +29,17 @@ namespace ProCP.viewModels
             conveyorToDropOff1 = new ConveyorLine(2500);
             conveyorToDropOff2 = new ConveyorLine(2500);
             mainProcessingUnit = new MainProcessArea(conveyorToDropOff1, conveyorToDropOff2);
-            security = new Security(2000);
+            security = new SecurityUnit(2000);
         }
 
         public void ConnectTheNodes()
         {
-            checkIn.nextNode = conveyorFromCheckin;
-            conveyorFromCheckin.nextNode = security;
-            security.nextNode = conveyorAfterSecurity;
-            conveyorAfterSecurity.nextNode = mainProcessingUnit;
-            conveyorToDropOff1.nextNode = drop1;
-            conveyorToDropOff2.nextNode = drop2;
+            checkIn.NextNode = conveyorFromCheckin;
+            conveyorFromCheckin.NextNode = security;
+            security.NextNode = conveyorAfterSecurity;
+            conveyorAfterSecurity.NextNode = mainProcessingUnit;
+            conveyorToDropOff1.NextNode = drop1;
+            conveyorToDropOff2.NextNode = drop2;
         }
         public void AddBaggage(int number)
         {

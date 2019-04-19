@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ProCP.viewModels
+namespace ProCP.models
 {
     public class ConveyorLine : Node
     {
@@ -28,10 +28,10 @@ namespace ProCP.viewModels
             {
                 foreach (Baggage b in conveyorBelt.ToList())
                 {
-                    if (nextNode.Status == BaggageStatus.Free)
+                    if (NextNode.Status == BaggageStatus.Free)
                     {
                         Thread.Sleep(1000);
-                        nextNode.PassBaggage(lastBag);
+                        NextNode.PassBaggage(lastBag);
                         conveyorBelt.Remove(lastBag);
                         Status = BaggageStatus.Free;
                     }
