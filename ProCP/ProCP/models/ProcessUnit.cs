@@ -16,7 +16,7 @@ namespace ProCP.models
             timer = new Timer();
             timer.Interval = processTime;
             timer.Elapsed += ProcessBaggage;
-            timer.Enabled = true;
+            timer.Start();
         }
         public abstract void ProcessBaggage(Object obj, ElapsedEventArgs e);
     }

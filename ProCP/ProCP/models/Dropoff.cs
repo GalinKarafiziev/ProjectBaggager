@@ -8,10 +8,12 @@ namespace ProCP.models
 {
     public class Dropoff: Node
     {
+        public int GateId { get; set; }
         public List<Baggage> baggages;
-        public Dropoff()
+        public Dropoff(int id)
         {
             baggages = new List<Baggage>();
+            GateId = id;
         }
         public override void PassBaggage(Baggage Lastbaggage)
         {

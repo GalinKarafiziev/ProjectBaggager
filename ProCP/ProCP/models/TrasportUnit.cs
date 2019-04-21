@@ -18,7 +18,7 @@ namespace ProCP.models
             timer = new Timer();
             timer.Interval = 1000;
             timer.Elapsed += Move;
-            timer.Enabled = true;
+            timer.Start();
         }
         public bool CanMove()
         {   

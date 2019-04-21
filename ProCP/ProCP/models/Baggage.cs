@@ -12,7 +12,7 @@ namespace ProCP.models
         private int randomGate;
         private int secure;
         public int Secure { get; set; }
-        public int DestinationGate { get; set; }
+        public int DestinationGateId { get; set; }
         public string Id { get; set; }
 
         public Baggage()
@@ -21,7 +21,7 @@ namespace ProCP.models
             random = new Random();
             randomGate = random.Next(1, 4);
             secure = random.Next(1, 10);
-            DestinationGate = randomGate;
+            DestinationGateId = randomGate;
             Secure = secure;
         }
     }
