@@ -4,53 +4,51 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace ProCP.models
 {
-    public class SecurityUnit: ProcessUnit
+    public class SecurityUnit : ProcessUnit
     {
-        public Baggage Baggage { get; set; }
-
         public List<Baggage> bufferNotSecure;
-        public int ProcessingTime { get; set; }
-
-        public SecurityUnit(int processingTime)
+        public SecurityUnit(int processTime) : base(processTime)
         {
-            ProcessingTime = processingTime;
             bufferNotSecure = new List<Baggage>();
         }
 
-        public override void ProcessBaggage()
+        public override void ProcessBaggage(Object obj, ElapsedEventArgs e)
         {
-            Status = BaggageStatus.Busy;
-            this.Baggage = Baggage;
-
-            if (NextNode.Status == BaggageStatus.Free)
+            if (baggage != null)
             {
-                if (Baggage.Secure == 5 && Baggage.Secure == 7)
+                Status = BaggageStatus.Busy;
+                timer.Stop();
+                if (NextNode.Status == BaggageStatus.Free)
                 {
-                    Thread.Sleep(ProcessingTime);
-                    bufferNotSecure.Add(Baggage);
-                    this.Status = BaggageStatus.Free;
+                    if (baggage.Secure == 5 && baggage.Secure == 7)
+                    {
+                        bufferNotSecure.Add(baggage);
+                        Status = BaggageStatus.Free;
+                    }
+                    else
+                    {
+                        NextNode.PassBaggage(baggage);
+                        Status = BaggageStatus.Free;
+                    }
                 }
                 else
                 {
-                    Thread.Sleep(ProcessingTime);
-                    NextNode.PassBaggage(Baggage);
-                    this.Status = BaggageStatus.Free;
+                    timer.Start();
                 }
             }
             else
             {
-                Thread.Sleep(1000);
-                ProcessBaggage();
+                timer.Start();
             }
         }
 
         public override void PassBaggage(Baggage Lastbaggage)
         {
-            this.Baggage = Lastbaggage;
-            ProcessBaggage();
+            baggage = Lastbaggage;
         }
     }
 }

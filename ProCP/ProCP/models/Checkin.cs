@@ -4,41 +4,43 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace ProCP.models
 {
     public class Checkin : ProcessUnit
     {
-        public Baggage Baggage { get; set; }
-        public int ProcessTime { get; set; }
-        public bool IsActive { get; set; }
-        public Checkin(int processingTime)
+        public Checkin(int processTime) : base(processTime)
         {
-            this.ProcessTime = processingTime;
-            this.IsActive = true;
+
         }
 
-        public override void ProcessBaggage()
+        public override void ProcessBaggage(Object obj, ElapsedEventArgs e)
         {
-            Status = BaggageStatus.Busy;
-
-            if (NextNode.Status == BaggageStatus.Free)
+            if (baggage != null)
             {
-                Thread.Sleep(ProcessTime);
-                NextNode.PassBaggage(Baggage);
-                Status = BaggageStatus.Free;
+                Status = BaggageStatus.Busy;
+                timer.Stop();
+                if (NextNode.Status == BaggageStatus.Free)
+                {
+                    NextNode.PassBaggage(baggage);
+                    Status = BaggageStatus.Free;
+                }
+                else
+                {
+                    timer.Start();
+                }
             }
             else
             {
-                Thread.Sleep(500);
                 Status = BaggageStatus.Free;
+                timer.Start();
             }
         }
 
         public override void PassBaggage(Baggage Lastbaggage)
         {
-            Baggage = Lastbaggage;
-            Parallel.Invoke(() => ProcessBaggage());
+            baggage = Lastbaggage;
         }
     }
 }

@@ -71,6 +71,7 @@
     <Compile Include="models\Checkin.cs" />
     <Compile Include="models\ConveyorLine.cs" />
     <Compile Include="models\Dropoff.cs" />
+    <Compile Include="models\TrasportUnit.cs" />
     <Compile Include="viewModels\Engine.cs" />
     <Compile Include="models\MainProcessArea.cs" />
     <Compile Include="models\Node.cs" />

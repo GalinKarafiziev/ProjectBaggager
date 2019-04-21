@@ -10,25 +10,26 @@ namespace ProCP.models
     public class MainProcessArea: Node
     {
         public Baggage baggage { get; set; }
-        ConveyorLine convToDrop1;
-        ConveyorLine convToDrop2;
-        public MainProcessArea(ConveyorLine convToDropOne, ConveyorLine convToDropTwo)
-        {
-            this.convToDrop1 = convToDropOne;
-            this.convToDrop2 = convToDropTwo;
-        }
+        public List<Node> nextNodes;
 
+        public MainProcessArea()
+        {
+            nextNodes = new List<Node>();
+        }
+        public void AddNextNode(Node node)
+        {
+            var nextNode = node;
+            nextNodes.Add(nextNode);
+        }
         public void RedirectBaggage()
         {
             Status = BaggageStatus.Busy;
 
             if (baggage.DestinationGate == 1 || baggage.DestinationGate == 2)
             {
-                Thread.Sleep(1000);
-                NextNode = convToDrop1;
                 if (NextNode.Status == BaggageStatus.Free)
                 {
-                    convToDrop1.PassBaggage(baggage);
+                    NextNode.PassBaggage(baggage);
                     Status = BaggageStatus.Free;
                 }
                 else
@@ -38,8 +39,6 @@ namespace ProCP.models
             }
             else
             {
-                Thread.Sleep(1000);
-                NextNode = convToDrop2;
                 if (NextNode.Status == BaggageStatus.Free)
                 {
                     convToDrop2.PassBaggage(baggage);
