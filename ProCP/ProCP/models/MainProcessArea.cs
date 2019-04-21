@@ -41,7 +41,7 @@ namespace ProCP.models
             {
                 if (NextNode.Status == BaggageStatus.Free)
                 {
-                    convToDrop2.PassBaggage(baggage);
+                    NextNode.PassBaggage(baggage);
                     Status = BaggageStatus.Free;
                 }
                 else

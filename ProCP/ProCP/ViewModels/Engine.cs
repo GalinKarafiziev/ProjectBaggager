@@ -28,7 +28,7 @@ namespace ProCP.viewModels
             conveyorAfterSecurity = new ConveyorLine(2500);
             conveyorToDropOff1 = new ConveyorLine(2500);
             conveyorToDropOff2 = new ConveyorLine(2500);
-            mainProcessingUnit = new MainProcessArea(conveyorToDropOff1, conveyorToDropOff2);
+            //mainProcessingUnit = new MainProcessArea(conveyorToDropOff1, conveyorToDropOff2);
             security = new SecurityUnit(2000);
         }
 
