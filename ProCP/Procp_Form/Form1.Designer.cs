@@ -1,4 +1,4 @@
-﻿namespace ProCP
+﻿namespace Procp_Form
 {
     partial class Form1
     {

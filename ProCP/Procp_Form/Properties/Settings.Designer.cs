@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ProCP.Properties
+namespace Procp_Form.Properties
 {
 
 
