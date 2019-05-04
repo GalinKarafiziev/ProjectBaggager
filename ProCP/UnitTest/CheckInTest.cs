@@ -44,6 +44,7 @@ namespace UnitTest
             
             checkIn.NextNode.Status = BaggageStatus.Busy;
             checkIn.ProcessBaggage();
+            
 
             if (checkIn.NextNode.OnNodeStatusChangedToFree != null)
             {
