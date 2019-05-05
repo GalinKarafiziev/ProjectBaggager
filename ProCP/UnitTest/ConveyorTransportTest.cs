@@ -13,7 +13,7 @@ namespace UnitTest
         {
             Baggage baggage = new Baggage();
             Conveyor conveyor = new Conveyor();
-            DropOff dropOff = new DropOff(1);
+            DropOff dropOff = new DropOff();
             conveyor.NextNode = dropOff;
             dropOff.Status = BaggageStatus.Busy;
 
@@ -26,7 +26,7 @@ namespace UnitTest
         {
             Baggage baggage = new Baggage();
             Conveyor conveyor = new Conveyor();
-            DropOff dropOff = new DropOff(1);
+            DropOff dropOff = new DropOff();
 
             conveyor.NextNode = dropOff;
             dropOff.Status = BaggageStatus.Free;
@@ -40,7 +40,7 @@ namespace UnitTest
         {
             Baggage baggage = new Baggage();
             Conveyor conveyor = new Conveyor();
-            DropOff dropOff = new DropOff(1);
+            DropOff dropOff = new DropOff();
             int counter = 0;
             conveyor.NextNode = dropOff;
             dropOff.Status = BaggageStatus.Busy;

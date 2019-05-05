@@ -11,6 +11,7 @@ namespace Procp_Form.Core
     public class CheckIn : ProcessUnit
     {
         public List<Baggage> queue;
+
         public CheckIn()
         {
             queue = new List<Baggage>();

@@ -10,6 +10,8 @@ namespace Procp_Form.Airport
     {
         public string FlightNumber { get; set; }
 
+        public int BaggageDispatched { get; set; }
+
         public int AmountOfBaggage { get; set; }
 
         public DateTime DepartureTime { get; set; }
@@ -18,6 +20,7 @@ namespace Procp_Form.Airport
         {
             this.FlightNumber = number;
             this.DepartureTime = time;
+            this.BaggageDispatched = 0;
         }
     }
 }

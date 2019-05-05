@@ -15,7 +15,7 @@ namespace UnitTest
             
             CheckIn checkIn = new CheckIn();
             Conveyor conveyor = new Conveyor();
-            DropOff dropOff = new DropOff(1);
+            DropOff dropOff = new DropOff();
             
             checkIn.NextNode = conveyor;
             conveyor.NextNode = dropOff;
@@ -37,7 +37,7 @@ namespace UnitTest
             checkIn.queue = baggages;
             Conveyor conveyor = new Conveyor();
             
-            DropOff dropOff = new DropOff(1);
+            DropOff dropOff = new DropOff();
             int var = 0;
             checkIn.NextNode = conveyor;
             conveyor.NextNode = dropOff;
@@ -59,7 +59,7 @@ namespace UnitTest
             Baggage baggage = new Baggage();
             CheckIn checkIn = new CheckIn();
             Conveyor conveyor = new Conveyor();
-            DropOff dropOff = new DropOff(1);
+            DropOff dropOff = new DropOff();
             
             checkIn.NextNode = conveyor;
             conveyor.NextNode = dropOff;
