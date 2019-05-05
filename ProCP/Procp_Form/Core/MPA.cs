@@ -29,7 +29,7 @@ namespace Procp_Form.Core
             {
                 foreach (DropOff drop in nextNodes)
                 {
-                    if (drop.GateId == baggage.DestinationGateId)
+                    if (drop.FlightNumber == baggage.FlightNumber)
                     {
                         this.NextNode = drop;
                         NextNode.PassBaggage(baggage);

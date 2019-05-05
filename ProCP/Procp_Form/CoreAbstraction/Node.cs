@@ -29,6 +29,8 @@ namespace Procp_Form.CoreAbstraction
                 }
             }
         }
+        public int ColumnIndex { get; set; }
+        public int RowIndex { get; set; }
         public Node NextNode { get; set; }
         public Node()
         {
