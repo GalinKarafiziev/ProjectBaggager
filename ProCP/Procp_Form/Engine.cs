@@ -12,12 +12,16 @@ namespace Procp_Form
     {
         private CheckIn checkIn;
         private DropOff dropOff;
+        private MPA mainProcessArea;
+        private Security security;
+        private CheckInDispatcher dispatcher;
         private List<CheckIn> checkIns;
         private List<DropOff> dropOffs;
-
+       
         public Engine()
         {
             checkIns = new List<CheckIn>();
+            dropOffs = new List<DropOff>();
         }
 
         public List<CheckIn> CheckIns() => this.checkIns;
@@ -34,6 +38,13 @@ namespace Procp_Form
             dropOff = new DropOff();
             dropOffs.Add(dropOff);
         }
+
+        public void CreateCheckInDispatcher() => dispatcher = new CheckInDispatcher();
+
+        public void CreateSecurity() => security = new Security();
+
+        public void CreateMPA() => mainProcessArea = new MPA();
+        
                 
         public void LinkTwoNodes(Node firstNode, Node secondNode)
         {
