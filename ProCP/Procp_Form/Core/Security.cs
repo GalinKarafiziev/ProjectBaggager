@@ -21,7 +21,7 @@ namespace Procp_Form.Core
             Status = BaggageStatus.Busy;
             if (NextNode.Status == BaggageStatus.Free)
             {
-                if (baggage.Secure == 5 && baggage.Secure == 7)
+                if (baggage.Secure == 5 || baggage.Secure == 7)
                 {
                     bufferNotSecure.Add(baggage);
                     counter--;
