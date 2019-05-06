@@ -34,6 +34,7 @@ namespace Procp_Form.CoreAbstraction
         {
             Status = BaggageStatus.Free;
         }
+
         public abstract void PassBaggage(Baggage Lastbaggage);
         public Action OnNodeStatusChangedToFree;
     }
