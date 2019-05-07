@@ -145,7 +145,7 @@ namespace Procp_Form.Core
         {
             var currentTime = DateTime.Now;
             var interval = new TimeSpan();
-            interval = currentTime - flight.DepartureTime;
+            interval = currentTime - flight.DepartureTime ;
             double dispatchRate = (interval.Minutes);
             dispatchRate = dispatchRate * 60000;
             dispatchRate = dispatchRate / flight.AmountOfBaggage;
