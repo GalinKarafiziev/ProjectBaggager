@@ -19,7 +19,7 @@ namespace UnitTest
             
             checkIn.NextNode = conveyor;
             conveyor.NextNode = dropOff;
-
+            checkIn.Status = BaggageStatus.Busy;
             checkIn.ProcessBaggage();
 
             Assert.AreEqual(BaggageStatus.Free, checkIn.Status);
