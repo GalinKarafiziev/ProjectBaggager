@@ -17,7 +17,7 @@ namespace UnitTest
             Security security = new Security();
             CheckIn checkIn = new CheckIn();
             Conveyor conveyor = new Conveyor();
-            DropOff dropOff = new DropOff(1);
+            DropOff dropOff = new DropOff();
             checkIn.NextNode = conveyor;
             conveyor.NextNode = security;
             security.NextNode = dropOff;
@@ -34,7 +34,7 @@ namespace UnitTest
             Security security = new Security();
             CheckIn checkIn = new CheckIn();
             Conveyor conveyor = new Conveyor();
-            DropOff dropOff = new DropOff(1);
+            DropOff dropOff = new DropOff();
             checkIn.NextNode = conveyor;
             conveyor.NextNode = security;
             security.NextNode = dropOff;
@@ -50,7 +50,7 @@ namespace UnitTest
             Security security = new Security();
             CheckIn checkIn = new CheckIn();
             Conveyor conveyor = new Conveyor();
-            DropOff dropOff = new DropOff(1);
+            DropOff dropOff = new DropOff();
             checkIn.NextNode = conveyor;
             conveyor.NextNode = security;
             security.NextNode = dropOff;

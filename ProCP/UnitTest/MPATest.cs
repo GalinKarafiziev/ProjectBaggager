@@ -12,7 +12,7 @@ namespace UnitTest
         [TestMethod]
         public void AddNextNode_Test()
         {
-            DropOff drop = new DropOff(1);
+            DropOff drop = new DropOff();
             MPA mpa = new MPA();
             mpa.AddNextNode(drop);
             Assert.AreEqual(1, mpa.nextNodes.Count);
@@ -22,8 +22,8 @@ namespace UnitTest
         public void ProcessBaggage_If_Statement()
         {
             
-            DropOff drop = new DropOff(1);
-            Baggage baggage = new Baggage(){DestinationGateId = 1};
+            DropOff drop = new DropOff();
+            Baggage baggage = new Baggage(){FlightNumber = "RA3625"};
             List<Baggage> baggages = new List<Baggage>()
             {
                 baggage,
