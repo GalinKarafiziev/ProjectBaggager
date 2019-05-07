@@ -16,10 +16,11 @@ namespace Procp_Form.Airport
 
         public DateTime DepartureTime { get; set; }
 
-        public Flight(DateTime time, string number)
+        public Flight(DateTime time, string number, int baggage)
         {
             this.FlightNumber = number;
             this.DepartureTime = time;
+            this.AmountOfBaggage = baggage;
             this.BaggageDispatched = 0;
         }
     }

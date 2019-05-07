@@ -141,12 +141,13 @@ namespace Procp_Form.Core
             return chosenIndex;
         }
 
-        public int CalculateDispatchRate(Flight flight)
+        public double CalculateDispatchRate(Flight flight)
         {
             var currentTime = DateTime.Now;
             var interval = new TimeSpan();
             interval = flight.DepartureTime - currentTime;
-            int dispatchRate = (interval.Seconds) * 1000;
+            double dispatchRate = (interval.TotalMilliseconds);
+            dispatchRate = dispatchRate / flight.AmountOfBaggage;
 
             return dispatchRate;
         }

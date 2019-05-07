@@ -10,45 +10,53 @@ namespace Procp_Form
 {
     public class Engine
     {
-        private CheckIn checkIn;
-        private DropOff dropOff;
         private MPA mainProcessArea;
         private Security security;
         private CheckInDispatcher dispatcher;
         private List<CheckIn> checkIns;
         private List<DropOff> dropOffs;
-       
+        private List<Conveyor> conveyors;
+
         public Engine()
         {
+            conveyors = new List<Conveyor>();
             checkIns = new List<CheckIn>();
             dropOffs = new List<DropOff>();
         }
 
-        public List<CheckIn> CheckIns() => this.checkIns;
-        public List<DropOff> DropOffs() => this.dropOffs;
+        //public List<CheckIn> CheckIns() => this.checkIns;
+        //public List<DropOff> DropOffs() => this.dropOffs;
 
-        public void CreateCheckIn()
+        public void AddCheckIn(CheckIn checkin)
         {
-            checkIn = new CheckIn();
-            checkIns.Add(checkIn);
+            checkIns.Add(checkin);
         }
 
-        public void CreateDropOff()
+        public void AddDropOff(DropOff dropOff)
         {
-            dropOff = new DropOff();
             dropOffs.Add(dropOff);
         }
 
-        public void CreateCheckInDispatcher() => dispatcher = new CheckInDispatcher();
+        public void AddConveyorPart(Conveyor conveyor)
+        {
+            conveyors.Add(conveyor);
+        }
 
-        public void CreateSecurity() => security = new Security();
+        public void AddCheckInDispatcher(CheckInDispatcher dispatcher) => this.dispatcher = dispatcher;
 
-        public void CreateMPA() => mainProcessArea = new MPA();
-        
-                
+        public void AddSecurity(Security security) => this.security = security;
+
+        public void AddMPA(MPA mpa) => this.mainProcessArea = mpa;
+
+        public void AddFlight(DateTime time, string number, int baggage)
+        {
+
+        }
+
         public void LinkTwoNodes(Node firstNode, Node secondNode)
         {
             firstNode.NextNode = secondNode;
         }
+
     }
 }
