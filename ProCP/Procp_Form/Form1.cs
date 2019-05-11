@@ -23,7 +23,8 @@ namespace Procp_Form
         bool isCurrentlyBuilding;
         List<GridTile> tilesCurrentlyBuilding;
         GridTile selectedTile;
-
+        Engine Engine = new Engine();
+        
         public Baggager()
         {
             InitializeComponent();
@@ -122,7 +123,7 @@ namespace Procp_Form
                 {
                     if (t is EmptyTile && t.Unclickable == false)
                     {
-                        thisGrid.AddDropOffAtCoordinates(t, new DropOff(3));
+                        thisGrid.AddDropOffAtCoordinates(t, new DropOff());
                     }
                 }
             }
@@ -179,6 +180,20 @@ namespace Procp_Form
                 isCurrentlyBuilding = false;
             }
             selectedTile = null;
+        }
+
+        private void btnAddFlight_Click(object sender, EventArgs e)
+        {
+            DateTime date = (Convert.ToDateTime(tbFlightTime.Text));
+            string flightNr = tbFlightNr.Text;
+            int flightBaggage = Convert.ToInt32(tbFlightBaggage.Text);
+            Engine.AddFlight(date, flightNr, flightBaggage);
+            lbFlights.Items.Add($"[#{flightNr}] {date.ToString()} ({flightBaggage})");
+        }
+
+        private void btnEditFlight_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Procp_Form.Visuals
 
         private bool unclickable = false;
         public Brush fillBrush;
-        
+
         public int Column
         {
             get { return column; }
