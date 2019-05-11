@@ -33,11 +33,11 @@
             this.chbBuildMode = new System.Windows.Forms.CheckBox();
             this.lblBagStatus = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lblNodeType = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.lblTest = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.lblColRow = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.lblNodeType = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.animationBox)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -50,8 +50,9 @@
             this.animationBox.TabIndex = 0;
             this.animationBox.TabStop = false;
             this.animationBox.Paint += new System.Windows.Forms.PaintEventHandler(this.AnimationBox_Paint);
-            this.animationBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.AnimationBox_MouseClick);
             this.animationBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.AnimationBox_MouseDown);
+            this.animationBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.AnimationBox_MouseMove);
+            this.animationBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.AnimationBox_MouseUp);
             // 
             // cmBoxNodeToBuild
             // 
@@ -98,6 +99,24 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Node Info:";
             // 
+            // lblNodeType
+            // 
+            this.lblNodeType.AutoSize = true;
+            this.lblNodeType.Location = new System.Drawing.Point(7, 33);
+            this.lblNodeType.Name = "lblNodeType";
+            this.lblNodeType.Size = new System.Drawing.Size(46, 17);
+            this.lblNodeType.TabIndex = 8;
+            this.lblNodeType.Text = "label3";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(0, 65);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(111, 17);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "Baggage status:";
+            // 
             // lblTest
             // 
             this.lblTest.AutoSize = true;
@@ -124,24 +143,6 @@
             this.lblColRow.Size = new System.Drawing.Size(46, 17);
             this.lblColRow.TabIndex = 9;
             this.lblColRow.Text = "label2";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(0, 65);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(111, 17);
-            this.label2.TabIndex = 7;
-            this.label2.Text = "Baggage status:";
-            // 
-            // lblNodeType
-            // 
-            this.lblNodeType.AutoSize = true;
-            this.lblNodeType.Location = new System.Drawing.Point(7, 33);
-            this.lblNodeType.Name = "lblNodeType";
-            this.lblNodeType.Size = new System.Drawing.Size(46, 17);
-            this.lblNodeType.TabIndex = 8;
-            this.lblNodeType.Text = "label3";
             // 
             // Baggager
             // 

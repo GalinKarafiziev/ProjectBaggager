@@ -19,6 +19,11 @@ namespace Procp_Form
 
         bool buildModeActive;
         string buildModeType;
+
+        bool isCurrentlyBuilding;
+        List<GridTile> tilesCurrentlyBuilding;
+        GridTile selectedTile;
+
         public Baggager()
         {
             InitializeComponent();
@@ -27,53 +32,13 @@ namespace Procp_Form
 
             buildModeActive = false;
             cmBoxNodeToBuild.Visible = false;
+            isCurrentlyBuilding = false;
+            tilesCurrentlyBuilding = new List<GridTile>(); 
         }
 
         private void AnimationBox_Paint(object sender, PaintEventArgs e)
         {
             thisGrid.DrawGrid(e);
-        }
-
-        private void AnimationBox_MouseClick(object sender, MouseEventArgs e)
-        {
-            var mouseClick = e as MouseEventArgs;
-           // MessageBox.Show(mouseClick.X + " " + mouseClick.Y);
-            GridTile t = thisGrid.FindTileInPixelCoordinates(mouseClick.X, mouseClick.Y);
-            if (buildModeActive)
-            {
-                if (buildModeType == "Conveyor") {
-                  
-                    if (t is EmptyTile && t.Unclickable == false)
-                    {
-                        thisGrid.AddConveyorLineAtCoordinates(t, new Conveyor());
-                    }
-                }
-                else if (buildModeType == "CheckIn")
-                {
-                    if (t is EmptyTile && t.Unclickable == false)
-                    {
-                        thisGrid.AddCheckInAtCoordinates(t, new CheckIn());
-                    }
-                }
-                else if(buildModeType == "DropOff")
-                {
-                    if (t is EmptyTile && t.Unclickable == false)
-                    {
-                        thisGrid.AddDropOffAtCoordinates(t, new DropOff(3));
-                    }
-                }
-            }
-            else
-            {
-                if (!(t is EmptyTile)) {
-                    Node n = thisGrid.ReturnNodeOnPosition(t);
-                    lblNodeType.Text = n.GetType().Name;
-                    lblBagStatus.Text = n.Status.ToString();
-                }
-            }
-            lblColRow.Text = t.Column + " " + t.Row;
-
-            animationBox.Invalidate();
         }
 
         private void ChbBuildMode_CheckedChanged(object sender, EventArgs e)
@@ -126,7 +91,94 @@ namespace Procp_Form
             if(buildModeActive && buildModeType == "Conveyor")
             {
                 System.Diagnostics.Debug.WriteLine("press");
+                isCurrentlyBuilding = true;
             }
+
+            var mouseClick = e as MouseEventArgs;
+            // MessageBox.Show(mouseClick.X + " " + mouseClick.Y);
+            GridTile t = thisGrid.FindTileInPixelCoordinates(mouseClick.X, mouseClick.Y);
+
+            selectedTile = t;
+
+            if (buildModeActive)
+            {
+                if (buildModeType == "Conveyor")
+                {
+
+                    if (t is EmptyTile && t.Unclickable == false)
+                    {
+                        thisGrid.AddConveyorLineAtCoordinates(t, new Conveyor());
+                        
+                    }
+                }
+                else if (buildModeType == "CheckIn")
+                {
+                    if (t is EmptyTile && t.Unclickable == false)
+                    {
+                        thisGrid.AddCheckInAtCoordinates(t, new CheckIn());
+                    }
+                }
+                else if (buildModeType == "DropOff")
+                {
+                    if (t is EmptyTile && t.Unclickable == false)
+                    {
+                        thisGrid.AddDropOffAtCoordinates(t, new DropOff(3));
+                    }
+                }
+            }
+            else
+            {
+                if (!(t is EmptyTile))
+                {
+                    Node n = thisGrid.ReturnNodeOnPosition(t);
+                    lblNodeType.Text = n.GetType().Name;
+                    lblBagStatus.Text = n.Status.ToString();
+                }
+            }
+            lblColRow.Text = t.Column + " " + t.Row;
+
+            animationBox.Invalidate();
+        }
+
+        private void AnimationBox_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (isCurrentlyBuilding)
+            {
+                var mouseClick = e as MouseEventArgs;
+                GridTile t = thisGrid.FindTileInPixelCoordinates(mouseClick.X, mouseClick.Y);
+
+                if (buildModeActive && buildModeType == "Conveyor" && isCurrentlyBuilding)
+                {
+                    System.Diagnostics.Debug.WriteLine("moving " + t.Column + " " + t.Row);
+                }
+
+                if (t.Column != selectedTile.Column || t.Row != selectedTile.Row)
+                {
+                    System.Diagnostics.Debug.WriteLine("dif " + selectedTile.Column + " " + selectedTile.Row);
+
+                    if (buildModeType == "Conveyor")
+                    {
+                        if ((Math.Abs(t.Column - selectedTile.Column) <= 1 && Math.Abs(t.Row - selectedTile.Row) == 0) || (Math.Abs(t.Column - selectedTile.Column) == 0 && Math.Abs(t.Row - selectedTile.Row) <= 1)) {
+                            if (t is EmptyTile && t.Unclickable == false)
+                            {
+                                thisGrid.AddConveyorLineAtCoordinates(t, new Conveyor());
+                                selectedTile = t;
+                            }
+                        }
+                    }
+                }
+            }
+            animationBox.Invalidate();
+        }
+
+        private void AnimationBox_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (buildModeActive && buildModeType == "Conveyor")
+            {
+                System.Diagnostics.Debug.WriteLine("uppress");
+                isCurrentlyBuilding = false;
+            }
+            selectedTile = null;
         }
     }
 }
