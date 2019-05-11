@@ -110,7 +110,7 @@ namespace Procp_Form
                     {
                         Conveyor conveyor = new Conveyor();
                         thisGrid.AddConveyorLineAtCoordinates(t, conveyor);
-                        selectedTile = thisGrid.FindTileInRowColumnCoordinates(t.Row, t.Column);
+                        selectedTile = thisGrid.FindTileInRowColumnCoordinates(t.Column, t.Row);
                         Engine.AddConveyorPart(conveyor);                       
                     }
                 }
@@ -171,7 +171,7 @@ namespace Procp_Form
                                 Conveyor conveyor = new Conveyor();
                                 thisGrid.AddConveyorLineAtCoordinates(t, conveyor);
                                 Engine.AddConveyorPart(conveyor);
-                                GridTile created = thisGrid.FindTileInRowColumnCoordinates(t.Row, t.Column);
+                                GridTile created = thisGrid.FindTileInRowColumnCoordinates(t.Column, t.Row);
 
                                 Engine.LinkTwoNodes(selectedTile.nodeInGrid, created.nodeInGrid);
                                 selectedTile = created;

@@ -113,12 +113,12 @@ namespace Procp_Form.Visuals
             }
             return foundTile;
         }
-        public GridTile FindTileInRowColumnCoordinates(float targetRow, float targetColumn)
+        public GridTile FindTileInRowColumnCoordinates(float  targetColumn, float targetRow)
         {
             GridTile foundTile = new EmptyTile();
             foreach (GridTile n in gridTiles)
             {
-                if (n.Column == targetRow && n.Row == targetColumn)
+                if (n.Column == targetColumn && n.Row == targetRow)
                 {
                     foundTile = n;
                     break;
