@@ -33,7 +33,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
+<<<<<<< HEAD
     <StartupObject>Procp_Form.Program</StartupObject>
+=======
+    <StartupObject />
+>>>>>>> development
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -69,12 +73,15 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+<<<<<<< HEAD
     <Compile Include="Visuals\DropOffTile.cs" />
     <Compile Include="Visuals\Grid.cs" />
     <Compile Include="Visuals\CheckInTile.cs" />
     <Compile Include="Visuals\ConveyorTile.cs" />
     <Compile Include="Visuals\EmptyTile.cs" />
     <Compile Include="Visuals\GridTile.cs" />
+=======
+>>>>>>> development
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
