@@ -9,7 +9,7 @@ using System.Drawing;
 
 namespace Procp_Form.Visuals
 {
-    abstract class GridTile
+    class GridTile
     {
         private int column;
         private int row;
@@ -18,6 +18,8 @@ namespace Procp_Form.Visuals
 
         private bool unclickable = false;
         public Brush fillBrush;
+        public Brush clickableColor;
+        public Brush unclickableColour;
         
         public int Column
         {
@@ -34,7 +36,24 @@ namespace Procp_Form.Visuals
             get { return unclickable; }
             set { unclickable = value; }
         }
-        public abstract void DrawTile(PaintEventArgs e, float width, float height);
-        public abstract void SetTileUncklicableColor();
+        public virtual void DrawTile(PaintEventArgs e, float width, float height)
+        {
+            Graphics g = e.Graphics;
+            Pen p = new Pen(Color.Red);
+
+            g.FillRectangle(fillBrush, Column * width, Row * height, width, height);
+            g.DrawRectangle(p, Column * width, Row * height, width, height);
+        }
+        public virtual void SetTileUncklicableColor()
+        {
+            if (Unclickable)
+            {
+                fillBrush = unclickableColour;
+            }
+            else
+            {
+                fillBrush = clickableColor;
+            }
+        }
     }
 }

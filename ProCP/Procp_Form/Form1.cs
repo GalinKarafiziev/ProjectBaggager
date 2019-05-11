@@ -122,7 +122,7 @@ namespace Procp_Form
                 {
                     if (t is EmptyTile && t.Unclickable == false)
                     {
-                        thisGrid.AddDropOffAtCoordinates(t, new DropOff(3));
+                        thisGrid.AddDropOffAtCoordinates(t, new DropOff());
                     }
                 }
             }

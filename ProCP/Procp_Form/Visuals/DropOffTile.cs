@@ -12,28 +12,10 @@ namespace Procp_Form.Visuals
     {
         public DropOffTile()
         {
-            fillBrush = Brushes.SlateGray;
-        }
+            clickableColor = Brushes.SlateGray;
+            unclickableColour = Brushes.DarkSlateGray;
 
-        public override void DrawTile(PaintEventArgs e, float width, float height)
-        {
-            Graphics g = e.Graphics;
-            Pen p = new Pen(Color.Red);
-
-            g.FillRectangle(fillBrush, Column * width, Row * height, width, height);
-            g.DrawRectangle(p, Column * width, Row * height, width, height);
-        }
-
-        public override void SetTileUncklicableColor()
-        {
-            if (Unclickable)
-            {
-                fillBrush = Brushes.DarkSlateGray;
-            }
-            else
-            {
-                fillBrush = Brushes.SlateGray;
-            }
+            fillBrush = clickableColor;
         }
     }
 }
