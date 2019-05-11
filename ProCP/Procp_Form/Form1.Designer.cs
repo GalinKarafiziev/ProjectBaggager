@@ -33,6 +33,8 @@
             this.chbBuildMode = new System.Windows.Forms.CheckBox();
             this.lblBagStatus = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lblNextNode = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.lblNodeType = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.lblTest = new System.Windows.Forms.Label();
@@ -42,12 +44,13 @@
             this.tbFlightNr = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnEditFlight = new System.Windows.Forms.Button();
+            this.btnAddFlight = new System.Windows.Forms.Button();
+            this.tbFlightTime = new System.Windows.Forms.DateTimePicker();
+            this.label5 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.tbFlightBaggage = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.tbFlightTime = new System.Windows.Forms.DateTimePicker();
-            this.btnAddFlight = new System.Windows.Forms.Button();
-            this.btnEditFlight = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.animationBox)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -100,15 +103,35 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.lblNextNode);
+            this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.lblNodeType);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.lblBagStatus);
-            this.groupBox1.Location = new System.Drawing.Point(10, 144);
+            this.groupBox1.Location = new System.Drawing.Point(10, 126);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(204, 100);
+            this.groupBox1.Size = new System.Drawing.Size(204, 118);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Node Info:";
+            // 
+            // lblNextNode
+            // 
+            this.lblNextNode.AutoSize = true;
+            this.lblNextNode.Location = new System.Drawing.Point(109, 95);
+            this.lblNextNode.Name = "lblNextNode";
+            this.lblNextNode.Size = new System.Drawing.Size(46, 17);
+            this.lblNextNode.TabIndex = 10;
+            this.lblNextNode.Text = "label7";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(7, 95);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(78, 17);
+            this.label6.TabIndex = 9;
+            this.label6.Text = "Next Node:";
             // 
             // lblNodeType
             // 
@@ -198,6 +221,43 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Flights Info";
             // 
+            // btnEditFlight
+            // 
+            this.btnEditFlight.Location = new System.Drawing.Point(112, 117);
+            this.btnEditFlight.Name = "btnEditFlight";
+            this.btnEditFlight.Size = new System.Drawing.Size(82, 23);
+            this.btnEditFlight.TabIndex = 19;
+            this.btnEditFlight.Text = "Edit";
+            this.btnEditFlight.UseVisualStyleBackColor = true;
+            this.btnEditFlight.Click += new System.EventHandler(this.btnEditFlight_Click);
+            // 
+            // btnAddFlight
+            // 
+            this.btnAddFlight.Location = new System.Drawing.Point(10, 117);
+            this.btnAddFlight.Name = "btnAddFlight";
+            this.btnAddFlight.Size = new System.Drawing.Size(84, 23);
+            this.btnAddFlight.TabIndex = 18;
+            this.btnAddFlight.Text = "Add";
+            this.btnAddFlight.UseVisualStyleBackColor = true;
+            this.btnAddFlight.Click += new System.EventHandler(this.btnAddFlight_Click);
+            // 
+            // tbFlightTime
+            // 
+            this.tbFlightTime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.tbFlightTime.Location = new System.Drawing.Point(74, 84);
+            this.tbFlightTime.Name = "tbFlightTime";
+            this.tbFlightTime.Size = new System.Drawing.Size(100, 22);
+            this.tbFlightTime.TabIndex = 17;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 84);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(69, 17);
+            this.label5.TabIndex = 16;
+            this.label5.Text = "Dep.Time";
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -214,48 +274,22 @@
             this.tbFlightBaggage.Size = new System.Drawing.Size(100, 22);
             this.tbFlightBaggage.TabIndex = 14;
             // 
-            // label5
+            // button1
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 84);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(69, 17);
-            this.label5.TabIndex = 16;
-            this.label5.Text = "Dep.Time";
-            // 
-            // tbFlightTime
-            // 
-            this.tbFlightTime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.tbFlightTime.Location = new System.Drawing.Point(74, 84);
-            this.tbFlightTime.Name = "tbFlightTime";
-            this.tbFlightTime.Size = new System.Drawing.Size(100, 22);
-            this.tbFlightTime.TabIndex = 17;
-            // 
-            // btnAddFlight
-            // 
-            this.btnAddFlight.Location = new System.Drawing.Point(10, 117);
-            this.btnAddFlight.Name = "btnAddFlight";
-            this.btnAddFlight.Size = new System.Drawing.Size(84, 23);
-            this.btnAddFlight.TabIndex = 18;
-            this.btnAddFlight.Text = "Add";
-            this.btnAddFlight.UseVisualStyleBackColor = true;
-            this.btnAddFlight.Click += new System.EventHandler(this.btnAddFlight_Click);
-            // 
-            // btnEditFlight
-            // 
-            this.btnEditFlight.Location = new System.Drawing.Point(112, 117);
-            this.btnEditFlight.Name = "btnEditFlight";
-            this.btnEditFlight.Size = new System.Drawing.Size(82, 23);
-            this.btnEditFlight.TabIndex = 19;
-            this.btnEditFlight.Text = "Edit";
-            this.btnEditFlight.UseVisualStyleBackColor = true;
-            this.btnEditFlight.Click += new System.EventHandler(this.btnEditFlight_Click);
+            this.button1.Location = new System.Drawing.Point(164, 63);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 15;
+            this.button1.Text = "Run";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.Button1_Click);
             // 
             // Baggager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1119, 524);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.lblColRow);
             this.Controls.Add(this.label1);
@@ -298,6 +332,9 @@
         private System.Windows.Forms.TextBox tbFlightBaggage;
         private System.Windows.Forms.Button btnEditFlight;
         private System.Windows.Forms.Button btnAddFlight;
+        private System.Windows.Forms.Label lblNextNode;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button button1;
     }
 }
 

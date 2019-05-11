@@ -21,6 +21,7 @@ namespace Procp_Form
         string buildModeType;
 
         bool isBuildingConveyor;
+        bool isConnectingTiles;
         GridTile selectedTile;
         Engine Engine = new Engine();
         
@@ -32,6 +33,7 @@ namespace Procp_Form
             buildModeActive = false;
             cmBoxNodeToBuild.Visible = false;
             isBuildingConveyor = false;
+            isConnectingTiles = false;
         }
 
         private void AnimationBox_Paint(object sender, PaintEventArgs e)
@@ -115,6 +117,10 @@ namespace Procp_Form
                         Engine.AddDropOff(dropoff);
                     }
                 }
+                else if(!(t is EmptyTile))
+                {
+                    isConnectingTiles = true;
+                }
             }
             else
             {
@@ -123,6 +129,14 @@ namespace Procp_Form
                     Node n = thisGrid.ReturnNodeOnPosition(t);
                     lblNodeType.Text = n.GetType().Name;
                     lblBagStatus.Text = n.Status.ToString();
+                    if (t.nodeInGrid.NextNode == null)
+                    {
+                        lblNextNode.Text = "null";
+                    }
+                    else
+                    {
+                        lblNextNode.Text = t.nodeInGrid.NextNode.ToString();
+                    }
                 }
             }
             lblColRow.Text = t.Column + " " + t.Row;
@@ -132,31 +146,39 @@ namespace Procp_Form
 
         private void AnimationBox_MouseMove(object sender, MouseEventArgs e)
         {
-            if (isBuildingConveyor)
+            var mouseClick = e as MouseEventArgs;
+            GridTile t = thisGrid.FindTileInPixelCoordinates(mouseClick.X, mouseClick.Y);
+
+            if (buildModeActive && buildModeType == "Conveyor" && isBuildingConveyor)
             {
-                var mouseClick = e as MouseEventArgs;
-                GridTile t = thisGrid.FindTileInPixelCoordinates(mouseClick.X, mouseClick.Y);
+                System.Diagnostics.Debug.WriteLine("moving " + t.Column + " " + t.Row);
+            }
 
-                if (buildModeActive && buildModeType == "Conveyor" && isBuildingConveyor)
-                {
-                    System.Diagnostics.Debug.WriteLine("moving " + t.Column + " " + t.Row);
-                }
+            if (isBuildingConveyor)
+            {              
+                if ((Math.Abs(t.Column - selectedTile.Column) == 1 && Math.Abs(t.Row - selectedTile.Row) == 0) || (Math.Abs(t.Column - selectedTile.Column) == 0 && Math.Abs(t.Row - selectedTile.Row) == 1)) {
+                   if (t is EmptyTile && t.Unselectable == false)
+                   {
+                       Conveyor conveyor = new Conveyor();
+                       GridTile created = thisGrid.AddConveyorLineAtCoordinates(t, conveyor);
+                       Engine.AddConveyorPart(conveyor);
 
-                if (t.Column != selectedTile.Column || t.Row != selectedTile.Row)
-                {
-                  if ((Math.Abs(t.Column - selectedTile.Column) <= 1 && Math.Abs(t.Row - selectedTile.Row) == 0) || (Math.Abs(t.Column - selectedTile.Column) == 0 && Math.Abs(t.Row - selectedTile.Row) <= 1)) {
-                      if (t is EmptyTile && t.Unselectable == false)
-                      {
-                           Conveyor conveyor = new Conveyor();
-                           GridTile created = thisGrid.AddConveyorLineAtCoordinates(t, conveyor);
-                           Engine.AddConveyorPart(conveyor);
-
-                           Engine.LinkTwoNodes(selectedTile.nodeInGrid, created.nodeInGrid);
-                          selectedTile = created;
-                      }
-                  }
+                       Engine.LinkTwoNodes(selectedTile.nodeInGrid, created.nodeInGrid);
+                       selectedTile = created;
+                   }
                 }
             }
+            if (isConnectingTiles)
+            {
+                if ((Math.Abs(t.Column - selectedTile.Column) == 1 && Math.Abs(t.Row - selectedTile.Row) == 0) || (Math.Abs(t.Column - selectedTile.Column) == 0 && Math.Abs(t.Row - selectedTile.Row) == 1))
+                {
+                    if(!(t is EmptyTile))
+                    {
+                        Engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
+                    }
+                }
+            }
+
             animationBox.Invalidate();
         }
 
@@ -165,8 +187,9 @@ namespace Procp_Form
             if (buildModeActive && buildModeType == "Conveyor")
             {
                 System.Diagnostics.Debug.WriteLine("uppress");
-                isBuildingConveyor = false;
             }
+            isBuildingConveyor = false;
+            isConnectingTiles = false;
             selectedTile = null;
         }
 
@@ -182,6 +205,12 @@ namespace Procp_Form
         private void btnEditFlight_Click(object sender, EventArgs e)
         {
             
+        }
+
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            Engine.AddCheckInDispatcher(new CheckInDispatcher());
+            Engine.Run();
         }
     }
 }
