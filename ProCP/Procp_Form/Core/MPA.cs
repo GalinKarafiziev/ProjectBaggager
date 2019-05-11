@@ -17,19 +17,22 @@ namespace Procp_Form.Core
         {
             nextNodes = new List<DropOff>();
         }
+
         public void AddNextNode(DropOff node)
         {
             var nextNode = node;
             nextNodes.Add(nextNode);
         }
+
         public override void ProcessBaggage()
         {
             Status = BaggageStatus.Busy;
+
             if (baggage != null)
             {
                 foreach (DropOff drop in nextNodes)
                 {
-                    if (drop.GateId == baggage.DestinationGateId)
+                    if (drop.FlightNumber == baggage.FlightNumber)
                     {
                         this.NextNode = drop;
                         NextNode.PassBaggage(baggage);
@@ -42,6 +45,7 @@ namespace Procp_Form.Core
                 }
             }
         }
+
         public override void PassBaggage(Baggage Lastbaggage)
         {
             baggage = Lastbaggage;

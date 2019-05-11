@@ -57,8 +57,10 @@
     <Compile Include="Core\CheckInDispatcher.cs" />
     <Compile Include="Core\Conveyor.cs" />
     <Compile Include="Core\DropOff.cs" />
+    <Compile Include="Airport\Flight.cs" />
     <Compile Include="Core\MPA.cs" />
     <Compile Include="Core\Security.cs" />
+    <Compile Include="Engine.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

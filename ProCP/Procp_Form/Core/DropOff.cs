@@ -9,12 +9,11 @@ namespace Procp_Form.Core
 {
     public class DropOff : Node
     {
-        public int GateId { get; set; }
+        public string FlightNumber { get; set; }
         public List<Baggage> baggages;
-        public DropOff(int id)
+        public DropOff()
         {
             baggages = new List<Baggage>();
-            GateId = id;
         }
         public override void PassBaggage(Baggage Lastbaggage)
         {

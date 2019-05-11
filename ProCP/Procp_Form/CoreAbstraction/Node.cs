@@ -9,27 +9,27 @@ namespace Procp_Form.CoreAbstraction
 {
     public enum BaggageStatus
     {
-        Free, Busy
+        Free,
+        Busy
     }
+
     public abstract class Node
     {
         private BaggageStatus status;
         public BaggageStatus Status
         {
-            get
-            {
-                return this.status;
-            }
+            get => this.status;
             set
             {
                 status = value;
+
                 if (value == BaggageStatus.Free && OnNodeStatusChangedToFree != null)
-                {
-                    OnNodeStatusChangedToFree?.Invoke();
-                }
+                     OnNodeStatusChangedToFree?.Invoke();
             }
         }
+
         public Node NextNode { get; set; }
+
         public Node()
         {
             Status = BaggageStatus.Free;
