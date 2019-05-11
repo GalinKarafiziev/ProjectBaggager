@@ -31,7 +31,7 @@ namespace Procp_Form.Visuals
             get { return row; }
             set { row = value; }
         }
-        public bool Unclickable
+        public bool Unselectable
         {
             get { return unclickable; }
             set { unclickable = value; }
@@ -46,7 +46,7 @@ namespace Procp_Form.Visuals
         }
         public virtual void SetTileUncklicableColor()
         {
-            if (Unclickable)
+            if (Unselectable)
             {
                 fillBrush = unclickableColour;
             }

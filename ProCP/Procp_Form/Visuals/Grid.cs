@@ -72,7 +72,7 @@ namespace Procp_Form.Visuals
                 n.DrawTile(e, tileWidth, tileHeight);
             }
         }
-        public void AddConveyorLineAtCoordinates(GridTile toReplace, Node nodeToPlace)
+        public GridTile AddConveyorLineAtCoordinates(GridTile toReplace, Node nodeToPlace)
         {
             ConveyorTile newLineTile = new ConveyorTile();
             newLineTile.Column = toReplace.Column;
@@ -80,8 +80,9 @@ namespace Procp_Form.Visuals
             gridTiles.Remove(toReplace);
             gridTiles.Add(newLineTile);
             newLineTile.nodeInGrid = nodeToPlace;
+            return newLineTile;
         }
-        public void AddCheckInAtCoordinates(GridTile toReplace, Node nodeToPlace)
+        public GridTile AddCheckInAtCoordinates(GridTile toReplace, Node nodeToPlace)
         {
             CheckInTile newCheckInTile = new CheckInTile();
             newCheckInTile.Column = toReplace.Column;
@@ -89,8 +90,9 @@ namespace Procp_Form.Visuals
             gridTiles.Remove(toReplace);
             gridTiles.Add(newCheckInTile);
             newCheckInTile.nodeInGrid = nodeToPlace;
+            return newCheckInTile;
         }
-        public void AddDropOffAtCoordinates(GridTile toReplace, Node nodeToPlace)
+        public GridTile AddDropOffAtCoordinates(GridTile toReplace, Node nodeToPlace)
         {
             DropOffTile newDropOffTile = new DropOffTile();
             newDropOffTile.Column = toReplace.Column;
@@ -98,6 +100,7 @@ namespace Procp_Form.Visuals
             gridTiles.Remove(toReplace);
             gridTiles.Add(newDropOffTile);
             newDropOffTile.nodeInGrid = nodeToPlace;
+            return newDropOffTile;
         }
         public GridTile FindTileInPixelCoordinates(float targetX, float targetY)
         {
@@ -134,7 +137,7 @@ namespace Procp_Form.Visuals
             {
                 foreach(GridTile t in gridTiles)
                 {
-                    t.Unclickable = false;
+                    t.Unselectable = false;
                     t.SetTileUncklicableColor();
                 }
             }
@@ -158,12 +161,12 @@ namespace Procp_Form.Visuals
             {
                 if (t.Row == hideAreaNotConveyorRowsTop || t.Row == hideAreaNotConveyorRowsBottom)
                 {
-                    t.Unclickable = true;
+                    t.Unselectable = true;
                     t.SetTileUncklicableColor();
                 }
                 else
                 {
-                    t.Unclickable = false;
+                    t.Unselectable = false;
                     t.SetTileUncklicableColor();
                 }
             }
@@ -175,12 +178,12 @@ namespace Procp_Form.Visuals
             {
                 if( t.Row != hideAreaNotCheckInRows)
                 {
-                    t.Unclickable = true;
+                    t.Unselectable = true;
                     t.SetTileUncklicableColor();
                 }
                 else
                 {
-                    t.Unclickable = false;
+                    t.Unselectable = false;
                     t.SetTileUncklicableColor();
                 }
             }
@@ -192,12 +195,12 @@ namespace Procp_Form.Visuals
             {
                 if (t.Row != hideAreaNotForDropOff)
                 {
-                    t.Unclickable = true;
+                    t.Unselectable = true;
                     t.SetTileUncklicableColor();
                 }
                 else
                 {
-                    t.Unclickable = false;
+                    t.Unselectable = false;
                     t.SetTileUncklicableColor();
                 }
             }
