@@ -26,24 +26,31 @@ namespace Procp_Form
             checkIns = new List<CheckIn>();
             dropOffs = new List<DropOff>();
             flights = new List<Flight>();
+            dispatcher = new CheckInDispatcher();
         }
 
         public void AddCheckIn(CheckIn checkin) => checkIns.Add(checkin);
 
-        public void AddDropOff(DropOff dropOff) =>  dropOffs.Add(dropOff);
+        public void AddDropOff(DropOff dropOff) => dropOffs.Add(dropOff);
 
         public void AddConveyorPart(Conveyor conveyor) => conveyors.Add(conveyor);
-
-        public void AddCheckInDispatcher(CheckInDispatcher dispatcher) => this.dispatcher = dispatcher;
 
         public void AddSecurity(Security security) => this.security = security;
 
         public void AddMPA(MPA mpa) => this.mainProcessArea = mpa;
 
-        public void AddFlight(DateTime time, string number, int baggage)
+        public bool AddFlight(DateTime time, string number, int baggage)
         {
             flight = new Flight(time, number, baggage);
-            flights.Add(flight);
+            foreach (Flight f in flights)
+            {
+                if (this.flight.FlightNumber != f.FlightNumber)
+                {
+                    flights.Add(flight);
+                    return true;
+                }
+            }
+            return false;
         }
 
         public void LinkTwoNodes(Node firstNode, Node secondNode)
@@ -53,8 +60,6 @@ namespace Procp_Form
 
         public void Run()
         {
-            //this.flights.ForEach(f => dispatcher.DispatchBaggage(f));
-
             dispatcher.SetupCheckins(checkIns);
             dispatcher.SetupTimers(flights);
             dispatcher.Start();

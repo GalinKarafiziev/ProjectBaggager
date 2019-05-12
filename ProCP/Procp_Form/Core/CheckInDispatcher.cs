@@ -14,7 +14,16 @@ namespace Procp_Form.Core
         List<Queue<Baggage>> checkinQueues;
         List<Timer> timers;
         List<CheckIn> checkins;
-        private static int counterBaggage = 0;
+
+        public List<CheckIn> GetCheckIns()
+        {
+            return this.checkins;
+        }
+
+        public List<Queue<Baggage>> GetQueuedBaggage()
+        {
+            return checkinQueues;
+        }
 
         public CheckInDispatcher()
         {
@@ -26,7 +35,6 @@ namespace Procp_Form.Core
         {
             foreach (Timer t in timers)
             {
-                t.Enabled = true;
                 t.Start();
             }
         }
@@ -35,7 +43,6 @@ namespace Procp_Form.Core
         {
             foreach (Timer t in timers)
             {
-                t.Enabled = false;
                 t.Stop();
             }
         }
@@ -43,7 +50,6 @@ namespace Procp_Form.Core
         public void DispatchBaggage(Flight flight)
         {
             var baggage = new Baggage();
-            flight.BaggageDispatched++;
             int chosen = FindMostSuitableCheckin();
             var checkIn = checkins[chosen];
             var queue = checkinQueues[chosen];
@@ -58,8 +64,8 @@ namespace Procp_Form.Core
             {
                 checkIn.OnNodeStatusChangedToFree += () => PassQueuedBaggage(chosen);
             }
-
             queue.Enqueue(baggage);
+            flight.BaggageDispatched++;
         }
 
         public void PassQueuedBaggage(int index)
@@ -72,7 +78,7 @@ namespace Procp_Form.Core
 
         public void SetupCheckins(List<CheckIn> checkinDesks)
         {
-            foreach (CheckIn desk in checkins)
+            foreach (CheckIn desk in checkinDesks)
             {
                 checkins.Add(desk);
             }
@@ -97,19 +103,16 @@ namespace Procp_Form.Core
                 timer = new Timer();
                 timers.Add(timer);
                 timer.Interval = CalculateDispatchRate(f);
-
+                
                 timer.Elapsed += (sender, args) =>
                 {
-                    if (NextNode.Status == BaggageStatus.Free)
+                    if (f.AmountOfBaggage > f.BaggageDispatched)
                     {
-                        if (f.AmountOfBaggage > f.BaggageDispatched)
-                        {
-                            DispatchBaggage(f);
-                        }
-                        else
-                        {
-                            timer.Stop();
-                        }
+                        DispatchBaggage(f);
+                    }
+                    else
+                    {
+                        timer.Stop();
                     }
                 };
             }
@@ -126,13 +129,13 @@ namespace Procp_Form.Core
                 {
                     chosenIndex = checkIn;
 
-                    return chosenIndex; 
+                    return chosenIndex;
                 }
             }
 
             foreach (var queue in Enumerable.Range(0, checkinQueues.Count))
             {
-                if (checkinQueues.ElementAt(queue).Count < initialQueue.Count)
+               if (checkinQueues.ElementAt(queue).Count < initialQueue.Count)
                 {
                     chosenIndex = queue;
                 }
@@ -145,7 +148,7 @@ namespace Procp_Form.Core
         {
             var currentTime = DateTime.Now;
             var interval = new TimeSpan();
-            interval = currentTime - flight.DepartureTime;
+            interval = flight.DepartureTime - currentTime ;
             double dispatchRate = (interval.Minutes);
             dispatchRate = dispatchRate * 60000;
             dispatchRate = dispatchRate / flight.AmountOfBaggage;
