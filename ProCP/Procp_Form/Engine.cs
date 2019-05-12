@@ -33,7 +33,11 @@ namespace Procp_Form
 
         public void AddDropOff(DropOff dropOff) => dropOffs.Add(dropOff);
 
-        public void AddConveyorPart(Conveyor conveyor) => conveyors.Add(conveyor);
+        public void AddConveyorPart(int capacity, int speed)
+        {
+            var conveyor = new Conveyor(capacity, speed);
+            conveyors.Add(conveyor);
+        }
 
         public void AddSecurity(Security security) => this.security = security;
 
@@ -64,6 +68,10 @@ namespace Procp_Form
 
         public void Run()
         {
+            foreach (var conveyor in conveyors)
+            {
+                conveyor.Start();
+            }
             dispatcher.SetupCheckins(checkIns);
             dispatcher.SetupTimers(flights);
             dispatcher.Start();
@@ -71,6 +79,10 @@ namespace Procp_Form
 
         public void Stop()
         {
+            foreach (var conveyor in conveyors)
+            {
+                conveyor.Stop();
+            }
             dispatcher.Stop();
         }
     }
