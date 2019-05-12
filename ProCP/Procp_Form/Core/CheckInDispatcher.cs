@@ -15,6 +15,16 @@ namespace Procp_Form.Core
         List<Timer> timers;
         List<CheckIn> checkins;
 
+        public List<CheckIn> GetCheckIns()
+        {
+            return this.checkins;
+        }
+
+        public List<Queue<Baggage>> GetQueuedBaggage()
+        {
+            return checkinQueues;
+        }
+
         public CheckInDispatcher()
         {
             checkins = new List<CheckIn>();
@@ -138,9 +148,9 @@ namespace Procp_Form.Core
         {
             var currentTime = DateTime.Now;
             var interval = new TimeSpan();
-            interval = currentTime - flight.DepartureTime;
+            interval = flight.DepartureTime - currentTime ;
             double dispatchRate = (interval.Minutes);
-            dispatchRate = dispatchRate * -60000;
+            dispatchRate = dispatchRate * 60000;
             dispatchRate = dispatchRate / flight.AmountOfBaggage;
 
             return dispatchRate;
