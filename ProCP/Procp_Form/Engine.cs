@@ -42,15 +42,19 @@ namespace Procp_Form
         public bool AddFlight(DateTime time, string number, int baggage)
         {
             flight = new Flight(time, number, baggage);
+            if (flights.Count == 0)
+            {
+                flights.Add(flight);
+            }
             foreach (Flight f in flights)
             {
-                if (this.flight.FlightNumber != f.FlightNumber)
+                if (this.flight.FlightNumber == f.FlightNumber)
                 {
-                    flights.Add(flight);
-                    return true;
+                    return false;
                 }
             }
-            return false;
+            flights.Add(flight);
+            return true;
         }
 
         public void LinkTwoNodes(Node firstNode, Node secondNode)

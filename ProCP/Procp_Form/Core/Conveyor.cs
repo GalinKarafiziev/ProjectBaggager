@@ -9,14 +9,39 @@ namespace Procp_Form.Core
 {
     public class Conveyor : TransportUnit
     {
-        public Conveyor() : base()
+        public Conveyor(int capacity, int timerSpeed) : base()
         {
-
+            conveyorBelt.Capacity = capacity;
+            timer.Interval = timerSpeed;
         }
+
+        public override void Move()
+        {
+            this.Stop();
+
+            if (CanMove())
+            {
+                if (lastBaggage != null)
+                {
+                    NextNode.PassBaggage(lastBaggage);
+                }
+            }
+
+            for (int index = conveyorBelt.Capacity - 1; index < conveyorBelt.Capacity; index++ )
+            {
+                conveyorBelt[index] = conveyorBelt[index - 1];
+                conveyorBelt[index - 1] = null;
+            }
+
+            NextNode.OnNodeStatusChangedToFree -= Move;
+            Status = BaggageStatus.Free;
+            this.Start();
+        }
+
         public override void PassBaggage(Baggage lastbaggage)
         {
-            conveyorBelt = lastbaggage;
-            Move();
+            Status = BaggageStatus.Busy;
+            conveyorBelt.Add(lastbaggage);
         }
     }
 }
