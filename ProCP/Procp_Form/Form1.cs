@@ -210,7 +210,6 @@ namespace Procp_Form
 
         private void Button1_Click(object sender, EventArgs e)
         {
-            Engine.AddCheckInDispatcher(new CheckInDispatcher());
             Engine.Run();
         }
     }
