@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Xsl;
 
 namespace Procp_Form.Core
 {
@@ -18,6 +19,11 @@ namespace Procp_Form.Core
         public override void PassBaggage(Baggage Lastbaggage)
         {
             baggages.Add(Lastbaggage);
+        }
+
+        public List<Baggage> GetBaggages()
+        {
+            return this.baggages;
         }
     }
 }
