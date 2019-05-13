@@ -16,7 +16,7 @@ namespace UnitTest
         [TestMethod]
         public void CalculateDispatchRate_Test()
         {
-            DateTime date = new DateTime(2019, 5,12,12, 01, 0 );
+            DateTime date = new DateTime(2019, 5,13,23, 04, 0 );
             Flight flight = new Flight(date, "BABY98", 3);
             Procp_Form.Core.CheckInDispatcher checkInDispatcher = new Procp_Form.Core.CheckInDispatcher();
 
@@ -28,9 +28,21 @@ namespace UnitTest
         }
 
         [TestMethod]
-        public void Start_Test()
+        public void SetupTimers_Test()
         {
-          
+          Flight flight = new Flight(DateTime.Now,"V",5);
+          Flight flight2 = new Flight(DateTime.Now, "G", 5);
+          CheckIn checkIn = new CheckIn();
+          CheckIn checkIn2 = new CheckIn();
+          List<Flight> flights = new List<Flight>();
+          Procp_Form.Core.CheckInDispatcher checkInDispatcher = new Procp_Form.Core.CheckInDispatcher();
+
+          flights.Add(flight);
+          flights.Add(flight2);
+          checkInDispatcher.SetupTimers(flights);
+
+
+
         }
 
         [TestMethod]
@@ -72,6 +84,7 @@ namespace UnitTest
             //test if the queued baggages are added correctly
             Assert.AreEqual(2, checkInDispatcher.GetQueuedBaggage().Count);
         }
+
         [TestMethod]
         public void FindMostSuitableCheckIn_WhenFreeCheckIn_Test()
         {
@@ -99,6 +112,7 @@ namespace UnitTest
             Assert.AreEqual(a, 1);
 
         }
+
         [TestMethod]
         public void FindMostSuitableCheckIn_WhenBusyCheckIn_Test()
         {
