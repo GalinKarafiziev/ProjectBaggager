@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using Procp_Form.Core;
 using Procp_Form.CoreAbstraction;
 using Procp_Form.Visuals;
+using System.Timers;
 
 namespace Procp_Form
 {
@@ -24,8 +25,11 @@ namespace Procp_Form
         bool isBuildingConveyor;
         bool isConnectingTiles;
         GridTile selectedTile;
+        List<ConveyorTile> conveyorBuilding;    
         Engine Engine = new Engine();
-        
+
+        System.Timers.Timer aTimer;
+
         public Baggager()
         {
             InitializeComponent();
@@ -35,6 +39,7 @@ namespace Procp_Form
             cmBoxNodeToBuild.Visible = false;
             isBuildingConveyor = false;
             isConnectingTiles = false;
+            conveyorBuilding = new List<ConveyorTile>();
         }
 
         private void AnimationBox_Paint(object sender, PaintEventArgs e)
@@ -100,9 +105,11 @@ namespace Procp_Form
                 {
                     if (buildModeType == "Conveyor")
                     {
-                        Conveyor conveyor = new Conveyor();
-                        selectedTile = thisGrid.AddConveyorLineAtCoordinates(t, conveyor);
-                        Engine.AddConveyorPart(conveyor);
+                       // Conveyor conveyor = new Conveyor();
+                        selectedTile = thisGrid.AddConveyorLineAtCoordinates(t);
+                        conveyorBuilding.Add((ConveyorTile) selectedTile);
+                        
+                        //Engine.AddConveyorPart(conveyor);
                         isBuildingConveyor = true;
                     }
                     else if (buildModeType == "CheckIn")
@@ -160,11 +167,12 @@ namespace Procp_Form
                 if ((Math.Abs(t.Column - selectedTile.Column) == 1 && Math.Abs(t.Row - selectedTile.Row) == 0) || (Math.Abs(t.Column - selectedTile.Column) == 0 && Math.Abs(t.Row - selectedTile.Row) == 1)) {
                    if (t is EmptyTile && t.Unselectable == false)
                    {
-                       Conveyor conveyor = new Conveyor();
-                       GridTile created = thisGrid.AddConveyorLineAtCoordinates(t, conveyor);
-                       Engine.AddConveyorPart(conveyor);
+                       //Conveyor conveyor = new Conveyor();
+                       GridTile created = thisGrid.AddConveyorLineAtCoordinates(t);
+                       //Engine.AddConveyorPart(conveyor);
+                       conveyorBuilding.Add((ConveyorTile)created);
 
-                       Engine.LinkTwoNodes(selectedTile.nodeInGrid, created.nodeInGrid);
+                      // Engine.LinkTwoNodes(selectedTile.nodeInGrid, created.nodeInGrid);
                        selectedTile = created;
                    }
                 }
@@ -187,11 +195,21 @@ namespace Procp_Form
         {
             if (buildModeActive && buildModeType == "Conveyor")
             {
+                Conveyor conveyor = new Conveyor(conveyorBuilding.Count, 1000);
+                Engine.AddConveyorPart(conveyor);
                 System.Diagnostics.Debug.WriteLine("uppress");
+                int i = 0;
+                foreach(ConveyorTile t in conveyorBuilding)
+                {
+                    t.nodeInGrid = conveyor;
+                    t.PositionInLine = i;
+                    i++;
+                }
             }
             isBuildingConveyor = false;
             isConnectingTiles = false;
             selectedTile = null;
+            conveyorBuilding.Clear();
         }
 
         private void btnAddFlight_Click(object sender, EventArgs e)
@@ -211,6 +229,15 @@ namespace Procp_Form
         private void Button1_Click(object sender, EventArgs e)
         {
             Engine.Run();
+            aTimer = new System.Timers.Timer();
+            aTimer.Elapsed += new ElapsedEventHandler(TimerSequence);
+            aTimer.Interval = 1;
+            aTimer.Enabled = true;
+        }
+
+        private void TimerSequence(object source, ElapsedEventArgs e)
+        {
+            animationBox.Invalidate();
         }
     }
 }
