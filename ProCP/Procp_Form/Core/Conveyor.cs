@@ -11,7 +11,7 @@ namespace Procp_Form.Core
     {
         public Conveyor(int capacity, int timerSpeed) : base()
         {
-            conveyorBelt.Capacity = capacity;
+            Capacity = capacity;
             timer.Interval = timerSpeed;
         }
 
@@ -27,7 +27,7 @@ namespace Procp_Form.Core
                 }
             }
 
-            for (int index = conveyorBelt.Capacity - 1; index < conveyorBelt.Capacity; index++ )
+            for (int index = conveyorBelt.Length - 1; index <= 0; index--)
             {
                 conveyorBelt[index] = conveyorBelt[index - 1];
                 conveyorBelt[index - 1] = null;
@@ -41,7 +41,7 @@ namespace Procp_Form.Core
         public override void PassBaggage(Baggage lastbaggage)
         {
             Status = BaggageStatus.Busy;
-            conveyorBelt.Add(lastbaggage);
+            conveyorBelt[0] = lastbaggage;
         }
     }
 }
