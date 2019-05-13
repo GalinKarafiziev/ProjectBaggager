@@ -24,7 +24,6 @@ namespace Procp_Form.Core
                 if (baggage.Secure == 5 || baggage.Secure == 7)
                 {
                     bufferNotSecure.Add(baggage);
-                    counter--;
                     Thread.Sleep(1000);
                     NextNode.OnNodeStatusChangedToFree -= ProcessBaggage;
                     Status = BaggageStatus.Free;
@@ -34,7 +33,6 @@ namespace Procp_Form.Core
                     NextNode.PassBaggage(baggage);
                     Thread.Sleep(1000);
                     NextNode.OnNodeStatusChangedToFree -= ProcessBaggage;
-                    counter--;
                     Status = BaggageStatus.Free;
                 }
             }
@@ -45,8 +43,8 @@ namespace Procp_Form.Core
         }
         public override void PassBaggage(Baggage Lastbaggage)
         {
+            Status = BaggageStatus.Busy;
             baggage = Lastbaggage;
-            counter++;
             ProcessBaggage();
         }
     }

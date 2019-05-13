@@ -11,7 +11,6 @@ namespace Procp_Form.Core
     public class MPA : ProcessUnit
     {
         public List<DropOff> nextNodes;
-        public new int counter = 0;
 
         public MPA()
         {
@@ -36,7 +35,6 @@ namespace Procp_Form.Core
                     {
                         this.NextNode = drop;
                         NextNode.PassBaggage(baggage);
-                        counter--;
                         Thread.Sleep(800);
                         baggage = null;
                         Status = BaggageStatus.Free;
@@ -48,8 +46,8 @@ namespace Procp_Form.Core
 
         public override void PassBaggage(Baggage Lastbaggage)
         {
+            Status = BaggageStatus.Busy;
             baggage = Lastbaggage;
-            counter++;
             ProcessBaggage();
         }
     }

@@ -33,7 +33,11 @@ namespace Procp_Form
 
         public void AddDropOff(DropOff dropOff) => dropOffs.Add(dropOff);
 
-        public void AddConveyorPart(Conveyor conveyor) => conveyors.Add(conveyor);
+        public void AddConveyorPart(int capacity, int speed)
+        {
+            var conveyor = new Conveyor(capacity, speed);
+            conveyors.Add(conveyor);
+        }
 
         public void AddSecurity(Security security) => this.security = security;
 
@@ -42,15 +46,19 @@ namespace Procp_Form
         public bool AddFlight(DateTime time, string number, int baggage)
         {
             flight = new Flight(time, number, baggage);
+            if (flights.Count == 0)
+            {
+                flights.Add(flight);
+            }
             foreach (Flight f in flights)
             {
-                if (this.flight.FlightNumber != f.FlightNumber)
+                if (this.flight.FlightNumber == f.FlightNumber)
                 {
-                    flights.Add(flight);
-                    return true;
+                    return false;
                 }
             }
-            return false;
+            flights.Add(flight);
+            return true;
         }
 
         public void LinkTwoNodes(Node firstNode, Node secondNode)
@@ -60,6 +68,10 @@ namespace Procp_Form
 
         public void Run()
         {
+            foreach (var conveyor in conveyors)
+            {
+                conveyor.Start();
+            }
             dispatcher.SetupCheckins(checkIns);
             dispatcher.SetupTimers(flights);
             dispatcher.Start();
@@ -67,6 +79,10 @@ namespace Procp_Form
 
         public void Stop()
         {
+            foreach (var conveyor in conveyors)
+            {
+                conveyor.Stop();
+            }
             dispatcher.Stop();
         }
     }
