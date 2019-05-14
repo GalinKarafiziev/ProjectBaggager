@@ -17,7 +17,6 @@ namespace Procp_Form.CoreAbstraction
 
         public TransportUnit()
         {
-            conveyorBelt = new Baggage[Capacity];
             timer = new Timer();
             timer.Elapsed += (sender, args) => Move();
         }

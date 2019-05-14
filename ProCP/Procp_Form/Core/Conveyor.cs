@@ -9,9 +9,11 @@ namespace Procp_Form.Core
 {
     public class Conveyor : TransportUnit
     {
+        public string FlightNumber { get; set; }
         public Conveyor(int capacity, int timerSpeed) : base()
         {
             Capacity = capacity;
+            conveyorBelt = new Baggage[Capacity];
             timer.Interval = timerSpeed;
         }
 
@@ -27,7 +29,7 @@ namespace Procp_Form.Core
                 }
             }
 
-            for (int index = conveyorBelt.Length - 1; index <= 0; index--)
+            for (int index = conveyorBelt.Length - 1; index > 0; index--)
             {
                 conveyorBelt[index] = conveyorBelt[index - 1];
                 conveyorBelt[index - 1] = null;
