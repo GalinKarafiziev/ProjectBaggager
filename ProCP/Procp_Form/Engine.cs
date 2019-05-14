@@ -33,9 +33,8 @@ namespace Procp_Form
 
         public void AddDropOff(DropOff dropOff) => dropOffs.Add(dropOff);
 
-        public void AddConveyorPart(int capacity, int speed)
+        public void AddConveyorPart(Conveyor conveyor)
         {
-            var conveyor = new Conveyor(capacity, speed);
             conveyors.Add(conveyor);
         }
 
