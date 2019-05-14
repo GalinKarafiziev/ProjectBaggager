@@ -10,7 +10,6 @@ namespace Procp_Form.Core
 {
     public class DropOff : Node
     {
-        public string FlightNumber { get; set; }
         public List<Baggage> baggages;
         public DropOff()
         {

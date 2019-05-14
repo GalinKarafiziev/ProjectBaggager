@@ -10,14 +10,14 @@ namespace Procp_Form.Core
 {
     public class MPA : ProcessUnit
     {
-        public List<DropOff> nextNodes;
+        public List<Conveyor> nextNodes;
 
         public MPA()
         {
-            nextNodes = new List<DropOff>();
+            nextNodes = new List<Conveyor>();
         }
 
-        public void AddNextNode(DropOff node)
+        public void AddNextNode(Conveyor node)
         {
             var nextNode = node;
             nextNodes.Add(nextNode);
@@ -29,11 +29,11 @@ namespace Procp_Form.Core
 
             if (baggage != null)
             {
-                foreach (DropOff drop in nextNodes)
+                foreach (Conveyor conv in nextNodes)
                 {
-                    if (drop.FlightNumber == baggage.FlightNumber)
+                    if (conv.FlightNumber == baggage.FlightNumber)
                     {
-                        this.NextNode = drop;
+                        this.NextNode = conv;
                         NextNode.PassBaggage(baggage);
                         Thread.Sleep(800);
                         baggage = null;
