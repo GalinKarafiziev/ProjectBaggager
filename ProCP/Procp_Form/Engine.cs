@@ -48,15 +48,19 @@ namespace Procp_Form
             if (flights.Count == 0)
             {
                 flights.Add(flight);
+                return true;
             }
-            foreach (Flight f in flights)
+            else
             {
-                if (this.flight.FlightNumber == f.FlightNumber)
+                foreach (Flight f in flights)
                 {
-                    return false;
+                    if (this.flight.FlightNumber == f.FlightNumber)
+                    {
+                        return false;
+                    }
                 }
+                flights.Add(flight);
             }
-            flights.Add(flight);
             return true;
         }
 
