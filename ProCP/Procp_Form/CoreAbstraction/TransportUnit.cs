@@ -17,6 +17,7 @@ namespace Procp_Form.CoreAbstraction
 
         public TransportUnit()
         {
+
             timer = new Timer();
             timer.Elapsed += (sender, args) => Move();
         }
@@ -36,7 +37,7 @@ namespace Procp_Form.CoreAbstraction
             {
                 return true;
             }
-
+        
             if (NextNode.Status == BaggageStatus.Free)
             {
                 return true;

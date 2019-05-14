@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Procp_Form.Core
 {
@@ -15,12 +16,13 @@ namespace Procp_Form.Core
             Capacity = capacity;
             conveyorBelt = new Baggage[Capacity];
             timer.Interval = timerSpeed;
+            conveyorBelt = new Baggage[Capacity];
         }
 
         public override void Move()
         {
             this.Stop();
-
+            
             if (CanMove())
             {
                 if (lastBaggage != null)
@@ -33,6 +35,7 @@ namespace Procp_Form.Core
             {
                 conveyorBelt[index] = conveyorBelt[index - 1];
                 conveyorBelt[index - 1] = null;
+                System.Diagnostics.Debug.Write("con class" + index + "  ");
             }
 
             NextNode.OnNodeStatusChangedToFree -= Move;
