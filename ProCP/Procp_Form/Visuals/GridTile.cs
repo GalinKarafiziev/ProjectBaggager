@@ -17,6 +17,7 @@ namespace Procp_Form.Visuals
         public Node nodeInGrid;
 
         private bool unclickable = false;
+        public bool selected = false;
         public Brush fillBrush;
         public Brush clickableColor;
         public Brush unclickableColour;
@@ -44,6 +45,11 @@ namespace Procp_Form.Visuals
             g.FillRectangle(fillBrush, Column * width, Row * height, width, height);
             g.DrawRectangle(p, Column * width, Row * height, width, height);
 
+            if (selected)
+            {
+                p = new Pen(Color.Yellow);
+                g.DrawRectangle(p, Column * width, Row * height, width, height);
+            }
             //if (nodeInGrid != null)
             //{
             //    if (nodeInGrid.Status == BaggageStatus.Busy)

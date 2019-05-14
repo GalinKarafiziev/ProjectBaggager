@@ -97,7 +97,7 @@ namespace Procp_Form
             var mouseClick = e as MouseEventArgs;
             GridTile t = thisGrid.FindTileInPixelCoordinates(mouseClick.X, mouseClick.Y);
 
-            selectedTile = t;
+            SelectTile(t);
 
             if (buildModeActive)
             {
@@ -106,7 +106,7 @@ namespace Procp_Form
                     if (buildModeType == "Conveyor")
                     {
                        // Conveyor conveyor = new Conveyor();
-                        selectedTile = thisGrid.AddConveyorLineAtCoordinates(t);
+                        SelectTile(thisGrid.AddConveyorLineAtCoordinates(t));
                         conveyorBuilding.Add((ConveyorTile) selectedTile);
                         
                         //Engine.AddConveyorPart(conveyor);
@@ -115,13 +115,13 @@ namespace Procp_Form
                     else if (buildModeType == "CheckIn")
                     {
                         CheckIn checkin = new CheckIn();
-                        selectedTile = thisGrid.AddCheckInAtCoordinates(t, checkin);
+                        SelectTile(thisGrid.AddCheckInAtCoordinates(t, checkin));
                         Engine.AddCheckIn(checkin);
                     }
                     else if (buildModeType == "DropOff")
                     {
                         DropOff dropoff = new DropOff();
-                        selectedTile = thisGrid.AddDropOffAtCoordinates(t, dropoff);
+                        SelectTile(thisGrid.AddDropOffAtCoordinates(t, dropoff));
                         Engine.AddDropOff(dropoff);
                     }
                 }
@@ -173,7 +173,7 @@ namespace Procp_Form
                        conveyorBuilding.Add((ConveyorTile)created);
 
                       // Engine.LinkTwoNodes(selectedTile.nodeInGrid, created.nodeInGrid);
-                       selectedTile = created;
+                       SelectTile(created);
                    }
                 }
             }
@@ -208,6 +208,7 @@ namespace Procp_Form
             }
             isBuildingConveyor = false;
             isConnectingTiles = false;
+            selectedTile.selected = false;
             selectedTile = null;
             conveyorBuilding.Clear();
         }
@@ -238,6 +239,16 @@ namespace Procp_Form
         private void TimerSequence(object source, ElapsedEventArgs e)
         {
             animationBox.Invalidate();
+        }
+
+        private void SelectTile(GridTile t)
+        {
+            if (selectedTile != null)
+            {
+                selectedTile.selected = false;
+            }
+            selectedTile = t;
+            selectedTile.selected = true;
         }
     }
 }

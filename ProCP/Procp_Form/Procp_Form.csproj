@@ -75,6 +75,7 @@
     <Compile Include="Visuals\ConveyorTile.cs" />
     <Compile Include="Visuals\EmptyTile.cs" />
     <Compile Include="Visuals\GridTile.cs" />
+    <Compile Include="Visuals\MPATile.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
