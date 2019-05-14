@@ -25,17 +25,17 @@ namespace Procp_Form
         List<GridTile> tilesCurrentlyBuilding;
         GridTile selectedTile;
         Engine Engine = new Engine();
-        
+
         public Baggager()
         {
             InitializeComponent();
             thisGrid = new Grid(animationBox.Width, animationBox.Height);
 
-
+            
             buildModeActive = false;
             cmBoxNodeToBuild.Visible = false;
             isCurrentlyBuilding = false;
-            tilesCurrentlyBuilding = new List<GridTile>(); 
+            tilesCurrentlyBuilding = new List<GridTile>();
         }
 
         private void AnimationBox_Paint(object sender, PaintEventArgs e)
@@ -71,15 +71,15 @@ namespace Procp_Form
 
         private void CmBoxNodeToBuild_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(cmBoxNodeToBuild.Text == "CheckIn")
+            if (cmBoxNodeToBuild.Text == "CheckIn")
             {
                 buildModeType = "CheckIn";
             }
-            else if(cmBoxNodeToBuild.Text == "Conveyor")
+            else if (cmBoxNodeToBuild.Text == "Conveyor")
             {
                 buildModeType = "Conveyor";
             }
-            else if(cmBoxNodeToBuild.Text == "DropOff")
+            else if (cmBoxNodeToBuild.Text == "DropOff")
             {
                 buildModeType = "DropOff";
             }
@@ -90,7 +90,7 @@ namespace Procp_Form
 
         private void AnimationBox_MouseDown(object sender, MouseEventArgs e)
         {
-            if(buildModeActive && buildModeType == "Conveyor")
+            if (buildModeActive && buildModeType == "Conveyor")
             {
                 System.Diagnostics.Debug.WriteLine("press");
                 isCurrentlyBuilding = true;
@@ -112,7 +112,7 @@ namespace Procp_Form
                         Conveyor conveyor = new Conveyor();
                         thisGrid.AddConveyorLineAtCoordinates(t, conveyor);
                         selectedTile = thisGrid.FindTileInRowColumnCoordinates(t.Column, t.Row);
-                        Engine.AddConveyorPart(conveyor);                       
+                        Engine.AddConveyorPart(conveyor);
                     }
                 }
                 else if (buildModeType == "CheckIn")
@@ -166,7 +166,8 @@ namespace Procp_Form
 
                     if (buildModeType == "Conveyor")
                     {
-                        if ((Math.Abs(t.Column - selectedTile.Column) <= 1 && Math.Abs(t.Row - selectedTile.Row) == 0) || (Math.Abs(t.Column - selectedTile.Column) == 0 && Math.Abs(t.Row - selectedTile.Row) <= 1)) {
+                        if ((Math.Abs(t.Column - selectedTile.Column) <= 1 && Math.Abs(t.Row - selectedTile.Row) == 0) || (Math.Abs(t.Column - selectedTile.Column) == 0 && Math.Abs(t.Row - selectedTile.Row) <= 1))
+                        {
                             if (t is EmptyTile && t.Unclickable == false)
                             {
                                 Conveyor conveyor = new Conveyor();
@@ -200,11 +201,42 @@ namespace Procp_Form
             DateTime date = (Convert.ToDateTime(tbFlightTime.Text));
             string flightNr = tbFlightNr.Text;
             int flightBaggage = Convert.ToInt32(tbFlightBaggage.Text);
-            Engine.AddFlight(date, flightNr, flightBaggage);
-            lbFlights.Items.Add($"[#{flightNr}] {date.ToString()} ({flightBaggage})");
+            if (!(Engine.AddFlight(date, flightNr, flightBaggage)))
+            {
+                MessageBox.Show("This flight already exists.");
+            }
+            else
+            {
+                //lbFlights.Items.Clear();
+                lbFlights.DataSource = null;
+                lbFlights.DataSource = Engine.flights;
+               
+                //lbFlights.Items.Add($"[#{flightNr}] {date.ToString()} ({flightBaggage})");
+            }
         }
 
         private void btnEditFlight_Click(object sender, EventArgs e)
+        {
+            //DateTime date = (Convert.ToDateTime(tbFlightTime.Text));
+            //string flightNr = tbFlightNr.Text;
+            //int flightBaggage = Convert.ToInt32(tbFlightBaggage.Text);
+            //var item = lbFlights.SelectedItem;
+            //if (!(Engine.EditFlight(date, flightNr, flightBaggage)))
+            //{
+            //    MessageBox.Show("Cannot find flight to edit.");
+            //}
+            //else
+            //{
+            //    lbFlights.Items.Add($"[#{flightNr}] {date.ToString()} ({flightBaggage})");
+            //}
+        }
+
+        private void btnDeleteFlight_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        public void RefreshFlightsList()
         {
             
         }

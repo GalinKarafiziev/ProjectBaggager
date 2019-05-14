@@ -44,15 +44,42 @@ namespace Procp_Form
             flight = new Flight(time, number, baggage);
             foreach (Flight f in flights)
             {
-                if (this.flight.FlightNumber != f.FlightNumber)
+                if (this.flight.FlightNumber == f.FlightNumber)
                 {
-                    flights.Add(flight);
+                    return false;
+                }
+            }
+            flights.Add(flight);
+            return true;
+        }
+        public bool RemoveFlight(string number)
+        {
+            var item = flights.Find(f => f.FlightNumber == number);
+            if(item == null)
+            {
+                return false;
+            }
+            else
+            {
+                flights.Remove(item);
+                return true;
+            }
+        }
+        public bool EditFlight(DateTime time, string number, string newNumber, int baggage)
+        {   
+            foreach (Flight f in flights)
+            {
+                if (f.FlightNumber == number)
+                {
+                    f.FlightNumber = newNumber;
+                    f.DepartureTime = time;
+                    f.AmountOfBaggage = baggage;
                     return true;
                 }
             }
             return false;
+            
         }
-
         public void LinkTwoNodes(Node firstNode, Node secondNode)
         {
             firstNode.NextNode = secondNode;
