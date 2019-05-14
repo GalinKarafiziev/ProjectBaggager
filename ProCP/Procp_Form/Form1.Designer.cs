@@ -51,16 +51,19 @@
             this.label3 = new System.Windows.Forms.Label();
             this.tbFlightBaggage = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.animationBox)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // animationBox
             // 
-            this.animationBox.Location = new System.Drawing.Point(245, 12);
+            this.animationBox.Location = new System.Drawing.Point(315, 0);
             this.animationBox.Name = "animationBox";
-            this.animationBox.Size = new System.Drawing.Size(862, 497);
+            this.animationBox.Size = new System.Drawing.Size(1573, 815);
+            this.animationBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.animationBox.TabIndex = 0;
             this.animationBox.TabStop = false;
             this.animationBox.Paint += new System.Windows.Forms.PaintEventHandler(this.AnimationBox_Paint);
@@ -75,7 +78,7 @@
             "Conveyor",
             "CheckIn",
             "DropOff"});
-            this.cmBoxNodeToBuild.Location = new System.Drawing.Point(13, 63);
+            this.cmBoxNodeToBuild.Location = new System.Drawing.Point(3, 68);
             this.cmBoxNodeToBuild.Name = "cmBoxNodeToBuild";
             this.cmBoxNodeToBuild.Size = new System.Drawing.Size(121, 24);
             this.cmBoxNodeToBuild.TabIndex = 2;
@@ -84,7 +87,7 @@
             // chbBuildMode
             // 
             this.chbBuildMode.AutoSize = true;
-            this.chbBuildMode.Location = new System.Drawing.Point(13, 36);
+            this.chbBuildMode.Location = new System.Drawing.Point(3, 41);
             this.chbBuildMode.Name = "chbBuildMode";
             this.chbBuildMode.Size = new System.Drawing.Size(100, 21);
             this.chbBuildMode.TabIndex = 4;
@@ -108,7 +111,7 @@
             this.groupBox1.Controls.Add(this.lblNodeType);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.lblBagStatus);
-            this.groupBox1.Location = new System.Drawing.Point(10, 126);
+            this.groupBox1.Location = new System.Drawing.Point(0, 131);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(204, 118);
             this.groupBox1.TabIndex = 7;
@@ -154,7 +157,7 @@
             // lblTest
             // 
             this.lblTest.AutoSize = true;
-            this.lblTest.Location = new System.Drawing.Point(87, 2);
+            this.lblTest.Location = new System.Drawing.Point(78, 0);
             this.lblTest.Name = "lblTest";
             this.lblTest.Size = new System.Drawing.Size(46, 17);
             this.lblTest.TabIndex = 3;
@@ -163,7 +166,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(10, 106);
+            this.label1.Location = new System.Drawing.Point(0, 111);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(118, 17);
             this.label1.TabIndex = 8;
@@ -172,7 +175,7 @@
             // lblColRow
             // 
             this.lblColRow.AutoSize = true;
-            this.lblColRow.Location = new System.Drawing.Point(135, 105);
+            this.lblColRow.Location = new System.Drawing.Point(125, 110);
             this.lblColRow.Name = "lblColRow";
             this.lblColRow.Size = new System.Drawing.Size(46, 17);
             this.lblColRow.TabIndex = 9;
@@ -214,7 +217,7 @@
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.lbFlights);
             this.groupBox2.Controls.Add(this.tbFlightNr);
-            this.groupBox2.Location = new System.Drawing.Point(10, 250);
+            this.groupBox2.Location = new System.Drawing.Point(0, 255);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(204, 259);
             this.groupBox2.TabIndex = 14;
@@ -276,7 +279,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(164, 63);
+            this.button1.Location = new System.Drawing.Point(154, 68);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 15;
@@ -284,19 +287,29 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Button1_Click);
             // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panel1.Controls.Add(this.cmBoxNodeToBuild);
+            this.panel1.Controls.Add(this.button1);
+            this.panel1.Controls.Add(this.lblTest);
+            this.panel1.Controls.Add(this.groupBox2);
+            this.panel1.Controls.Add(this.chbBuildMode);
+            this.panel1.Controls.Add(this.lblColRow);
+            this.panel1.Controls.Add(this.groupBox1);
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Location = new System.Drawing.Point(5, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(304, 815);
+            this.panel1.TabIndex = 16;
+            // 
             // Baggager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1119, 524);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.lblColRow);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.chbBuildMode);
-            this.Controls.Add(this.lblTest);
-            this.Controls.Add(this.cmBoxNodeToBuild);
+            this.ClientSize = new System.Drawing.Size(1888, 815);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.animationBox);
             this.Name = "Baggager";
             this.Text = "Form1";
@@ -305,8 +318,9 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -335,6 +349,7 @@
         private System.Windows.Forms.Label lblNextNode;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Panel panel1;
     }
 }
 
