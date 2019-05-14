@@ -50,13 +50,13 @@ namespace Procp_Form.Visuals
                 p = new Pen(Color.Yellow);
                 g.DrawRectangle(p, Column * width, Row * height, width, height);
             }
-            //if (nodeInGrid != null)
-            //{
-            //    if (nodeInGrid.Status == BaggageStatus.Busy)
-            //    {
-            //        g.FillRectangle(Brushes.DarkGoldenrod, column * width + 10, row * height + 10, width - 20, height - 20);
-            //    }
-            //}
+            if (nodeInGrid != null)
+            {
+                if (nodeInGrid.Status == BaggageStatus.Busy)
+                {
+                    g.FillRectangle(Brushes.DarkGoldenrod, column * width + 10, row * height + 10, width - 20, height - 20);
+                }
+            }
         }
         public virtual void SetTileUncklicableColor()
         {

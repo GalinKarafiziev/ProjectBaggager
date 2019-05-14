@@ -21,9 +21,9 @@ namespace Procp_Form.Core
         {
             if (NextNode.Status == BaggageStatus.Free)
             {
+                Thread.Sleep(1000);
                 NextNode.PassBaggage(baggage);
                 counter--;
-                Thread.Sleep(1000);
                 baggage = null;
                 NextNode.OnNodeStatusChangedToFree -= ProcessBaggage;
                 Status = BaggageStatus.Free;

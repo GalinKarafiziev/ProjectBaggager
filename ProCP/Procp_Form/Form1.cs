@@ -69,7 +69,6 @@ namespace Procp_Form
                 buildModeType = null;
                 thisGrid.HideArea(buildModeType);
             }
-
             animationBox.Invalidate();
         }
 
