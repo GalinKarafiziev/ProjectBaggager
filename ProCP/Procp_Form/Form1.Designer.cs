@@ -52,6 +52,10 @@
             this.tbFlightBaggage = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.listBoxQueues = new System.Windows.Forms.ListBox();
+            this.buttonPause = new System.Windows.Forms.Button();
+            this.buttonStop = new System.Windows.Forms.Button();
+            this.buttonResume = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.animationBox)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -279,7 +283,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(154, 68);
+            this.button1.Location = new System.Drawing.Point(140, 12);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 15;
@@ -291,6 +295,10 @@
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panel1.Controls.Add(this.buttonResume);
+            this.panel1.Controls.Add(this.buttonStop);
+            this.panel1.Controls.Add(this.buttonPause);
+            this.panel1.Controls.Add(this.listBoxQueues);
             this.panel1.Controls.Add(this.cmBoxNodeToBuild);
             this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.lblTest);
@@ -303,6 +311,44 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(304, 815);
             this.panel1.TabIndex = 16;
+            // 
+            // listBoxQueues
+            // 
+            this.listBoxQueues.FormattingEnabled = true;
+            this.listBoxQueues.ItemHeight = 16;
+            this.listBoxQueues.Location = new System.Drawing.Point(10, 541);
+            this.listBoxQueues.Name = "listBoxQueues";
+            this.listBoxQueues.Size = new System.Drawing.Size(184, 84);
+            this.listBoxQueues.TabIndex = 20;
+            // 
+            // buttonPause
+            // 
+            this.buttonPause.Location = new System.Drawing.Point(140, 56);
+            this.buttonPause.Name = "buttonPause";
+            this.buttonPause.Size = new System.Drawing.Size(75, 23);
+            this.buttonPause.TabIndex = 21;
+            this.buttonPause.Text = "Pause";
+            this.buttonPause.UseVisualStyleBackColor = true;
+            this.buttonPause.Click += new System.EventHandler(this.buttonStop_Click);
+            // 
+            // buttonStop
+            // 
+            this.buttonStop.Location = new System.Drawing.Point(226, 12);
+            this.buttonStop.Name = "buttonStop";
+            this.buttonStop.Size = new System.Drawing.Size(75, 23);
+            this.buttonStop.TabIndex = 22;
+            this.buttonStop.Text = "Stop";
+            this.buttonStop.UseVisualStyleBackColor = true;
+            this.buttonStop.Click += new System.EventHandler(this.buttonStop_Click_1);
+            // 
+            // buttonResume
+            // 
+            this.buttonResume.Location = new System.Drawing.Point(226, 56);
+            this.buttonResume.Name = "buttonResume";
+            this.buttonResume.Size = new System.Drawing.Size(75, 23);
+            this.buttonResume.TabIndex = 23;
+            this.buttonResume.Text = "Resume";
+            this.buttonResume.UseVisualStyleBackColor = true;
             // 
             // Baggager
             // 
@@ -350,6 +396,10 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.ListBox listBoxQueues;
+        private System.Windows.Forms.Button buttonPause;
+        private System.Windows.Forms.Button buttonStop;
+        private System.Windows.Forms.Button buttonResume;
     }
 }
 

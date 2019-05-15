@@ -13,10 +13,8 @@ namespace Procp_Form.Core
         public string FlightNumber { get; set; }
         public Conveyor(int capacity, int timerSpeed) : base()
         {
-            Capacity = capacity;
-            conveyorBelt = new Baggage[Capacity];
             timer.Interval = timerSpeed;
-            conveyorBelt = new Baggage[Capacity];
+            conveyorBelt = new Baggage[capacity];
         }
 
         public override void Move()

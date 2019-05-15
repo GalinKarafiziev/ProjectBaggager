@@ -70,7 +70,7 @@ namespace Procp_Form
         }
 
         public void Run()
-        {
+        {        
             foreach (var conveyor in conveyors)
             {
                 conveyor.Start();
@@ -80,13 +80,49 @@ namespace Procp_Form
             dispatcher.Start();
         }
 
-        public void Stop()
+        public void Resume()
+        {
+            foreach (var conveyor in conveyors)
+            {
+                conveyor.Start();
+            }
+            dispatcher.Start();
+        }
+
+        public void Pause()
         {
             foreach (var conveyor in conveyors)
             {
                 conveyor.Stop();
             }
             dispatcher.Stop();
+        }
+
+        public void Stop()
+        {
+            dispatcher.Stop();
+            dispatcher = null;
+            foreach (var conveyor in conveyors)
+            {
+                conveyor.Stop();
+                for (int i = 0; i < conveyor.conveyorBelt.Length - 1; i++)
+                {
+                    if (conveyor.conveyorBelt[i] != null)
+                    {
+                        conveyor.conveyorBelt[i] = null;
+                    }
+                }
+            }
+
+            foreach (var dropOff in dropOffs)
+            {
+                dropOff.baggages.Clear();
+            }
+
+            foreach (var checkin in checkIns)
+            {
+                checkin.baggage = null; 
+            }
         }
     }
 }

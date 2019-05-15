@@ -249,5 +249,16 @@ namespace Procp_Form
             selectedTile = t;
             selectedTile.selected = true;
         }
+
+        private void buttonStop_Click(object sender, EventArgs e)
+        {
+            Engine.Pause();
+        }
+
+        private void buttonStop_Click_1(object sender, EventArgs e)
+        {
+            Engine.Stop();
+        }
     }
 }
+
