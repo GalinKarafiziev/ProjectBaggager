@@ -9,11 +9,9 @@ namespace Procp_Form.CoreAbstraction
 {
     public abstract class TransportUnit : Node
     {
-        public int Capacity { get; set; }
         public Baggage[] conveyorBelt;
         public Baggage lastBaggage;
         public Timer timer;
-
 
         public TransportUnit()
         {

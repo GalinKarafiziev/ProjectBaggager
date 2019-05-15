@@ -25,8 +25,10 @@ namespace Procp_Form
         bool isBuildingConveyor;
         bool isConnectingTiles;
         GridTile selectedTile;
-        List<ConveyorTile> conveyorBuilding;    
-        Engine Engine = new Engine();
+        List<ConveyorTile> conveyorBuilding;
+        Engine engine = new Engine();
+        int checkinCounter = 0;
+        int queueCounter = 0;
 
         System.Timers.Timer aTimer;
 
@@ -74,15 +76,15 @@ namespace Procp_Form
 
         private void CmBoxNodeToBuild_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(cmBoxNodeToBuild.Text == "CheckIn")
+            if (cmBoxNodeToBuild.Text == "CheckIn")
             {
                 buildModeType = "CheckIn";
             }
-            else if(cmBoxNodeToBuild.Text == "Conveyor")
+            else if (cmBoxNodeToBuild.Text == "Conveyor")
             {
                 buildModeType = "Conveyor";
             }
-            else if(cmBoxNodeToBuild.Text == "DropOff")
+            else if (cmBoxNodeToBuild.Text == "DropOff")
             {
                 buildModeType = "DropOff";
             }
@@ -104,10 +106,10 @@ namespace Procp_Form
                 {
                     if (buildModeType == "Conveyor")
                     {
-                       // Conveyor conveyor = new Conveyor();
+                        // Conveyor conveyor = new Conveyor();
                         SelectTile(thisGrid.AddConveyorLineAtCoordinates(t));
-                        conveyorBuilding.Add((ConveyorTile) selectedTile);
-                        
+                        conveyorBuilding.Add((ConveyorTile)selectedTile);
+
                         //Engine.AddConveyorPart(conveyor);
                         isBuildingConveyor = true;
                     }
@@ -115,16 +117,16 @@ namespace Procp_Form
                     {
                         CheckIn checkin = new CheckIn();
                         SelectTile(thisGrid.AddCheckInAtCoordinates(t, checkin));
-                        Engine.AddCheckIn(checkin);
+                        engine.AddCheckIn(checkin);
                     }
                     else if (buildModeType == "DropOff")
                     {
                         DropOff dropoff = new DropOff();
                         SelectTile(thisGrid.AddDropOffAtCoordinates(t, dropoff));
-                        Engine.AddDropOff(dropoff);
+                        engine.AddDropOff(dropoff);
                     }
                 }
-                else if(!(t is EmptyTile))
+                else if (!(t is EmptyTile))
                 {
                     isConnectingTiles = true;
                 }
@@ -162,27 +164,28 @@ namespace Procp_Form
             }
 
             if (isBuildingConveyor)
-            {              
-                if ((Math.Abs(t.Column - selectedTile.Column) == 1 && Math.Abs(t.Row - selectedTile.Row) == 0) || (Math.Abs(t.Column - selectedTile.Column) == 0 && Math.Abs(t.Row - selectedTile.Row) == 1)) {
-                   if (t is EmptyTile && t.Unselectable == false)
-                   {
-                       //Conveyor conveyor = new Conveyor();
-                       GridTile created = thisGrid.AddConveyorLineAtCoordinates(t);
-                       //Engine.AddConveyorPart(conveyor);
-                       conveyorBuilding.Add((ConveyorTile)created);
+            {
+                if ((Math.Abs(t.Column - selectedTile.Column) == 1 && Math.Abs(t.Row - selectedTile.Row) == 0) || (Math.Abs(t.Column - selectedTile.Column) == 0 && Math.Abs(t.Row - selectedTile.Row) == 1))
+                {
+                    if (t is EmptyTile && t.Unselectable == false)
+                    {
+                        //Conveyor conveyor = new Conveyor();
+                        GridTile created = thisGrid.AddConveyorLineAtCoordinates(t);
+                        //Engine.AddConveyorPart(conveyor);
+                        conveyorBuilding.Add((ConveyorTile)created);
 
-                      // Engine.LinkTwoNodes(selectedTile.nodeInGrid, created.nodeInGrid);
-                       SelectTile(created);
-                   }
+                        // Engine.LinkTwoNodes(selectedTile.nodeInGrid, created.nodeInGrid);
+                        SelectTile(created);
+                    }
                 }
             }
             if (isConnectingTiles)
             {
                 if ((Math.Abs(t.Column - selectedTile.Column) == 1 && Math.Abs(t.Row - selectedTile.Row) == 0) || (Math.Abs(t.Column - selectedTile.Column) == 0 && Math.Abs(t.Row - selectedTile.Row) == 1))
                 {
-                    if(!(t is EmptyTile))
+                    if (!(t is EmptyTile))
                     {
-                        Engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
+                        engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
                     }
                 }
             }
@@ -194,11 +197,11 @@ namespace Procp_Form
         {
             if (buildModeActive && buildModeType == "Conveyor")
             {
-                Conveyor conveyor = new Conveyor(conveyorBuilding.Count, 500);
-                Engine.AddConveyorPart(conveyor);
+                Conveyor conveyor = new Conveyor(conveyorBuilding.Count, 1500);
+                engine.AddConveyorPart(conveyor);
                 System.Diagnostics.Debug.WriteLine("uppress");
                 int i = 0;
-                foreach(ConveyorTile t in conveyorBuilding)
+                foreach (ConveyorTile t in conveyorBuilding)
                 {
                     t.nodeInGrid = conveyor;
                     t.PositionInLine = i;
@@ -217,18 +220,18 @@ namespace Procp_Form
             DateTime date = (Convert.ToDateTime(tbFlightTime.Text));
             string flightNr = tbFlightNr.Text;
             int flightBaggage = Convert.ToInt32(tbFlightBaggage.Text);
-            Engine.AddFlight(date, flightNr, flightBaggage);
+            engine.AddFlight(date, flightNr, flightBaggage);
             lbFlights.Items.Add($"[#{flightNr}] {date.ToString()} ({flightBaggage})");
         }
 
         private void btnEditFlight_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void Button1_Click(object sender, EventArgs e)
         {
-            Engine.Run();
+            engine.Run();
             aTimer = new System.Timers.Timer();
             aTimer.Elapsed += new ElapsedEventHandler(TimerSequence);
             aTimer.Interval = 1;
@@ -248,6 +251,29 @@ namespace Procp_Form
             }
             selectedTile = t;
             selectedTile.selected = true;
+        }
+
+        private void ContextMenuStrip1_Opening(object sender, CancelEventArgs e)
+        {
+
+        }
+
+        private void BtnBaggageInCheckIn_Click(object sender, EventArgs e)
+        {
+            engine.GetCheckInCounter().ForEach(x =>
+            {
+                checkinCounter++;
+                this.listBox1.Items.Add($"checkin: {checkinCounter}, {x}");
+            });
+        }
+
+        private void BtnBaggageInQueue_Click(object sender, EventArgs e)
+        {
+            engine.GetQueueCounter().ForEach(x =>
+            {
+                queueCounter++;
+                this.listBox1.Items.Add($"queues: {queueCounter}, {x}");
+            });
         }
     }
 }
