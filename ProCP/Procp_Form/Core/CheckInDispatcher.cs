@@ -11,9 +11,15 @@ namespace Procp_Form.Core
 {
     public class CheckInDispatcher : Node
     {
-        List<Queue<Baggage>> checkinQueues;
+        public List<Queue<Baggage>> checkinQueues;
         List<Timer> timers;
         List<CheckIn> checkins;
+
+        public CheckInDispatcher()
+        {
+            checkins = new List<CheckIn>();
+            checkinQueues = new List<Queue<Baggage>>();
+        }
 
         public List<CheckIn> GetCheckIns()
         {
@@ -23,12 +29,6 @@ namespace Procp_Form.Core
         public List<Queue<Baggage>> GetQueuedBaggage()
         {
             return checkinQueues;
-        }
-
-        public CheckInDispatcher()
-        {
-            checkins = new List<CheckIn>();
-            checkinQueues = new List<Queue<Baggage>>();
         }
 
         public void Start()
@@ -58,11 +58,14 @@ namespace Procp_Form.Core
 
             if (checkIn.Status == BaggageStatus.Free)
             {
-                checkIn.PassBaggage(baggage);
+                checkIn.PassBaggage(baggage);              
             }
             else
             {
                 queue.Enqueue(baggage);
+
+                //to do - oprai si koda
+
                 checkIn.OnNodeStatusChangedToFree += () => PassQueuedBaggage(chosen);
             }
             flight.BaggageDispatched++;

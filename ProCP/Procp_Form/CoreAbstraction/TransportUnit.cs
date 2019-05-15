@@ -13,7 +13,6 @@ namespace Procp_Form.CoreAbstraction
         public Baggage lastBaggage;
         public Timer timer;
 
-
         public TransportUnit()
         {
             timer = new Timer();

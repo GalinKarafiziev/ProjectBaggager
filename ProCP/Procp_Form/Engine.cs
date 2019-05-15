@@ -19,6 +19,8 @@ namespace Procp_Form
         public List<Conveyor> conveyors;
         public List<Flight> flights;
         private Flight flight;
+        public List<int> baggageInCheckIn;
+        public List<int> baggageInQueue;
 
         public Engine()
         {
@@ -27,6 +29,8 @@ namespace Procp_Form
             dropOffs = new List<DropOff>();
             flights = new List<Flight>();
             dispatcher = new CheckInDispatcher();
+            baggageInCheckIn = new List<int>();
+            baggageInQueue = new List<int>();
         }
 
         public void AddCheckIn(CheckIn checkin) => checkIns.Add(checkin);
@@ -123,6 +127,18 @@ namespace Procp_Form
             {
                 checkin.baggage = null; 
             }
+        }
+
+        public List<int> GetCheckInCounter()
+        {
+            checkIns.ForEach(x => baggageInCheckIn.Add(x.bagageInCheckIn));
+            return baggageInCheckIn;
+        }
+
+        public List<int> GetQueueCounter()
+        {
+            dispatcher.checkinQueues.ForEach(q => baggageInQueue.Add(q.Count));
+            return baggageInQueue;
         }
     }
 }

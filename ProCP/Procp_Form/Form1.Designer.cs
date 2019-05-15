@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.animationBox = new System.Windows.Forms.PictureBox();
             this.cmBoxNodeToBuild = new System.Windows.Forms.ComboBox();
             this.chbBuildMode = new System.Windows.Forms.CheckBox();
@@ -52,10 +53,13 @@
             this.tbFlightBaggage = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.listBoxQueues = new System.Windows.Forms.ListBox();
             this.buttonPause = new System.Windows.Forms.Button();
             this.buttonStop = new System.Windows.Forms.Button();
             this.buttonResume = new System.Windows.Forms.Button();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.btnBaggageInCheckIn = new System.Windows.Forms.Button();
+            this.btnBaggageInQueue = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.animationBox)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -298,7 +302,9 @@
             this.panel1.Controls.Add(this.buttonResume);
             this.panel1.Controls.Add(this.buttonStop);
             this.panel1.Controls.Add(this.buttonPause);
-            this.panel1.Controls.Add(this.listBoxQueues);
+            this.panel1.Controls.Add(this.btnBaggageInQueue);
+            this.panel1.Controls.Add(this.btnBaggageInCheckIn);
+            this.panel1.Controls.Add(this.listBox1);
             this.panel1.Controls.Add(this.cmBoxNodeToBuild);
             this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.lblTest);
@@ -312,14 +318,6 @@
             this.panel1.Size = new System.Drawing.Size(304, 815);
             this.panel1.TabIndex = 16;
             // 
-            // listBoxQueues
-            // 
-            this.listBoxQueues.FormattingEnabled = true;
-            this.listBoxQueues.ItemHeight = 16;
-            this.listBoxQueues.Location = new System.Drawing.Point(10, 541);
-            this.listBoxQueues.Name = "listBoxQueues";
-            this.listBoxQueues.Size = new System.Drawing.Size(184, 84);
-            this.listBoxQueues.TabIndex = 20;
             // 
             // buttonPause
             // 
@@ -349,6 +347,38 @@
             this.buttonResume.TabIndex = 23;
             this.buttonResume.Text = "Resume";
             this.buttonResume.UseVisualStyleBackColor = true;
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.ItemHeight = 16;
+            this.listBox1.Location = new System.Drawing.Point(10, 491);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(188, 116);
+            this.listBox1.TabIndex = 16;
+            // 
+            // btnBaggageInCheckIn
+            // 
+            this.btnBaggageInCheckIn.Location = new System.Drawing.Point(10, 613);
+            this.btnBaggageInCheckIn.Name = "btnBaggageInCheckIn";
+            this.btnBaggageInCheckIn.Size = new System.Drawing.Size(119, 23);
+            this.btnBaggageInCheckIn.TabIndex = 17;
+            this.btnBaggageInCheckIn.Text = "Show Check-Ins";
+            this.btnBaggageInCheckIn.UseVisualStyleBackColor = true;
+            // 
+            // btnBaggageInQueue
+            // 
+            this.btnBaggageInQueue.Location = new System.Drawing.Point(9, 642);
+            this.btnBaggageInQueue.Name = "btnBaggageInQueue";
+            this.btnBaggageInQueue.Size = new System.Drawing.Size(119, 23);
+            this.btnBaggageInQueue.TabIndex = 18;
+            this.btnBaggageInQueue.Text = "Show Queues";
+            this.btnBaggageInQueue.UseVisualStyleBackColor = true;
             // 
             // Baggager
             // 
@@ -396,10 +426,13 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.ListBox listBoxQueues;
         private System.Windows.Forms.Button buttonPause;
         private System.Windows.Forms.Button buttonStop;
         private System.Windows.Forms.Button buttonResume;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.Button btnBaggageInCheckIn;
+        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.Button btnBaggageInQueue;
     }
 }
 
