@@ -14,7 +14,6 @@ namespace Procp_Form.Core
         public Conveyor(int capacity, int timerSpeed) : base()
         {
             Capacity = capacity;
-            conveyorBelt = new Baggage[Capacity];
             timer.Interval = timerSpeed;
             conveyorBelt = new Baggage[Capacity];
         }
