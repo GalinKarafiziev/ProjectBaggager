@@ -185,7 +185,12 @@ namespace Procp_Form
             {
                 if ((Math.Abs(t.Column - selectedTile.Column) == 1 && Math.Abs(t.Row - selectedTile.Row) == 0) || (Math.Abs(t.Column - selectedTile.Column) == 0 && Math.Abs(t.Row - selectedTile.Row) == 1))
                 {
-                    if (!(t is EmptyTile))
+                    if (selectedTile is ConveyorTile && !(t is EmptyTile) && !(t is ConveyorTile) && !(t is CheckInTile))
+                    {
+                        engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
+                        selectedTile.ConnectNext(t);
+                    }
+                    if(selectedTile is CheckInTile && t is ConveyorTile)
                     {
                         engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
                         selectedTile.ConnectNext(t);
