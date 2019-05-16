@@ -174,8 +174,10 @@ namespace Procp_Form
                         //Engine.AddConveyorPart(conveyor);
                         conveyorBuilding.Add((ConveyorTile)created);
 
+                        selectedTile.ConnectNext(created);
                         // Engine.LinkTwoNodes(selectedTile.nodeInGrid, created.nodeInGrid);
                         SelectTile(created);
+
                     }
                 }
             }
@@ -186,6 +188,7 @@ namespace Procp_Form
                     if (!(t is EmptyTile))
                     {
                         engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
+                        selectedTile.ConnectNext(t);
                     }
                 }
             }
