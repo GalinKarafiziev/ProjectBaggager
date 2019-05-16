@@ -53,10 +53,11 @@
             this.tbFlightBaggage = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.listBox1 = new System.Windows.Forms.ListBox();
-            this.btnBaggageInCheckIn = new System.Windows.Forms.Button();
             this.btnBaggageInQueue = new System.Windows.Forms.Button();
+            this.btnBaggageInCheckIn = new System.Windows.Forms.Button();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.chbDeleteMode = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.animationBox)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -296,6 +297,7 @@
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panel1.Controls.Add(this.chbDeleteMode);
             this.panel1.Controls.Add(this.btnBaggageInQueue);
             this.panel1.Controls.Add(this.btnBaggageInCheckIn);
             this.panel1.Controls.Add(this.listBox1);
@@ -312,21 +314,15 @@
             this.panel1.Size = new System.Drawing.Size(304, 815);
             this.panel1.TabIndex = 16;
             // 
-            // contextMenuStrip1
+            // btnBaggageInQueue
             // 
-            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
-            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.ContextMenuStrip1_Opening);
-            // 
-            // listBox1
-            // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 16;
-            this.listBox1.Location = new System.Drawing.Point(10, 491);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(188, 116);
-            this.listBox1.TabIndex = 16;
+            this.btnBaggageInQueue.Location = new System.Drawing.Point(9, 642);
+            this.btnBaggageInQueue.Name = "btnBaggageInQueue";
+            this.btnBaggageInQueue.Size = new System.Drawing.Size(119, 23);
+            this.btnBaggageInQueue.TabIndex = 18;
+            this.btnBaggageInQueue.Text = "Show Queues";
+            this.btnBaggageInQueue.UseVisualStyleBackColor = true;
+            this.btnBaggageInQueue.Click += new System.EventHandler(this.BtnBaggageInQueue_Click);
             // 
             // btnBaggageInCheckIn
             // 
@@ -338,15 +334,32 @@
             this.btnBaggageInCheckIn.UseVisualStyleBackColor = true;
             this.btnBaggageInCheckIn.Click += new System.EventHandler(this.BtnBaggageInCheckIn_Click);
             // 
-            // btnBaggageInQueue
+            // listBox1
             // 
-            this.btnBaggageInQueue.Location = new System.Drawing.Point(9, 642);
-            this.btnBaggageInQueue.Name = "btnBaggageInQueue";
-            this.btnBaggageInQueue.Size = new System.Drawing.Size(119, 23);
-            this.btnBaggageInQueue.TabIndex = 18;
-            this.btnBaggageInQueue.Text = "Show Queues";
-            this.btnBaggageInQueue.UseVisualStyleBackColor = true;
-            this.btnBaggageInQueue.Click += new System.EventHandler(this.BtnBaggageInQueue_Click);
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.ItemHeight = 16;
+            this.listBox1.Location = new System.Drawing.Point(10, 491);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(188, 116);
+            this.listBox1.TabIndex = 16;
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.ContextMenuStrip1_Opening);
+            // 
+            // chbDeleteMode
+            // 
+            this.chbDeleteMode.AutoSize = true;
+            this.chbDeleteMode.Location = new System.Drawing.Point(154, 41);
+            this.chbDeleteMode.Name = "chbDeleteMode";
+            this.chbDeleteMode.Size = new System.Drawing.Size(105, 21);
+            this.chbDeleteMode.TabIndex = 19;
+            this.chbDeleteMode.Text = "Delete Tiles";
+            this.chbDeleteMode.UseVisualStyleBackColor = true;
+            this.chbDeleteMode.CheckedChanged += new System.EventHandler(this.ChbDeleteMode_CheckedChanged);
             // 
             // Baggager
             // 
@@ -398,6 +411,7 @@
         private System.Windows.Forms.Button btnBaggageInCheckIn;
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.Button btnBaggageInQueue;
+        private System.Windows.Forms.CheckBox chbDeleteMode;
     }
 }
 

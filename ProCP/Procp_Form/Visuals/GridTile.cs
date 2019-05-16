@@ -18,7 +18,7 @@ namespace Procp_Form.Visuals
 
         private bool unclickable = false;
         public bool selected = false;
-        protected GridTile nextTile;
+        public GridTile nextTile;
         public Brush fillBrush;
         public Brush clickableColor;
         public Brush unclickableColour;

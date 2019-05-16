@@ -21,6 +21,7 @@ namespace Procp_Form
 
         bool buildModeActive;
         string buildModeType;
+        bool deleteMode;
 
         bool isBuildingConveyor;
         bool isConnectingTiles;
@@ -37,7 +38,9 @@ namespace Procp_Form
             InitializeComponent();
             thisGrid = new Grid(animationBox.Width, animationBox.Height);
 
+            chbDeleteMode.Visible = false;
             buildModeActive = false;
+            deleteMode = false;
             cmBoxNodeToBuild.Visible = false;
             isBuildingConveyor = false;
             isConnectingTiles = false;
@@ -58,16 +61,24 @@ namespace Procp_Form
                 buildModeActive = true;
                 lblTest.Text = buildModeActive.ToString();
                 cmBoxNodeToBuild.Visible = true;
+                chbDeleteMode.Visible = true;
 
                 buildModeType = cmBoxNodeToBuild.Text;
                 thisGrid.HideArea(buildModeType);
+
             }
             else
             {
                 buildModeActive = false;
                 lblTest.Text = buildModeActive.ToString();
                 cmBoxNodeToBuild.Visible = false;
+                chbDeleteMode.Checked = false;
+                chbDeleteMode.Visible = false;
 
+                //hide area with null will make everything non hidden
+                //you call HideArea() to remove all of the hiding
+                //im a fuckin idiot - Boris Georgiev
+                //PS: it works doe
                 buildModeType = null;
                 thisGrid.HideArea(buildModeType);
             }
@@ -126,9 +137,14 @@ namespace Procp_Form
                         engine.AddDropOff(dropoff);
                     }
                 }
-                else if (!(t is EmptyTile))
+                else if (!(t is EmptyTile) && deleteMode == false)
                 {
                     isConnectingTiles = true;
+                }
+                else if(!(t is EmptyTile) && deleteMode == true)
+                {
+                    engine.Remove(t.nodeInGrid);
+                    thisGrid.RemoveNode(t);
                 }
             }
             else
@@ -282,6 +298,25 @@ namespace Procp_Form
                 queueCounter++;
                 this.listBox1.Items.Add($"queues: {queueCounter}, {x}");
             });
+        }
+
+        private void ChbDeleteMode_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chbDeleteMode.Checked)
+            {
+                deleteMode = true;
+                buildModeType = null;
+                thisGrid.HideArea(buildModeType);
+                cmBoxNodeToBuild.Visible = false;
+            }
+            else
+            {
+                deleteMode = false;
+                buildModeType = cmBoxNodeToBuild.Text;
+                thisGrid.HideArea(buildModeType);
+                cmBoxNodeToBuild.Visible = true;
+            }
+            animationBox.Invalidate();
         }
     }
 }

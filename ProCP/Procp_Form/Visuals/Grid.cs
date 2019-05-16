@@ -210,5 +210,23 @@ namespace Procp_Form.Visuals
         {
             return clickedTile.nodeInGrid;
         }
+
+        public void RemoveNode(GridTile toRemove)
+        {
+            foreach(GridTile t in gridTiles)
+            {
+                if(t.nextTile == toRemove)
+                {
+                    t.nextTile = null;
+                    break;
+                }
+            }
+            int index = gridTiles.IndexOf(toRemove, 0);
+            EmptyTile empty = new EmptyTile();
+            empty.Column = toRemove.Column;
+            empty.Row = toRemove.Row;
+            gridTiles.Remove(toRemove);
+            gridTiles.Insert(index, empty);
+        }
     }
 }
