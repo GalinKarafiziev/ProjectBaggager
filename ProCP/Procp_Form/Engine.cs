@@ -13,7 +13,7 @@ namespace Procp_Form
     {
         private MPA mainProcessArea;
         private Security security;
-        private CheckInDispatcher dispatcher;
+        public CheckInDispatcher dispatcher;
         public List<CheckIn> checkIns;
         public List<DropOff> dropOffs;
         public List<Conveyor> conveyors;
@@ -28,9 +28,13 @@ namespace Procp_Form
             checkIns = new List<CheckIn>();
             dropOffs = new List<DropOff>();
             flights = new List<Flight>();
-            dispatcher = new CheckInDispatcher();
             baggageInCheckIn = new List<int>();
             baggageInQueue = new List<int>();
+        }
+
+        public void AddDispatcher()
+        {
+            dispatcher = new CheckInDispatcher();
         }
 
         public void AddCheckIn(CheckIn checkin) => checkIns.Add(checkin);
@@ -104,6 +108,10 @@ namespace Procp_Form
 
         public void Stop()
         {
+            if (dispatcher == null)
+            {
+                return;
+            }
             dispatcher.Stop();
             dispatcher = null;
             foreach (var conveyor in conveyors)

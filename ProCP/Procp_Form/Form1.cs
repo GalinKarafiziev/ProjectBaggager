@@ -231,11 +231,15 @@ namespace Procp_Form
 
         private void Button1_Click(object sender, EventArgs e)
         {
+            if (engine.dispatcher == null)
+            {
+                engine.AddDispatcher();
+            }
             engine.Run();
             aTimer = new System.Timers.Timer();
             aTimer.Elapsed += new ElapsedEventHandler(TimerSequence);
             aTimer.Interval = 1;
-            aTimer.Enabled = true;
+            aTimer.Start();
         }
 
         private void TimerSequence(object source, ElapsedEventArgs e)
@@ -262,12 +266,8 @@ namespace Procp_Form
         {
             engine.Stop();
         }
-        private void ContextMenuStrip1_Opening(object sender, CancelEventArgs e)
-        {
 
-        }
-
-        private void BtnBaggageInCheckIn_Click(object sender, EventArgs e)
+        private void buttonShowProcessedBaggage_Click(object sender, EventArgs e)
         {
             engine.GetCheckInCounter().ForEach(x =>
             {
@@ -276,7 +276,7 @@ namespace Procp_Form
             });
         }
 
-        private void BtnBaggageInQueue_Click(object sender, EventArgs e)
+        private void buttonShowQueuedBaggage_Click(object sender, EventArgs e)
         {
             engine.GetQueueCounter().ForEach(x =>
             {

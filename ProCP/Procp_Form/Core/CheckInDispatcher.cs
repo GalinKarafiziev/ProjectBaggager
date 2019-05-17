@@ -58,14 +58,13 @@ namespace Procp_Form.Core
 
             if (checkIn.Status == BaggageStatus.Free)
             {
-                checkIn.PassBaggage(baggage);              
+                checkIn.PassBaggage(baggage);
+                System.Diagnostics.Debug.WriteLine("passed baggage from checkin");
+
             }
             else
             {
                 queue.Enqueue(baggage);
-
-                //to do - oprai si koda
-
                 checkIn.OnNodeStatusChangedToFree += () => PassQueuedBaggage(chosen);
             }
             flight.BaggageDispatched++;
@@ -75,8 +74,12 @@ namespace Procp_Form.Core
         {
             var checkIn = checkins[index];
             var queue = checkinQueues[index];
-
-            checkIn.PassBaggage(queue.Dequeue());
+            
+            if (queue.Count != 0)
+            {
+                checkIn.PassBaggage(queue.Dequeue());
+                System.Diagnostics.Debug.WriteLine("passed baggage to checkin");
+            }
         }
 
         public void SetupCheckins(List<CheckIn> checkinDesks)
@@ -131,6 +134,7 @@ namespace Procp_Form.Core
                 if (checkins.ElementAt(checkIn).Status == BaggageStatus.Free)
                 {
                     chosenIndex = checkIn;
+                    System.Diagnostics.Debug.WriteLine("chosen checkin" + chosenIndex.ToString());
 
                     return chosenIndex;
                 }
@@ -138,9 +142,11 @@ namespace Procp_Form.Core
 
             foreach (var queue in Enumerable.Range(0, checkinQueues.Count))
             {
-                if (checkinQueues.ElementAt(queue).Count < initialQueue.Count)
+                if (checkinQueues.ElementAt(queue).Count <= initialQueue.Count)
                 {
                     chosenIndex = queue;
+                    System.Diagnostics.Debug.WriteLine("chosen queue" + chosenIndex.ToString());
+
                 }
             }
 

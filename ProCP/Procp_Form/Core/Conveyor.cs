@@ -21,12 +21,17 @@ namespace Procp_Form.Core
         public override void Move()
         {
             this.Stop();
-            
+
             if (CanMove())
             {
                 if (lastBaggage != null)
                 {
                     NextNode.PassBaggage(lastBaggage);
+                    System.Diagnostics.Debug.WriteLine("passed baggage from conveyor");
+                }
+                else
+                {
+                    NextNode.OnNodeStatusChangedToFree += Move;
                 }
             }
 
@@ -34,7 +39,6 @@ namespace Procp_Form.Core
             {
                 conveyorBelt[index] = conveyorBelt[index - 1];
                 conveyorBelt[index - 1] = null;
-                System.Diagnostics.Debug.Write("con class" + index + "  ");
             }
 
             NextNode.OnNodeStatusChangedToFree -= Move;
