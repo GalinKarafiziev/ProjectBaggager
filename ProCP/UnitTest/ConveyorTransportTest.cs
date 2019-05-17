@@ -12,7 +12,7 @@ namespace UnitTest
         public void CanMove_Test()
         {
             Baggage baggage = new Baggage();
-            Conveyor conveyor = new Conveyor();
+            Conveyor conveyor = new Conveyor(5,6);
             DropOff dropOff = new DropOff();
             conveyor.NextNode = dropOff;
             dropOff.Status = BaggageStatus.Busy;
@@ -25,7 +25,7 @@ namespace UnitTest
         public void Move_If_Statement()
         {
             Baggage baggage = new Baggage();
-            Conveyor conveyor = new Conveyor();
+            Conveyor conveyor = new Conveyor(5,6);
             DropOff dropOff = new DropOff();
 
             conveyor.NextNode = dropOff;
@@ -34,22 +34,7 @@ namespace UnitTest
 
             Assert.AreEqual(BaggageStatus.Free, conveyor.Status);
         }
-
-        [TestMethod]
-        public void Move_Else_Statement()
-        {
-            Baggage baggage = new Baggage();
-            Conveyor conveyor = new Conveyor();
-            DropOff dropOff = new DropOff();
-            int counter = 0;
-            conveyor.NextNode = dropOff;
-            dropOff.Status = BaggageStatus.Busy;
-            conveyor.PassBaggage(baggage);
-            if (dropOff.OnNodeStatusChangedToFree != null)
-            {
-                counter = dropOff.OnNodeStatusChangedToFree.GetInvocationList().Length;
-            }
-            Assert.AreEqual(1, counter);
-        }
+        
+        
     }
 }

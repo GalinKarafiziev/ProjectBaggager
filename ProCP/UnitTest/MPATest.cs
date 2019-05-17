@@ -22,7 +22,7 @@ namespace UnitTest
         public void ProcessBaggage_If_Statement()
         {
             
-            DropOff drop = new DropOff();
+            DropOff drop = new DropOff(){FlightNumber = "RA3625"};
             Baggage baggage = new Baggage(){FlightNumber = "RA3625"};
             List<Baggage> baggages = new List<Baggage>()
             {
@@ -30,14 +30,10 @@ namespace UnitTest
             };
             drop.baggages = baggages;
             MPA mpa = new MPA();
-            List<DropOff> dropoffs = new List<DropOff>()
-            {
-                drop,
-            };
-            mpa.nextNodes = dropoffs;
-
+            
+            mpa.AddNextNode(drop);
             mpa.PassBaggage(baggage);
-
+            
             Assert.AreEqual(null, mpa.baggage);
             Assert.AreEqual(BaggageStatus.Free, mpa.Status);
         }
