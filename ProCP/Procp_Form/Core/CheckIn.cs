@@ -11,6 +11,7 @@ namespace Procp_Form.Core
     public class CheckIn : ProcessUnit
     {
         public List<Baggage> queue;
+        public int bagageInCheckIn = 0;
 
         public CheckIn()
         {
@@ -22,11 +23,10 @@ namespace Procp_Form.Core
             if (NextNode.Status == BaggageStatus.Free)
             {
                 NextNode.PassBaggage(baggage);
+                Status = BaggageStatus.Free;
                 counter--;
-                Thread.Sleep(1000);
                 baggage = null;
                 NextNode.OnNodeStatusChangedToFree -= ProcessBaggage;
-                Status = BaggageStatus.Free;
             }
             else
             {
@@ -37,6 +37,7 @@ namespace Procp_Form.Core
         public override void PassBaggage(Baggage Lastbaggage)
         {
             Status = BaggageStatus.Busy;
+            bagageInCheckIn++;
             baggage = Lastbaggage;
             ProcessBaggage();
         }

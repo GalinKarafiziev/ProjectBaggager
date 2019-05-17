@@ -13,12 +13,14 @@ namespace Procp_Form
     {
         private MPA mainProcessArea;
         private Security security;
-        private CheckInDispatcher dispatcher;
+        public CheckInDispatcher dispatcher;
         public List<CheckIn> checkIns;
         public List<DropOff> dropOffs;
         public List<Conveyor> conveyors;
         public List<Flight> flights;
         private Flight flight;
+        public List<int> baggageInCheckIn;
+        public List<int> baggageInQueue;
 
         public Engine()
         {
@@ -26,6 +28,12 @@ namespace Procp_Form
             checkIns = new List<CheckIn>();
             dropOffs = new List<DropOff>();
             flights = new List<Flight>();
+            baggageInCheckIn = new List<int>();
+            baggageInQueue = new List<int>();
+        }
+
+        public void AddDispatcher()
+        {
             dispatcher = new CheckInDispatcher();
         }
 
@@ -33,9 +41,8 @@ namespace Procp_Form
 
         public void AddDropOff(DropOff dropOff) => dropOffs.Add(dropOff);
 
-        public void AddConveyorPart(int capacity, int speed)
+        public void AddConveyorPart(Conveyor conveyor)
         {
-            var conveyor = new Conveyor(capacity, speed);
             conveyors.Add(conveyor);
         }
 
@@ -49,15 +56,19 @@ namespace Procp_Form
             if (flights.Count == 0)
             {
                 flights.Add(flight);
+                return true;
             }
-            foreach (Flight f in flights)
+            else
             {
-                if (this.flight.FlightNumber == f.FlightNumber)
+                foreach (Flight f in flights)
                 {
-                    return false;
+                    if (this.flight.FlightNumber == f.FlightNumber)
+                    {
+                        return false;
+                    }
                 }
+                flights.Add(flight);
             }
-            flights.Add(flight);
             return true;
         }
 
@@ -67,7 +78,7 @@ namespace Procp_Form
         }
 
         public void Run()
-        {
+        {        
             foreach (var conveyor in conveyors)
             {
                 conveyor.Start();
@@ -77,13 +88,65 @@ namespace Procp_Form
             dispatcher.Start();
         }
 
-        public void Stop()
+        public void Resume()
+        {
+            foreach (var conveyor in conveyors)
+            {
+                conveyor.Start();
+            }
+            dispatcher.Start();
+        }
+
+        public void Pause()
         {
             foreach (var conveyor in conveyors)
             {
                 conveyor.Stop();
             }
             dispatcher.Stop();
+        }
+
+        public void Stop()
+        {
+            if (dispatcher == null)
+            {
+                return;
+            }
+            dispatcher.Stop();
+            dispatcher = null;
+            foreach (var conveyor in conveyors)
+            {
+                conveyor.Stop();
+                for (int i = 0; i < conveyor.conveyorBelt.Length - 1; i++)
+                {
+                    if (conveyor.conveyorBelt[i] != null)
+                    {
+                        conveyor.conveyorBelt[i] = null;
+                    }
+                }
+            }
+
+            foreach (var dropOff in dropOffs)
+            {
+                dropOff.baggages.Clear();
+            }
+
+            foreach (var checkin in checkIns)
+            {
+                checkin.baggage = null; 
+            }
+        }
+
+        public List<int> GetCheckInCounter()
+        {
+            checkIns.ForEach(x => baggageInCheckIn.Add(x.bagageInCheckIn));
+            return baggageInCheckIn;
+        }
+
+        public List<int> GetQueueCounter()
+        {
+            dispatcher.checkinQueues.ForEach(q => baggageInQueue.Add(q.Count));
+            return baggageInQueue;
         }
     }
 }

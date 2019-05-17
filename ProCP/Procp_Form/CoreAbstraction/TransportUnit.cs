@@ -9,15 +9,12 @@ namespace Procp_Form.CoreAbstraction
 {
     public abstract class TransportUnit : Node
     {
-        public int Capacity { get; set; }
         public Baggage[] conveyorBelt;
         public Baggage lastBaggage;
         public Timer timer;
 
-
         public TransportUnit()
         {
-            conveyorBelt = new Baggage[Capacity];
             timer = new Timer();
             timer.Elapsed += (sender, args) => Move();
         }
@@ -33,15 +30,16 @@ namespace Procp_Form.CoreAbstraction
         public bool CanMove()
         {
             lastBaggage = conveyorBelt[conveyorBelt.Length - 1];
-            if (lastBaggage != null)
-            {
-                return true;
-            }
-
             if (NextNode.Status == BaggageStatus.Free)
             {
                 return true;
             }
+
+            if (lastBaggage != null)
+            {
+                return true;
+            }
+        
             return false;
         }
         public abstract void Move();

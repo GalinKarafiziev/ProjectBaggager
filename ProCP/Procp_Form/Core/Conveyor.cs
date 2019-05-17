@@ -4,15 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Procp_Form.Core
 {
     public class Conveyor : TransportUnit
     {
+        public string FlightNumber { get; set; }
+
         public Conveyor(int capacity, int timerSpeed) : base()
         {
-            Capacity = capacity;
             timer.Interval = timerSpeed;
+            conveyorBelt = new Baggage[capacity];
         }
 
         public override void Move()
@@ -24,10 +27,15 @@ namespace Procp_Form.Core
                 if (lastBaggage != null)
                 {
                     NextNode.PassBaggage(lastBaggage);
+                    System.Diagnostics.Debug.WriteLine("passed baggage from conveyor");
+                }
+                else
+                {
+                    NextNode.OnNodeStatusChangedToFree += Move;
                 }
             }
 
-            for (int index = conveyorBelt.Length - 1; index <= 0; index--)
+            for (int index = conveyorBelt.Length - 1; index > 0; index--)
             {
                 conveyorBelt[index] = conveyorBelt[index - 1];
                 conveyorBelt[index - 1] = null;

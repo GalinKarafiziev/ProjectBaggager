@@ -72,14 +72,14 @@ namespace Procp_Form.Visuals
                 n.DrawTile(e, tileWidth, tileHeight);
             }
         }
-        public GridTile AddConveyorLineAtCoordinates(GridTile toReplace, Node nodeToPlace)
+        public ConveyorTile AddConveyorLineAtCoordinates(GridTile toReplace)
         {
             ConveyorTile newLineTile = new ConveyorTile();
             newLineTile.Column = toReplace.Column;
             newLineTile.Row = toReplace.Row;
             gridTiles.Remove(toReplace);
             gridTiles.Add(newLineTile);
-            newLineTile.nodeInGrid = nodeToPlace;
+            
             return newLineTile;
         }
         public GridTile AddCheckInAtCoordinates(GridTile toReplace, Node nodeToPlace)
