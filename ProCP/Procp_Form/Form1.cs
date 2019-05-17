@@ -143,8 +143,16 @@ namespace Procp_Form
                 }
                 else if(!(t is EmptyTile) && deleteMode == true)
                 {
-                    engine.Remove(t.nodeInGrid);
-                    thisGrid.RemoveNode(t);
+                    if (t is ConveyorTile)
+                    {
+                        thisGrid.RemoveConveyorLine(t);
+                        engine.Remove(t.nodeInGrid);       
+                    }
+                    else
+                    {
+                        engine.Remove(t.nodeInGrid);
+                        thisGrid.RemoveNode(t);
+                    }
                 }
             }
             else
@@ -234,8 +242,11 @@ namespace Procp_Form
             }
             isBuildingConveyor = false;
             isConnectingTiles = false;
-            selectedTile.selected = false;
-            selectedTile = null;
+            if (selectedTile != null)
+            {
+                selectedTile.selected = false;
+                selectedTile = null;
+            }
             conveyorBuilding.Clear();
         }
 
