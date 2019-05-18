@@ -30,15 +30,16 @@ namespace Procp_Form.CoreAbstraction
         public bool CanMove()
         {
             lastBaggage = conveyorBelt[conveyorBelt.Length - 1];
+            if (NextNode.Status == BaggageStatus.Free)
+            {
+                return true;
+            }
+
             if (lastBaggage != null)
             {
                 return true;
             }
         
-            if (NextNode.Status == BaggageStatus.Free)
-            {
-                return true;
-            }
             return false;
         }
         public abstract void Move();

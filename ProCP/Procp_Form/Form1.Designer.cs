@@ -53,11 +53,14 @@
             this.tbFlightBaggage = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.btnBaggageInQueue = new System.Windows.Forms.Button();
-            this.btnBaggageInCheckIn = new System.Windows.Forms.Button();
+            this.buttonResume = new System.Windows.Forms.Button();
+            this.buttonStop = new System.Windows.Forms.Button();
+            this.buttonPause = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.chbDeleteMode = new System.Windows.Forms.CheckBox();
+            this.buttonShowProcessedBaggage = new System.Windows.Forms.Button();
+            this.buttonShowQueuedBaggage = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.animationBox)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -285,7 +288,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(154, 68);
+            this.button1.Location = new System.Drawing.Point(140, 12);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 15;
@@ -298,8 +301,11 @@
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panel1.Controls.Add(this.chbDeleteMode);
-            this.panel1.Controls.Add(this.btnBaggageInQueue);
-            this.panel1.Controls.Add(this.btnBaggageInCheckIn);
+            this.panel1.Controls.Add(this.buttonShowQueuedBaggage);
+            this.panel1.Controls.Add(this.buttonShowProcessedBaggage);
+            this.panel1.Controls.Add(this.buttonResume);
+            this.panel1.Controls.Add(this.buttonStop);
+            this.panel1.Controls.Add(this.buttonPause);
             this.panel1.Controls.Add(this.listBox1);
             this.panel1.Controls.Add(this.cmBoxNodeToBuild);
             this.panel1.Controls.Add(this.button1);
@@ -314,25 +320,34 @@
             this.panel1.Size = new System.Drawing.Size(304, 815);
             this.panel1.TabIndex = 16;
             // 
-            // btnBaggageInQueue
+            // buttonResume
             // 
-            this.btnBaggageInQueue.Location = new System.Drawing.Point(9, 642);
-            this.btnBaggageInQueue.Name = "btnBaggageInQueue";
-            this.btnBaggageInQueue.Size = new System.Drawing.Size(119, 23);
-            this.btnBaggageInQueue.TabIndex = 18;
-            this.btnBaggageInQueue.Text = "Show Queues";
-            this.btnBaggageInQueue.UseVisualStyleBackColor = true;
-            this.btnBaggageInQueue.Click += new System.EventHandler(this.BtnBaggageInQueue_Click);
+            this.buttonResume.Location = new System.Drawing.Point(226, 56);
+            this.buttonResume.Name = "buttonResume";
+            this.buttonResume.Size = new System.Drawing.Size(75, 23);
+            this.buttonResume.TabIndex = 23;
+            this.buttonResume.Text = "Resume";
+            this.buttonResume.UseVisualStyleBackColor = true;
             // 
-            // btnBaggageInCheckIn
+            // buttonStop
             // 
-            this.btnBaggageInCheckIn.Location = new System.Drawing.Point(10, 613);
-            this.btnBaggageInCheckIn.Name = "btnBaggageInCheckIn";
-            this.btnBaggageInCheckIn.Size = new System.Drawing.Size(119, 23);
-            this.btnBaggageInCheckIn.TabIndex = 17;
-            this.btnBaggageInCheckIn.Text = "Show Check-Ins";
-            this.btnBaggageInCheckIn.UseVisualStyleBackColor = true;
-            this.btnBaggageInCheckIn.Click += new System.EventHandler(this.BtnBaggageInCheckIn_Click);
+            this.buttonStop.Location = new System.Drawing.Point(226, 12);
+            this.buttonStop.Name = "buttonStop";
+            this.buttonStop.Size = new System.Drawing.Size(75, 23);
+            this.buttonStop.TabIndex = 22;
+            this.buttonStop.Text = "Stop";
+            this.buttonStop.UseVisualStyleBackColor = true;
+            this.buttonStop.Click += new System.EventHandler(this.buttonStop_Click_1);
+            // 
+            // buttonPause
+            // 
+            this.buttonPause.Location = new System.Drawing.Point(140, 56);
+            this.buttonPause.Name = "buttonPause";
+            this.buttonPause.Size = new System.Drawing.Size(75, 23);
+            this.buttonPause.TabIndex = 21;
+            this.buttonPause.Text = "Pause";
+            this.buttonPause.UseVisualStyleBackColor = true;
+            this.buttonPause.Click += new System.EventHandler(this.buttonStop_Click);
             // 
             // listBox1
             // 
@@ -343,14 +358,8 @@
             this.listBox1.Size = new System.Drawing.Size(188, 116);
             this.listBox1.TabIndex = 16;
             // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
-            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.ContextMenuStrip1_Opening);
-            // 
             // chbDeleteMode
+            // buttonShowProcessedBaggage
             // 
             this.chbDeleteMode.AutoSize = true;
             this.chbDeleteMode.Location = new System.Drawing.Point(154, 41);
@@ -360,6 +369,23 @@
             this.chbDeleteMode.Text = "Delete Tiles";
             this.chbDeleteMode.UseVisualStyleBackColor = true;
             this.chbDeleteMode.CheckedChanged += new System.EventHandler(this.ChbDeleteMode_CheckedChanged);
+            this.buttonShowProcessedBaggage.Location = new System.Drawing.Point(9, 613);
+            this.buttonShowProcessedBaggage.Name = "buttonShowProcessedBaggage";
+            this.buttonShowProcessedBaggage.Size = new System.Drawing.Size(189, 23);
+            this.buttonShowProcessedBaggage.TabIndex = 20;
+            this.buttonShowProcessedBaggage.Text = "Show processed baggage";
+            this.buttonShowProcessedBaggage.UseVisualStyleBackColor = true;
+            this.buttonShowProcessedBaggage.Click += new System.EventHandler(this.buttonShowProcessedBaggage_Click);
+            // 
+            // buttonShowQueuedBaggage
+            // 
+            this.buttonShowQueuedBaggage.Location = new System.Drawing.Point(10, 653);
+            this.buttonShowQueuedBaggage.Name = "buttonShowQueuedBaggage";
+            this.buttonShowQueuedBaggage.Size = new System.Drawing.Size(188, 23);
+            this.buttonShowQueuedBaggage.TabIndex = 24;
+            this.buttonShowQueuedBaggage.Text = "Show queued baggage";
+            this.buttonShowQueuedBaggage.UseVisualStyleBackColor = true;
+            this.buttonShowQueuedBaggage.Click += new System.EventHandler(this.buttonShowQueuedBaggage_Click);
             // 
             // Baggager
             // 
@@ -407,10 +433,13 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button buttonPause;
+        private System.Windows.Forms.Button buttonStop;
+        private System.Windows.Forms.Button buttonResume;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.Button btnBaggageInCheckIn;
         private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.Button btnBaggageInQueue;
+        private System.Windows.Forms.Button buttonShowQueuedBaggage;
+        private System.Windows.Forms.Button buttonShowProcessedBaggage;
         private System.Windows.Forms.CheckBox chbDeleteMode;
     }
 }

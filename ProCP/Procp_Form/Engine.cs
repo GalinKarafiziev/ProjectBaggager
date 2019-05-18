@@ -13,7 +13,7 @@ namespace Procp_Form
     {
         private MPA mainProcessArea;
         private Security security;
-        private CheckInDispatcher dispatcher;
+        public CheckInDispatcher dispatcher;
         public List<CheckIn> checkIns;
         public List<DropOff> dropOffs;
         public List<Conveyor> conveyors;
@@ -28,9 +28,13 @@ namespace Procp_Form
             checkIns = new List<CheckIn>();
             dropOffs = new List<DropOff>();
             flights = new List<Flight>();
-            dispatcher = new CheckInDispatcher();
             baggageInCheckIn = new List<int>();
             baggageInQueue = new List<int>();
+        }
+
+        public void AddDispatcher()
+        {
+            dispatcher = new CheckInDispatcher();
         }
 
         public void AddCheckIn(CheckIn checkin) => checkIns.Add(checkin);
@@ -74,7 +78,7 @@ namespace Procp_Form
         }
 
         public void Run()
-        {
+        {        
             foreach (var conveyor in conveyors)
             {
                 conveyor.Start();
@@ -84,13 +88,53 @@ namespace Procp_Form
             dispatcher.Start();
         }
 
-        public void Stop()
+        public void Resume()
+        {
+            foreach (var conveyor in conveyors)
+            {
+                conveyor.Start();
+            }
+            dispatcher.Start();
+        }
+
+        public void Pause()
         {
             foreach (var conveyor in conveyors)
             {
                 conveyor.Stop();
             }
             dispatcher.Stop();
+        }
+
+        public void Stop()
+        {
+            if (dispatcher == null)
+            {
+                return;
+            }
+            dispatcher.Stop();
+            dispatcher = null;
+            foreach (var conveyor in conveyors)
+            {
+                conveyor.Stop();
+                for (int i = 0; i < conveyor.conveyorBelt.Length - 1; i++)
+                {
+                    if (conveyor.conveyorBelt[i] != null)
+                    {
+                        conveyor.conveyorBelt[i] = null;
+                    }
+                }
+            }
+
+            foreach (var dropOff in dropOffs)
+            {
+                dropOff.baggages.Clear();
+            }
+
+            foreach (var checkin in checkIns)
+            {
+                checkin.baggage = null; 
+            }
         }
 
         public List<int> GetCheckInCounter()
