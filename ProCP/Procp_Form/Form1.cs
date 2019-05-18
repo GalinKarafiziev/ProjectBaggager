@@ -199,6 +199,7 @@ namespace Procp_Form
                         conveyorBuilding.Add((ConveyorTile)created);
 
                         selectedTile.ConnectNext(created);
+                        
                         // Engine.LinkTwoNodes(selectedTile.nodeInGrid, created.nodeInGrid);
                         SelectTile(created);
 
@@ -211,8 +212,12 @@ namespace Procp_Form
                 {
                     if (selectedTile is ConveyorTile && !(t is EmptyTile) && !(t is ConveyorTile) && !(t is CheckInTile))
                     {
-                        engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
-                        selectedTile.ConnectNext(t);
+                        ConveyorTile temp = (ConveyorTile)selectedTile;
+                        if (temp.isLastTile)
+                        {
+                            engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
+                            selectedTile.ConnectNext(t);
+                        }
                     }
                     if(selectedTile is CheckInTile && t is ConveyorTile)
                     {
@@ -239,6 +244,7 @@ namespace Procp_Form
                     t.PositionInLine = i;
                     i++;
                 }
+                conveyorBuilding.Last().isLastTile = true;
             }
             isBuildingConveyor = false;
             isConnectingTiles = false;
