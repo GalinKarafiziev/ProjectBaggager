@@ -20,7 +20,6 @@ namespace Procp_Form
         public List<Conveyor> conveyors;
         public List<Flight> flights;
         private Flight flight;
-        
 
         public Engine()
         {
