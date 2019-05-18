@@ -358,16 +358,6 @@
             this.listBox1.Size = new System.Drawing.Size(188, 116);
             this.listBox1.TabIndex = 16;
             // 
-            // contextMenuStrip1
-            // 
-            this.btnBaggageInCheckIn.Location = new System.Drawing.Point(10, 613);
-            this.btnBaggageInCheckIn.Name = "btnBaggageInCheckIn";
-            this.btnBaggageInCheckIn.Size = new System.Drawing.Size(119, 23);
-            this.btnBaggageInCheckIn.TabIndex = 17;
-            this.btnBaggageInCheckIn.Text = "Show Check-Ins";
-            this.btnBaggageInCheckIn.UseVisualStyleBackColor = true;
-            this.btnBaggageInCheckIn.Click += new System.EventHandler(this.BtnBaggageInCheckIn_Click);
-            // 
             // chbDeleteMode
             // buttonShowProcessedBaggage
             // 
