@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.animationBox = new System.Windows.Forms.PictureBox();
             this.cmBoxNodeToBuild = new System.Windows.Forms.ComboBox();
             this.chbBuildMode = new System.Windows.Forms.CheckBox();
@@ -54,25 +53,33 @@
             this.btnDeleteFlight = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.chbDeleteMode = new System.Windows.Forms.CheckBox();
+            this.buttonShowQueuedBaggage = new System.Windows.Forms.Button();
+            this.buttonShowProcessedBaggage = new System.Windows.Forms.Button();
             this.buttonResume = new System.Windows.Forms.Button();
             this.buttonStop = new System.Windows.Forms.Button();
             this.buttonPause = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.chbDeleteMode = new System.Windows.Forms.CheckBox();
-            this.buttonShowProcessedBaggage = new System.Windows.Forms.Button();
-            this.buttonShowQueuedBaggage = new System.Windows.Forms.Button();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPageSimVisuals = new System.Windows.Forms.TabPage();
+            this.tabPageStats = new System.Windows.Forms.TabPage();
+            this.cartesianChartBaggageProcessedByCheckin = new LiveCharts.WinForms.CartesianChart();
+            this.buttonLoadChartBaggageThroughCheckin = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.animationBox)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPageSimVisuals.SuspendLayout();
+            this.tabPageStats.SuspendLayout();
             this.SuspendLayout();
             // 
             // animationBox
             // 
-            this.animationBox.Location = new System.Drawing.Point(315, 0);
+            this.animationBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.animationBox.Location = new System.Drawing.Point(3, 3);
             this.animationBox.Name = "animationBox";
-            this.animationBox.Size = new System.Drawing.Size(1573, 815);
+            this.animationBox.Size = new System.Drawing.Size(1715, 923);
             this.animationBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.animationBox.TabIndex = 0;
             this.animationBox.TabStop = false;
@@ -97,7 +104,7 @@
             // chbBuildMode
             // 
             this.chbBuildMode.AutoSize = true;
-            this.chbBuildMode.Location = new System.Drawing.Point(3, 41);
+            this.chbBuildMode.Location = new System.Drawing.Point(7, 14);
             this.chbBuildMode.Name = "chbBuildMode";
             this.chbBuildMode.Size = new System.Drawing.Size(79, 17);
             this.chbBuildMode.TabIndex = 4;
@@ -312,7 +319,6 @@
             // 
             // panel1
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panel1.Controls.Add(this.chbDeleteMode);
             this.panel1.Controls.Add(this.buttonShowQueuedBaggage);
@@ -329,10 +335,42 @@
             this.panel1.Controls.Add(this.lblColRow);
             this.panel1.Controls.Add(this.groupBox1);
             this.panel1.Controls.Add(this.label1);
-            this.panel1.Location = new System.Drawing.Point(5, 0);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(304, 815);
+            this.panel1.Size = new System.Drawing.Size(308, 920);
             this.panel1.TabIndex = 16;
+            // 
+            // chbDeleteMode
+            // 
+            this.chbDeleteMode.AutoSize = true;
+            this.chbDeleteMode.Location = new System.Drawing.Point(6, 41);
+            this.chbDeleteMode.Name = "chbDeleteMode";
+            this.chbDeleteMode.Size = new System.Drawing.Size(105, 21);
+            this.chbDeleteMode.TabIndex = 19;
+            this.chbDeleteMode.Text = "Delete Tiles";
+            this.chbDeleteMode.UseVisualStyleBackColor = true;
+            this.chbDeleteMode.CheckedChanged += new System.EventHandler(this.ChbDeleteMode_CheckedChanged);
+            // 
+            // buttonShowQueuedBaggage
+            // 
+            this.buttonShowQueuedBaggage.Location = new System.Drawing.Point(10, 653);
+            this.buttonShowQueuedBaggage.Name = "buttonShowQueuedBaggage";
+            this.buttonShowQueuedBaggage.Size = new System.Drawing.Size(188, 23);
+            this.buttonShowQueuedBaggage.TabIndex = 24;
+            this.buttonShowQueuedBaggage.Text = "Show queued baggage";
+            this.buttonShowQueuedBaggage.UseVisualStyleBackColor = true;
+            this.buttonShowQueuedBaggage.Click += new System.EventHandler(this.buttonShowQueuedBaggage_Click);
+            // 
+            // buttonShowProcessedBaggage
+            // 
+            this.buttonShowProcessedBaggage.Location = new System.Drawing.Point(9, 613);
+            this.buttonShowProcessedBaggage.Name = "buttonShowProcessedBaggage";
+            this.buttonShowProcessedBaggage.Size = new System.Drawing.Size(189, 23);
+            this.buttonShowProcessedBaggage.TabIndex = 20;
+            this.buttonShowProcessedBaggage.Text = "Show processed baggage";
+            this.buttonShowProcessedBaggage.UseVisualStyleBackColor = true;
+            this.buttonShowProcessedBaggage.Click += new System.EventHandler(this.buttonShowProcessedBaggage_Click);
             // 
             // buttonResume
             // 
@@ -342,6 +380,7 @@
             this.buttonResume.TabIndex = 23;
             this.buttonResume.Text = "Resume";
             this.buttonResume.UseVisualStyleBackColor = true;
+            this.buttonResume.Click += new System.EventHandler(this.buttonResume_Click);
             // 
             // buttonStop
             // 
@@ -372,45 +411,68 @@
             this.listBox1.Size = new System.Drawing.Size(188, 116);
             this.listBox1.TabIndex = 16;
             // 
-            // chbDeleteMode
-            // buttonShowProcessedBaggage
+            // tabControl1
             // 
-            this.chbDeleteMode.AutoSize = true;
-            this.chbDeleteMode.Location = new System.Drawing.Point(154, 41);
-            this.chbDeleteMode.Name = "chbDeleteMode";
-            this.chbDeleteMode.Size = new System.Drawing.Size(105, 21);
-            this.chbDeleteMode.TabIndex = 19;
-            this.chbDeleteMode.Text = "Delete Tiles";
-            this.chbDeleteMode.UseVisualStyleBackColor = true;
-            this.chbDeleteMode.CheckedChanged += new System.EventHandler(this.ChbDeleteMode_CheckedChanged);
-            this.buttonShowProcessedBaggage.Location = new System.Drawing.Point(9, 613);
-            this.buttonShowProcessedBaggage.Name = "buttonShowProcessedBaggage";
-            this.buttonShowProcessedBaggage.Size = new System.Drawing.Size(189, 23);
-            this.buttonShowProcessedBaggage.TabIndex = 20;
-            this.buttonShowProcessedBaggage.Text = "Show processed baggage";
-            this.buttonShowProcessedBaggage.UseVisualStyleBackColor = true;
-            this.buttonShowProcessedBaggage.Click += new System.EventHandler(this.buttonShowProcessedBaggage_Click);
+            this.tabControl1.Controls.Add(this.tabPageSimVisuals);
+            this.tabControl1.Controls.Add(this.tabPageStats);
+            this.tabControl1.Location = new System.Drawing.Point(307, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(1729, 958);
+            this.tabControl1.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight;
+            this.tabControl1.TabIndex = 17;
             // 
-            // buttonShowQueuedBaggage
+            // tabPageSimVisuals
             // 
-            this.buttonShowQueuedBaggage.Location = new System.Drawing.Point(10, 653);
-            this.buttonShowQueuedBaggage.Name = "buttonShowQueuedBaggage";
-            this.buttonShowQueuedBaggage.Size = new System.Drawing.Size(188, 23);
-            this.buttonShowQueuedBaggage.TabIndex = 24;
-            this.buttonShowQueuedBaggage.Text = "Show queued baggage";
-            this.buttonShowQueuedBaggage.UseVisualStyleBackColor = true;
-            this.buttonShowQueuedBaggage.Click += new System.EventHandler(this.buttonShowQueuedBaggage_Click);
+            this.tabPageSimVisuals.Controls.Add(this.animationBox);
+            this.tabPageSimVisuals.Location = new System.Drawing.Point(4, 25);
+            this.tabPageSimVisuals.Name = "tabPageSimVisuals";
+            this.tabPageSimVisuals.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageSimVisuals.Size = new System.Drawing.Size(1721, 929);
+            this.tabPageSimVisuals.TabIndex = 1;
+            this.tabPageSimVisuals.Text = "Simulation Visualisation";
+            this.tabPageSimVisuals.UseVisualStyleBackColor = true;
+            // 
+            // tabPageStats
+            // 
+            this.tabPageStats.Controls.Add(this.buttonLoadChartBaggageThroughCheckin);
+            this.tabPageStats.Controls.Add(this.cartesianChartBaggageProcessedByCheckin);
+            this.tabPageStats.Location = new System.Drawing.Point(4, 25);
+            this.tabPageStats.Name = "tabPageStats";
+            this.tabPageStats.Size = new System.Drawing.Size(1721, 929);
+            this.tabPageStats.TabIndex = 2;
+            this.tabPageStats.Text = "Statistics";
+            this.tabPageStats.UseVisualStyleBackColor = true;
+            // 
+            // cartesianChartBaggageProcessedByCheckin
+            // 
+            this.cartesianChartBaggageProcessedByCheckin.Location = new System.Drawing.Point(3, 3);
+            this.cartesianChartBaggageProcessedByCheckin.Name = "cartesianChartBaggageProcessedByCheckin";
+            this.cartesianChartBaggageProcessedByCheckin.Size = new System.Drawing.Size(572, 347);
+            this.cartesianChartBaggageProcessedByCheckin.TabIndex = 0;
+            this.cartesianChartBaggageProcessedByCheckin.Text = "BaggageProcessedByCheckin";
+            // 
+            // buttonLoadChartBaggageThroughCheckin
+            // 
+            this.buttonLoadChartBaggageThroughCheckin.Location = new System.Drawing.Point(500, 376);
+            this.buttonLoadChartBaggageThroughCheckin.Name = "buttonLoadChartBaggageThroughCheckin";
+            this.buttonLoadChartBaggageThroughCheckin.Size = new System.Drawing.Size(75, 23);
+            this.buttonLoadChartBaggageThroughCheckin.TabIndex = 25;
+            this.buttonLoadChartBaggageThroughCheckin.Text = "Load";
+            this.buttonLoadChartBaggageThroughCheckin.UseVisualStyleBackColor = true;
+            this.buttonLoadChartBaggageThroughCheckin.Click += new System.EventHandler(this.buttonLoadChartBaggageThroughCheckin_Click);
             // 
             // Baggager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1888, 815);
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ClientSize = new System.Drawing.Size(1924, 920);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.animationBox);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "Baggager";
             this.Text = "Form1";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             ((System.ComponentModel.ISupportInitialize)(this.animationBox)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -418,6 +480,9 @@
             this.groupBox2.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.tabControl1.ResumeLayout(false);
+            this.tabPageSimVisuals.ResumeLayout(false);
+            this.tabPageStats.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -451,12 +516,15 @@
         private System.Windows.Forms.Button buttonPause;
         private System.Windows.Forms.Button buttonStop;
         private System.Windows.Forms.Button buttonResume;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.Button buttonShowQueuedBaggage;
         private System.Windows.Forms.Button buttonShowProcessedBaggage;
         private System.Windows.Forms.CheckBox chbDeleteMode;
-        private System.Windows.Forms.Button btnDeleteFlight;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPageSimVisuals;
+        private System.Windows.Forms.TabPage tabPageStats;
+        private LiveCharts.WinForms.CartesianChart cartesianChartBaggageProcessedByCheckin;
+        private System.Windows.Forms.Button buttonLoadChartBaggageThroughCheckin;
     }
 }
 

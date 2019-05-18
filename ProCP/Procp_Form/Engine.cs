@@ -1,5 +1,6 @@
 ﻿using Procp_Form.Airport;
 using Procp_Form.Core;
+using Procp_Form.Statistics;
 using Procp_Form.CoreAbstraction;
 using System;
 using System.Collections.Generic;
@@ -19,8 +20,7 @@ namespace Procp_Form
         public List<Conveyor> conveyors;
         public List<Flight> flights;
         private Flight flight;
-        public List<int> baggageInCheckIn;
-        public List<int> baggageInQueue;
+        
 
         public Engine()
         {
@@ -28,8 +28,6 @@ namespace Procp_Form
             checkIns = new List<CheckIn>();
             dropOffs = new List<DropOff>();
             flights = new List<Flight>();
-            baggageInCheckIn = new List<int>();
-            baggageInQueue = new List<int>();
         }
 
         public void AddDispatcher()
@@ -128,12 +126,7 @@ namespace Procp_Form
 
         public void Stop()
         {
-            if (dispatcher == null)
-            {
-                return;
-            }
             dispatcher.Stop();
-            dispatcher = null;
             foreach (var conveyor in conveyors)
             {
                 conveyor.Stop();
@@ -149,24 +142,20 @@ namespace Procp_Form
             foreach (var dropOff in dropOffs)
             {
                 dropOff.baggages.Clear();
+                dropOff.Status = BaggageStatus.Free;
             }
 
             foreach (var checkin in checkIns)
             {
-                checkin.baggage = null; 
+                checkin.baggage = null;
+                checkin.Status = BaggageStatus.Free;
             }
-        }
 
-        public List<int> GetCheckInCounter()
-        {
-            checkIns.ForEach(x => baggageInCheckIn.Add(x.bagageInCheckIn));
-            return baggageInCheckIn;
-        }
-
-        public List<int> GetQueueCounter()
-        {
-            dispatcher.checkinQueues.ForEach(q => baggageInQueue.Add(q.Count));
-            return baggageInQueue;
+            if (dispatcher == null)
+            {
+                return;
+            }
+            dispatcher = null;
         }
 
         public void Remove(Node rem)
@@ -184,6 +173,11 @@ namespace Procp_Form
                 dropOffs.Remove((DropOff)rem);
             }
             rem = null;
+        }
+
+        public List<int> GetCheckInStats()
+        {
+            return null;
         }
     }
 }
