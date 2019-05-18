@@ -29,6 +29,29 @@ namespace Procp_Form.Visuals
             g.FillRectangle(fillBrush, Column * width, Row * height, width, height);
             g.DrawRectangle(p, Column * width, Row * height, width, height);
 
+            if (nextTile != null)
+            {
+                if (nextTile.Column < this.Column)
+                {
+                    p = new Pen(Color.Red);
+                    g.DrawLine(p, (Column * width + width/2), (Row * height + height/2), Column * width, Row * height + height / 2);
+                }
+                else if (nextTile.Column > this.Column)
+                {
+                    p = new Pen(Color.Red);
+                    g.DrawLine(p, (Column * width + width / 2), (Row * height + height / 2), Column * width + width, Row * height + height / 2);
+                }
+                else if (nextTile.Row < this.Row)
+                {
+                    p = new Pen(Color.Red);
+                    g.DrawLine(p, (Column * width + width / 2), (Row * height + height / 2), Column * width + width / 2, Row * height);
+                }
+                else if (nextTile.Row > this.Row)
+                {
+                    p = new Pen(Color.Red);
+                    g.DrawLine(p, (Column * width + width / 2), (Row * height + height / 2), Column * width + width / 2, Row * height + height);
+                }
+            }
 
             if (selected)
             {

@@ -148,5 +148,22 @@ namespace Procp_Form
             dispatcher.checkinQueues.ForEach(q => baggageInQueue.Add(q.Count));
             return baggageInQueue;
         }
+
+        public void Remove(Node rem)
+        {
+            if(rem is Conveyor)
+            {
+                conveyors.Remove((Conveyor)rem);
+            }
+            else if(rem is CheckIn)
+            {
+                checkIns.Remove((CheckIn)rem);
+            }
+            else if (rem is DropOff)
+            {
+                dropOffs.Remove((DropOff)rem);
+            }
+            rem = null;
+        }
     }
 }
