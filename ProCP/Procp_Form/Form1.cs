@@ -256,7 +256,7 @@ namespace Procp_Form
             DateTime date = (Convert.ToDateTime(tbFlightTime.Text));
             string flightNr = tbFlightNr.Text;
             int flightBaggage = Convert.ToInt32(tbFlightBaggage.Text);
-            if (!(Engine.AddFlight(date, flightNr, flightBaggage)))
+            if (!(engine.AddFlight(date, flightNr, flightBaggage)))
             {
                 MessageBox.Show("This flight already exists.");
             }
@@ -264,7 +264,7 @@ namespace Procp_Form
             {
                 //lbFlights.Items.Clear();
                 lbFlights.DataSource = null;
-                lbFlights.DataSource = Engine.flights;
+                lbFlights.DataSource = engine.flights;
                
                 //lbFlights.Items.Add($"[#{flightNr}] {date.ToString()} ({flightBaggage})");
             }

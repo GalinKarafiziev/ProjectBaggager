@@ -53,9 +53,12 @@ namespace Procp_Form
             flight = new Flight(time, number, baggage);
             if (flights.Count == 0)
             {
-                if (this.flight.FlightNumber == f.FlightNumber)
+                foreach (var f in flights)
                 {
-                    return false;
+                    if (this.flight.FlightNumber == f.FlightNumber)
+                    {
+                        return false;
+                    }
                 }
             }
             flights.Add(flight);
