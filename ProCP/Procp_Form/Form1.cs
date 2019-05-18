@@ -228,7 +228,7 @@ namespace Procp_Form
 
         private void AnimationBox_MouseUp(object sender, MouseEventArgs e)
         {
-            if (buildModeActive && buildModeType == "Conveyor")
+            if (buildModeActive && isBuildingConveyor)
             {
                 Conveyor conveyor = new Conveyor(conveyorBuilding.Count, 1500);
                 engine.AddConveyorPart(conveyor);
