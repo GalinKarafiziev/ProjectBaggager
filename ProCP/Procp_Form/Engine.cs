@@ -51,7 +51,7 @@ namespace Procp_Form
         public bool AddFlight(DateTime time, string number, int baggage)
         {
             flight = new Flight(time, number, baggage);
-            if (flights.Count == 0)
+            if (flights.Count != 0)
             {
                 foreach (var f in flights)
                 {
@@ -77,21 +77,20 @@ namespace Procp_Form
                 return true;
             }
         }
-        public bool EditFlight(DateTime time, string number, string newNumber, int baggage)
-        {   
-            foreach (Flight f in flights)
+        public bool EditFlight(string number, string newNumber, int baggage, DateTime time)
+        {
+            Flight selectedFlight = flights.Find(f => f.FlightNumber == number);
+            if (selectedFlight == null)
             {
-                if (f.FlightNumber == number)
-                {
-                    f.FlightNumber = newNumber;
-                    f.DepartureTime = time;
-                    f.AmountOfBaggage = baggage;
-                    return true;
-                }
-                flights.Add(flight);
+                return false;
             }
-            return false;
-            
+            else
+            {
+                selectedFlight.FlightNumber = newNumber;
+                selectedFlight.DepartureTime = time;
+                selectedFlight.AmountOfBaggage = baggage;
+                return true;
+            }
         }
         public void LinkTwoNodes(Node firstNode, Node secondNode)
         {
@@ -129,7 +128,6 @@ namespace Procp_Form
 
         public void Stop()
         {
-            dispatcher.Stop();
             foreach (var conveyor in conveyors)
             {
                 conveyor.Stop();
@@ -158,6 +156,7 @@ namespace Procp_Form
             {
                 return;
             }
+            dispatcher.Stop();
             dispatcher = null;
         }
 

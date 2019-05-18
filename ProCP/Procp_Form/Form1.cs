@@ -12,6 +12,7 @@ using Procp_Form.CoreAbstraction;
 using Procp_Form.Visuals;
 using System.Timers;
 using LiveCharts;
+using Procp_Form.Airport;
 
 namespace Procp_Form
 {
@@ -60,7 +61,7 @@ namespace Procp_Form
                 cmBoxNodeToBuild.SelectedIndex = 0;
 
                 buildModeActive = true;
-                lblTest.Text = buildModeActive.ToString();
+                lblTest.Text = buildModeActive ? "[On]" : "[Off]";
                 cmBoxNodeToBuild.Visible = true;
                 chbDeleteMode.Visible = true;
 
@@ -71,7 +72,7 @@ namespace Procp_Form
             else
             {
                 buildModeActive = false;
-                lblTest.Text = buildModeActive.ToString();
+                lblTest.Text = buildModeActive ? "[On]" : "[Off]";
                 cmBoxNodeToBuild.Visible = false;
                 chbDeleteMode.Checked = false;
                 chbDeleteMode.Visible = false;
@@ -91,6 +92,10 @@ namespace Procp_Form
             if (cmBoxNodeToBuild.Text == "CheckIn")
             {
                 buildModeType = "CheckIn";
+            }
+            else if (cmBoxNodeToBuild.Text == "Security Scanner")
+            {
+                buildModeType = "Security Scanner";
             }
             else if (cmBoxNodeToBuild.Text == "Conveyor")
             {
@@ -131,6 +136,12 @@ namespace Procp_Form
                         SelectTile(thisGrid.AddCheckInAtCoordinates(t, checkin));
                         engine.AddCheckIn(checkin);
                     }
+                    else if (buildModeType == "Security Scanner")
+                    {
+                        Security security = new Security();
+                        SelectTile(thisGrid.AddSecurityAtCoordinates(t, security));
+                        engine.AddSecurity(security);
+                    }
                     else if (buildModeType == "DropOff")
                     {
                         DropOff dropoff = new DropOff();
@@ -142,12 +153,12 @@ namespace Procp_Form
                 {
                     isConnectingTiles = true;
                 }
-                else if(!(t is EmptyTile) && deleteMode == true)
+                else if (!(t is EmptyTile) && deleteMode == true)
                 {
                     if (t is ConveyorTile)
                     {
                         thisGrid.RemoveConveyorLine(t);
-                        engine.Remove(t.nodeInGrid);       
+                        engine.Remove(t.nodeInGrid);
                     }
                     else
                     {
@@ -215,7 +226,17 @@ namespace Procp_Form
                         engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
                         selectedTile.ConnectNext(t);
                     }
-                    if(selectedTile is CheckInTile && t is ConveyorTile)
+                    else if (selectedTile is ConveyorTile && t is SecurityTile)
+                    {
+                        engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
+                        selectedTile.ConnectNext(t);
+                    }
+                    else if (selectedTile is CheckInTile && t is ConveyorTile)
+                    {
+                        engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
+                        selectedTile.ConnectNext(t);
+                    }
+                    else if (selectedTile is SecurityTile && t is ConveyorTile)
                     {
                         engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
                         selectedTile.ConnectNext(t);
@@ -262,19 +283,28 @@ namespace Procp_Form
             }
             else
             {
-                //lbFlights.Items.Clear();
                 lbFlights.DataSource = null;
                 lbFlights.DataSource = engine.flights;
-               
-                //lbFlights.Items.Add($"[#{flightNr}] {date.ToString()} ({flightBaggage})");
             }
+
         }
 
         private void btnEditFlight_Click(object sender, EventArgs e)
         {
-            //DateTime date = (Convert.ToDateTime(tbFlightTime.Text));
-            //string flightNr = tbFlightNr.Text;
-            //int flightBaggage = Convert.ToInt32(tbFlightBaggage.Text);
+            DateTime date = (Convert.ToDateTime(tbFlightTime.Text));
+            string flightNr = tbFlightNr.Text;
+            int flightBaggage = Convert.ToInt32(tbFlightBaggage.Text);
+
+            Flight selectedFlight = lbFlights.SelectedItem as Flight;
+            if (!(engine.EditFlight(selectedFlight.FlightNumber, flightNr, flightBaggage, date)))
+            {
+                MessageBox.Show("Flight not found.");
+            }
+            else
+            {
+                lbFlights.DataSource = null;
+                lbFlights.DataSource = engine.flights;
+            }
             //var item = lbFlights.SelectedItem;
             //if (!(Engine.EditFlight(date, flightNr, flightBaggage)))
             //{
@@ -288,12 +318,21 @@ namespace Procp_Form
 
         private void btnDeleteFlight_Click(object sender, EventArgs e)
         {
-
+            Flight selectedFlight = lbFlights.SelectedItem as Flight;
+            if (!(engine.RemoveFlight(selectedFlight.FlightNumber)))
+            {
+                MessageBox.Show("Flight not found.");
+            }
+            else
+            {
+                lbFlights.DataSource = null;
+                lbFlights.DataSource = engine.flights;
+            }
         }
 
         public void RefreshFlightsList()
         {
-            
+
         }
 
         private void Button1_Click(object sender, EventArgs e)
@@ -336,7 +375,7 @@ namespace Procp_Form
 
         private void buttonShowProcessedBaggage_Click(object sender, EventArgs e)
         {
-            //engine.GetCheckInCounter().ForEach(x =>
+            //engine.GetCheckInStats().ForEach(x =>
             //{
             //    checkinCounter++;
             //    this.listBox1.Items.Add($"checkin: {checkinCounter}, {x}");

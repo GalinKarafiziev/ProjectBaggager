@@ -26,7 +26,7 @@ namespace Procp_Form.Airport
 
         public override string ToString()
         {
-            return $"[{FlightNumber}] [{DepartureTime}] [{AmountOfBaggage}]";
+            return $"[#{FlightNumber}][⌚{DepartureTime.Hour}:{DepartureTime.Minute}][💼{AmountOfBaggage}]";
         }
     }
 }
