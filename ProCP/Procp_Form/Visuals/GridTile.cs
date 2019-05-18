@@ -17,6 +17,8 @@ namespace Procp_Form.Visuals
         public Node nodeInGrid;
 
         private bool unclickable = false;
+        public bool selected = false;
+        public GridTile nextTile;
         public Brush fillBrush;
         public Brush clickableColor;
         public Brush unclickableColour;
@@ -31,7 +33,7 @@ namespace Procp_Form.Visuals
             get { return row; }
             set { row = value; }
         }
-        public bool Unclickable
+        public bool Unselectable
         {
             get { return unclickable; }
             set { unclickable = value; }
@@ -43,10 +45,47 @@ namespace Procp_Form.Visuals
 
             g.FillRectangle(fillBrush, Column * width, Row * height, width, height);
             g.DrawRectangle(p, Column * width, Row * height, width, height);
+
+            if(nextTile != null)
+            {
+                if (nextTile.Column < this.Column)
+                {
+                    p = new Pen(Color.Red);
+                    g.DrawLine(p, (Column * width + width / 2), (Row * height + height / 2), Column * width, Row * height + height / 2);
+                }
+                else if (nextTile.Column > this.Column)
+                {
+                    p = new Pen(Color.Red);
+                    g.DrawLine(p, (Column * width + width / 2), (Row * height + height / 2), Column * width + width, Row * height + height / 2);
+                }
+                else if (nextTile.Row < this.Row)
+                {
+                    p = new Pen(Color.Red);
+                    g.DrawLine(p, (Column * width + width / 2), (Row * height + height / 2), Column * width + width / 2, Row * height);
+                }
+                else if (nextTile.Row > this.Row)
+                {
+                    p = new Pen(Color.Red);
+                    g.DrawLine(p, (Column * width + width / 2), (Row * height + height / 2), Column * width + width / 2, Row * height + height);
+                }
+            }
+
+            if (selected)
+            {
+                p = new Pen(Color.Yellow);
+                g.DrawRectangle(p, Column * width, Row * height, width, height);
+            }
+            if (nodeInGrid != null)
+            {
+                if (nodeInGrid.Status == BaggageStatus.Busy)
+                {
+                    g.FillRectangle(Brushes.DarkGoldenrod, column * width + 10, row * height + 10, width - 20, height - 20);
+                }
+            }
         }
         public virtual void SetTileUncklicableColor()
         {
-            if (Unclickable)
+            if (Unselectable)
             {
                 fillBrush = unclickableColour;
             }
@@ -54,6 +93,11 @@ namespace Procp_Form.Visuals
             {
                 fillBrush = clickableColor;
             }
+        }
+
+        public void ConnectNext(GridTile t)
+        {
+            nextTile = t;
         }
     }
 }
