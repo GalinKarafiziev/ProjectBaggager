@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Procp_Form.Statistics
 {
-    public class Statistics
+    public class StatisticsManager
     {
         public List<int> baggageInCheckIn;
         public Engine engine;
 
-        public Statistics()
+        public StatisticsManager()
         {
             baggageInCheckIn = new List<int>();
             engine = new Engine();
