@@ -1,7 +1,7 @@
 ﻿using Procp_Form.Airport;
 using Procp_Form.Core;
-using Procp_Form.Statistics;
 using Procp_Form.CoreAbstraction;
+using Procp_Form.Statistics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +12,7 @@ namespace Procp_Form
 {
     public class Engine
     {
+        private StatisticsManager statistics;
         private MPA mainProcessArea;
         private Security security;
         public CheckInDispatcher dispatcher;
@@ -27,6 +28,7 @@ namespace Procp_Form
             checkIns = new List<CheckIn>();
             dropOffs = new List<DropOff>();
             flights = new List<Flight>();
+            statistics = new StatisticsManager();
         }
 
         public void AddDispatcher()

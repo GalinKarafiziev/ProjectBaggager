@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace Procp_Form.Statistics
 {
-    public class Statistics
+    public class StatisticsManager
     {
         public List<int> baggageInCheckIn;
         public Engine engine;
         Stopwatch stopwatch;
         Baggage baggage;
 
-        public Statistics()
+        public StatisticsManager()
         {
             baggageInCheckIn = new List<int>();
             engine = new Engine();
