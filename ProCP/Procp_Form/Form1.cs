@@ -8,16 +8,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Procp_Form.Core;
 using Procp_Form.CoreAbstraction;
 using Procp_Form.Visuals;
 using System.Timers;
+using LiveCharts;
 
 namespace Procp_Form
 {
     public partial class Baggager : Form
     {
         Grid thisGrid;
+        SeriesCollection series = new SeriesCollection();
 
         bool buildModeActive;
         string buildModeType;
@@ -304,20 +305,20 @@ namespace Procp_Form
 
         private void buttonShowProcessedBaggage_Click(object sender, EventArgs e)
         {
-            engine.GetCheckInCounter().ForEach(x =>
-            {
-                checkinCounter++;
-                this.listBox1.Items.Add($"checkin: {checkinCounter}, {x}");
-            });
+            //engine.GetCheckInCounter().ForEach(x =>
+            //{
+            //    checkinCounter++;
+            //    this.listBox1.Items.Add($"checkin: {checkinCounter}, {x}");
+            //});
         }
 
         private void buttonShowQueuedBaggage_Click(object sender, EventArgs e)
         {
-            engine.GetQueueCounter().ForEach(x =>
-            {
-                queueCounter++;
-                this.listBox1.Items.Add($"queues: {queueCounter}, {x}");
-            });
+            //engine.GetQueueCounter().ForEach(x =>
+            //{
+            //    queueCounter++;
+            //    this.listBox1.Items.Add($"queues: {queueCounter}, {x}");
+            //});
         }
 
         private void ChbDeleteMode_CheckedChanged(object sender, EventArgs e)
@@ -337,6 +338,16 @@ namespace Procp_Form
                 cmBoxNodeToBuild.Visible = true;
             }
             animationBox.Invalidate();
+        }
+
+        private void buttonResume_Click(object sender, EventArgs e)
+        {
+            engine.Resume();
+        }
+
+        private void buttonLoadChartBaggageThroughCheckin_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

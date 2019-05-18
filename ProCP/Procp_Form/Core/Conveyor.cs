@@ -27,7 +27,6 @@ namespace Procp_Form.Core
                 if (lastBaggage != null)
                 {
                     NextNode.PassBaggage(lastBaggage);
-                    System.Diagnostics.Debug.WriteLine("passed baggage from conveyor");
                 }
                 else
                 {
