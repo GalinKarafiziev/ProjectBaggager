@@ -102,8 +102,9 @@ namespace Procp_Form.Visuals
 
         public void AddMPA(GridTile firstTile, MPA mpa)
         {
-            int cRange = 2;
-            int rRange = 2;
+            int cRange = TileVerticalCount / 4;
+            int rRange = tileHorizontalCount / 3;
+
 
             if (CheckIfTilesAreEmpty(firstTile, cRange, rRange))
             {
