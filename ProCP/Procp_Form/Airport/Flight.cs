@@ -25,5 +25,10 @@ namespace Procp_Form.Airport
             this.AmountOfBaggage = baggage;
             this.BaggageDispatched = 0;
         }
+
+        public override string ToString()
+        {
+            return $"[#{FlightNumber}][⌚{DepartureTime.Hour}:{DepartureTime.Minute}][💼{AmountOfBaggage}]";
+        }
     }
 }
