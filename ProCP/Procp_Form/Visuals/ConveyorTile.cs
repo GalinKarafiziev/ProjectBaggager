@@ -13,12 +13,15 @@ namespace Procp_Form.Visuals
     {
         public int PositionInLine;
 
+        public bool isLastTile;
         public ConveyorTile()
         {
             clickableColor = Brushes.SeaGreen;
             unclickableColour = Brushes.DarkSeaGreen;
 
             fillBrush = clickableColor;
+
+            isLastTile = false;
         }
 
         public override void DrawTile(PaintEventArgs e, float width, float height)

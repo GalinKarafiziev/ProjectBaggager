@@ -81,6 +81,48 @@ namespace Procp_Form.Visuals
             gridTiles.Add(newLineTile);
             return newLineTile;
         }
+
+        public bool CheckIfTilesAreEmpty(GridTile firstTile, int cRange, int rRange)
+        {
+            int firstC = firstTile.Column;
+            int firstR = firstTile.Row;
+            for(int i = firstC; i < firstC + cRange; i++)
+            {
+                for(int y = firstR; y < firstR + rRange; y++)
+                {
+                    GridTile temp = FindTileInRowColumnCoordinates(i, y);
+                    if(!(temp is EmptyTile))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        public void AddMPA(GridTile firstTile, MPA mpa)
+        {
+            int cRange = 2;
+            int rRange = 2;
+
+            if (CheckIfTilesAreEmpty(firstTile, cRange, rRange))
+            {
+                for (int i = firstTile.Column; i < firstTile.Column + cRange; i++)
+                {
+                    for (int y = firstTile.Row; y < firstTile.Row + rRange; y++)
+                    {
+                        MPATile mpaTile = new MPATile();
+                        mpaTile.Column = i;
+                        mpaTile.Row = y;
+                        GridTile temp = FindTileInRowColumnCoordinates(i, y);
+                        gridTiles.Remove(temp);
+                        gridTiles.Add(mpaTile);
+                        mpaTile.nodeInGrid = mpa;
+                    }
+                }
+            }
+        }
+
         public GridTile AddCheckInAtCoordinates(GridTile toReplace, Node nodeToPlace)
         {
             CheckInTile newCheckInTile = new CheckInTile();

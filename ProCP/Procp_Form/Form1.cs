@@ -108,6 +108,10 @@ namespace Procp_Form
             {
                 buildModeType = "DropOff";
             }
+            else if(cmBoxNodeToBuild.Text == "MPA")
+            {
+                buildModeType = "MPA";
+            }
             thisGrid.HideArea(buildModeType);
 
             animationBox.Invalidate();
@@ -126,11 +130,9 @@ namespace Procp_Form
                 {
                     if (buildModeType == "Conveyor")
                     {
-                        // Conveyor conveyor = new Conveyor();
                         SelectTile(thisGrid.AddConveyorLineAtCoordinates(t));
                         conveyorBuilding.Add((ConveyorTile)selectedTile);
 
-                        //Engine.AddConveyorPart(conveyor);
                         isBuildingConveyor = true;
                     }
                     else if (buildModeType == "CheckIn")
@@ -155,6 +157,12 @@ namespace Procp_Form
                         {
                             btnAddFlight.Enabled = true;
                         }
+                    }
+                    else if(buildModeType == "MPA")
+                    {
+                        MPA mpa = new MPA();
+                        thisGrid.AddMPA(t, mpa);
+                        engine.AddMPA(mpa);
                     }
                 }
                 else if (!(t is EmptyTile) && deleteMode == false)
@@ -202,11 +210,6 @@ namespace Procp_Form
             var mouseClick = e as MouseEventArgs;
             GridTile t = thisGrid.FindTileInPixelCoordinates(mouseClick.X, mouseClick.Y);
 
-            if (buildModeActive && buildModeType == "Conveyor" && isBuildingConveyor)
-            {
-                System.Diagnostics.Debug.WriteLine("moving " + t.Column + " " + t.Row);
-            }
-
             if (isBuildingConveyor)
             {
                 if ((Math.Abs(t.Column - selectedTile.Column) == 1 && Math.Abs(t.Row - selectedTile.Row) == 0) || (Math.Abs(t.Column - selectedTile.Column) == 0 && Math.Abs(t.Row - selectedTile.Row) == 1))
@@ -219,6 +222,7 @@ namespace Procp_Form
                         conveyorBuilding.Add((ConveyorTile)created);
 
                         selectedTile.ConnectNext(created);
+                        
                         // Engine.LinkTwoNodes(selectedTile.nodeInGrid, created.nodeInGrid);
                         SelectTile(created);
 
@@ -231,8 +235,12 @@ namespace Procp_Form
                 {
                     if (selectedTile is ConveyorTile && !(t is EmptyTile) && !(t is ConveyorTile) && !(t is CheckInTile))
                     {
-                        engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
-                        selectedTile.ConnectNext(t);
+                        ConveyorTile temp = (ConveyorTile)selectedTile;
+                        if (temp.isLastTile)
+                        {
+                            engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
+                            selectedTile.ConnectNext(t);
+                        }
                     }
                     else if (selectedTile is ConveyorTile && t is SecurityTile)
                     {
@@ -269,7 +277,9 @@ namespace Procp_Form
                     t.PositionInLine = i;
                     i++;
                 }
+                conveyorBuilding.Last().isLastTile = true;
             }
+
             isBuildingConveyor = false;
             isConnectingTiles = false;
             if (selectedTile != null)
@@ -320,7 +330,6 @@ namespace Procp_Form
                 btnDeleteFlight.Enabled = true;
                 btnEditFlight.Enabled = true;
             }
-
         }
 
         private void btnEditFlight_Click(object sender, EventArgs e)
@@ -426,7 +435,8 @@ namespace Procp_Form
 
         }
 
-
+        private void buttonLoadChartBaggageThroughCheckin_Click(object sender, EventArgs e)
+        {
             series.Clear();
             checkinCounter = 0;
             foreach (var number in engine.GetCheckInStats())
@@ -434,8 +444,6 @@ namespace Procp_Form
                 checkinCounter++;
                 series.Add(new ColumnSeries() {Title = $"Checkin {checkinCounter.ToString()}", Values = new ChartValues<int> { number }});   
             }
-            
-
         }
     }
 }

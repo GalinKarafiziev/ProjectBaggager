@@ -100,7 +100,8 @@
             "Conveyor",
             "CheckIn",
             "DropOff",
-            "Security Scanner"});
+            "Security Scanner",
+            "MPA"});
             this.cmBoxNodeToBuild.Location = new System.Drawing.Point(9, 79);
             this.cmBoxNodeToBuild.Margin = new System.Windows.Forms.Padding(4);
             this.cmBoxNodeToBuild.Name = "cmBoxNodeToBuild";
@@ -389,7 +390,7 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(411, 1132);
+            this.panel1.Size = new System.Drawing.Size(411, 1055);
             this.panel1.TabIndex = 16;
             // 
             // chbDeleteMode
@@ -549,7 +550,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(2564, 1132);
+            this.ClientSize = new System.Drawing.Size(1924, 1055);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.panel1);
             this.Margin = new System.Windows.Forms.Padding(4);
