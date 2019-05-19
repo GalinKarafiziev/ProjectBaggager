@@ -12,7 +12,6 @@ namespace Procp_Form.Core
 
         private int secure;
         public int Secure { get; set; }
-        public string FlightNumber { get; set; }
         public int DestinationGate { get; set; }
 
         public Baggage()

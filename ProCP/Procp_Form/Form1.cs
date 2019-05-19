@@ -349,7 +349,7 @@ namespace Procp_Form
 
         private void buttonLoadChartBaggageThroughCheckin_Click(object sender, EventArgs e)
         {
-            
+
             series.Clear();
             checkinCounter = 0;
             foreach (var number in engine.GetCheckInStats())
