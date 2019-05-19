@@ -57,7 +57,7 @@ namespace Procp_Form
             {
                 foreach (var f in flights)
                 {
-                    if (this.flight.FlightNumber == f.FlightNumber && this.flight.DestinationGate == f.DestinationGate)
+                    if ((this.flight.FlightNumber == f.FlightNumber && this.flight.DestinationGate == f.DestinationGate) || (this.flight.FlightNumber != f.FlightNumber && this.flight.DestinationGate == f.DestinationGate))
                     {
                         return false;
                     }
@@ -88,6 +88,13 @@ namespace Procp_Form
             }
             else
             {
+                foreach (var f in flights)
+                {
+                    if ((selectedFlight.FlightNumber == f.FlightNumber && selectedFlight.DestinationGate == f.DestinationGate) || (selectedFlight.FlightNumber != f.FlightNumber && selectedFlight.DestinationGate == f.DestinationGate))
+                    {
+                        return false;
+                    }
+                }
                 selectedFlight.FlightNumber = newNumber;
                 selectedFlight.DepartureTime = time;
                 selectedFlight.AmountOfBaggage = baggage;

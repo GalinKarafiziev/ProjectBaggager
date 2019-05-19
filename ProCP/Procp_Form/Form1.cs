@@ -245,6 +245,12 @@ namespace Procp_Form
                         {
                             engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
                             selectedTile.ConnectNext(t);
+                            if(t is DropOffTile)
+                            {
+                                var selectedConveyor = selectedTile.nodeInGrid as Conveyor;
+                                var tNode = t.nodeInGrid as DropOff;
+                                selectedConveyor.DestinationGate = tNode.DestinationGate;
+                            }
                         }
                     }
                     else if (selectedTile is ConveyorTile && t is SecurityTile)
@@ -260,6 +266,13 @@ namespace Procp_Form
                     else if (selectedTile is SecurityTile && t is ConveyorTile)
                     {
                         engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
+                        selectedTile.ConnectNext(t);
+                    }
+                    else if (selectedTile is MPATile && t is ConveyorTile)
+                    {
+                        var selectedMPA = selectedTile.nodeInGrid as MPA;
+                        selectedMPA.AddNextNode(t.nodeInGrid as Conveyor);
+                        //engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
                         selectedTile.ConnectNext(t);
                     }
                 }
@@ -350,7 +363,7 @@ namespace Procp_Form
             Flight selectedFlight = lbFlights.SelectedItem as Flight;
             if (!(engine.EditFlight(selectedFlight.FlightNumber, flightNr, flightBaggage, date, destGate)))
             {
-                MessageBox.Show("Flight not found.");
+                MessageBox.Show("The flight number already exists or drop-off destination is already taken.");
             }
             else
             {
