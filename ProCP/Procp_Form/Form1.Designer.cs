@@ -45,6 +45,7 @@
             this.tbFlightNr = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnDeleteFlight = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.btnEditFlight = new System.Windows.Forms.Button();
             this.btnAddFlight = new System.Windows.Forms.Button();
@@ -64,9 +65,12 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageSimVisuals = new System.Windows.Forms.TabPage();
             this.tabPageStats = new System.Windows.Forms.TabPage();
+            this.buttonFailedSecurityCheck = new System.Windows.Forms.Button();
+            this.cartesianChartFailedToPassBaggage = new LiveCharts.WinForms.CartesianChart();
             this.buttonLoadChartBaggageThroughCheckin = new System.Windows.Forms.Button();
             this.cartesianChartBaggageProcessedByCheckin = new LiveCharts.WinForms.CartesianChart();
-            this.btnDeleteFlight = new System.Windows.Forms.Button();
+            this.pieChartPercentageAllFailedBaggage = new LiveCharts.WinForms.PieChart();
+            this.buttonRefreshPercentageFailedBags = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.animationBox)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -273,6 +277,17 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Flights Info";
             // 
+            // btnDeleteFlight
+            // 
+            this.btnDeleteFlight.Location = new System.Drawing.Point(314, 119);
+            this.btnDeleteFlight.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnDeleteFlight.Name = "btnDeleteFlight";
+            this.btnDeleteFlight.Size = new System.Drawing.Size(72, 23);
+            this.btnDeleteFlight.TabIndex = 23;
+            this.btnDeleteFlight.Text = "Delete";
+            this.btnDeleteFlight.UseVisualStyleBackColor = true;
+            this.btnDeleteFlight.Click += new System.EventHandler(this.btnDeleteFlight_Click);
+            // 
             // label8
             // 
             this.label8.AutoSize = true;
@@ -371,7 +386,7 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(411, 1132);
+            this.panel1.Size = new System.Drawing.Size(411, 1055);
             this.panel1.TabIndex = 16;
             // 
             // chbDeleteMode
@@ -477,6 +492,10 @@
             // 
             // tabPageStats
             // 
+            this.tabPageStats.Controls.Add(this.buttonRefreshPercentageFailedBags);
+            this.tabPageStats.Controls.Add(this.pieChartPercentageAllFailedBaggage);
+            this.tabPageStats.Controls.Add(this.buttonFailedSecurityCheck);
+            this.tabPageStats.Controls.Add(this.cartesianChartFailedToPassBaggage);
             this.tabPageStats.Controls.Add(this.buttonLoadChartBaggageThroughCheckin);
             this.tabPageStats.Controls.Add(this.cartesianChartBaggageProcessedByCheckin);
             this.tabPageStats.Location = new System.Drawing.Point(4, 25);
@@ -486,6 +505,26 @@
             this.tabPageStats.TabIndex = 2;
             this.tabPageStats.Text = "Statistics";
             this.tabPageStats.UseVisualStyleBackColor = true;
+            // 
+            // buttonFailedSecurityCheck
+            // 
+            this.buttonFailedSecurityCheck.Location = new System.Drawing.Point(1424, 463);
+            this.buttonFailedSecurityCheck.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonFailedSecurityCheck.Name = "buttonFailedSecurityCheck";
+            this.buttonFailedSecurityCheck.Size = new System.Drawing.Size(100, 28);
+            this.buttonFailedSecurityCheck.TabIndex = 27;
+            this.buttonFailedSecurityCheck.Text = "Load";
+            this.buttonFailedSecurityCheck.UseVisualStyleBackColor = true;
+            this.buttonFailedSecurityCheck.Click += new System.EventHandler(this.buttonFailedSecurityCheck_Click);
+            // 
+            // cartesianChartFailedToPassBaggage
+            // 
+            this.cartesianChartFailedToPassBaggage.Location = new System.Drawing.Point(785, 4);
+            this.cartesianChartFailedToPassBaggage.Margin = new System.Windows.Forms.Padding(4);
+            this.cartesianChartFailedToPassBaggage.Name = "cartesianChartFailedToPassBaggage";
+            this.cartesianChartFailedToPassBaggage.Size = new System.Drawing.Size(763, 427);
+            this.cartesianChartFailedToPassBaggage.TabIndex = 26;
+            this.cartesianChartFailedToPassBaggage.Text = "FailedToPassBaggageThroughSecurity";
             // 
             // buttonLoadChartBaggageThroughCheckin
             // 
@@ -507,23 +546,31 @@
             this.cartesianChartBaggageProcessedByCheckin.TabIndex = 0;
             this.cartesianChartBaggageProcessedByCheckin.Text = "BaggageProcessedByCheckin";
             // 
-            // btnDeleteFlight
+            // pieChartPercentageAllFailedBaggage
             // 
-            this.btnDeleteFlight.Location = new System.Drawing.Point(314, 119);
-            this.btnDeleteFlight.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btnDeleteFlight.Name = "btnDeleteFlight";
-            this.btnDeleteFlight.Size = new System.Drawing.Size(72, 23);
-            this.btnDeleteFlight.TabIndex = 23;
-            this.btnDeleteFlight.Text = "Delete";
-            this.btnDeleteFlight.UseVisualStyleBackColor = true;
-            this.btnDeleteFlight.Click += new System.EventHandler(this.btnDeleteFlight_Click);
+            this.pieChartPercentageAllFailedBaggage.Location = new System.Drawing.Point(38, 531);
+            this.pieChartPercentageAllFailedBaggage.Name = "pieChartPercentageAllFailedBaggage";
+            this.pieChartPercentageAllFailedBaggage.Size = new System.Drawing.Size(434, 265);
+            this.pieChartPercentageAllFailedBaggage.TabIndex = 28;
+            this.pieChartPercentageAllFailedBaggage.Text = "pieChart1";
+            // 
+            // buttonRefreshPercentageFailedBags
+            // 
+            this.buttonRefreshPercentageFailedBags.Location = new System.Drawing.Point(381, 803);
+            this.buttonRefreshPercentageFailedBags.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonRefreshPercentageFailedBags.Name = "buttonRefreshPercentageFailedBags";
+            this.buttonRefreshPercentageFailedBags.Size = new System.Drawing.Size(100, 28);
+            this.buttonRefreshPercentageFailedBags.TabIndex = 29;
+            this.buttonRefreshPercentageFailedBags.Text = "Refresh";
+            this.buttonRefreshPercentageFailedBags.UseVisualStyleBackColor = true;
+            this.buttonRefreshPercentageFailedBags.Click += new System.EventHandler(this.buttonRefreshPercentageFailedBags_Click);
             // 
             // Baggager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(2564, 1132);
+            this.ClientSize = new System.Drawing.Size(1924, 1055);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.panel1);
             this.Margin = new System.Windows.Forms.Padding(4);
@@ -585,6 +632,10 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button btnDeleteFlight;
+        private LiveCharts.WinForms.CartesianChart cartesianChartFailedToPassBaggage;
+        private System.Windows.Forms.Button buttonFailedSecurityCheck;
+        private System.Windows.Forms.Button buttonRefreshPercentageFailedBags;
+        private LiveCharts.WinForms.PieChart pieChartPercentageAllFailedBaggage;
     }
 }
 

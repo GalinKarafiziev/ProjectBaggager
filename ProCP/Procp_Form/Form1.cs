@@ -29,9 +29,7 @@ namespace Procp_Form
         GridTile selectedTile;
         List<ConveyorTile> conveyorBuilding;
         Engine engine = new Engine();
-        int checkinCounter = 0;
-        SeriesCollection series = new SeriesCollection();
-        int queueCounter = 0;
+        SeriesCollection series;
 
         System.Timers.Timer aTimer;
 
@@ -47,8 +45,6 @@ namespace Procp_Form
             isBuildingConveyor = false;
             isConnectingTiles = false;
             conveyorBuilding = new List<ConveyorTile>();
-
-            cartesianChartBaggageProcessedByCheckin.Series = series;
         }
 
         private void AnimationBox_Paint(object sender, PaintEventArgs e)
@@ -321,14 +317,21 @@ namespace Procp_Form
         private void btnDeleteFlight_Click(object sender, EventArgs e)
         {
             Flight selectedFlight = lbFlights.SelectedItem as Flight;
-            if (!(engine.RemoveFlight(selectedFlight.FlightNumber)))
+            if (selectedFlight != null)
             {
-                MessageBox.Show("Flight not found.");
+                if (!(engine.RemoveFlight(selectedFlight.FlightNumber)))
+                {
+                    MessageBox.Show("Flight not found.");
+                }
+                else
+                {
+                    lbFlights.DataSource = null;
+                    lbFlights.DataSource = engine.flights;
+                }
             }
             else
             {
-                lbFlights.DataSource = null;
-                lbFlights.DataSource = engine.flights;
+                MessageBox.Show("Select a flight first!");
             }
         }
 
@@ -419,16 +422,37 @@ namespace Procp_Form
 
         private void buttonLoadChartBaggageThroughCheckin_Click(object sender, EventArgs e)
         {
-
-            series.Clear();
-            checkinCounter = 0;
+            series = new SeriesCollection();
+            int checkinCounter = 0;
             foreach (var number in engine.GetCheckInStats())
             {
                 checkinCounter++;
-                series.Add(new ColumnSeries() {Title = $"Checkin {checkinCounter.ToString()}", Values = new ChartValues<int> { number }});   
+                series.Add(new ColumnSeries() { Title = $"Checkin {checkinCounter.ToString()}", Values = new ChartValues<int> { number } });
             }
-            
+            cartesianChartBaggageProcessedByCheckin.Series = series;
+        }
 
+        private void buttonFailedSecurityCheck_Click(object sender, EventArgs e)
+        {
+            series = new SeriesCollection();
+            int securityCounter = 0;
+            foreach (var number in engine.GetSecurityStats())
+            {
+                securityCounter++;
+                series.Add(new ColumnSeries() { Title = $"Security {securityCounter.ToString()}", Values = new ChartValues<int> { number } });
+            }
+            cartesianChartFailedToPassBaggage.Series = series;
+        }
+
+        private void buttonRefreshPercentageFailedBags_Click(object sender, EventArgs e)
+        {
+            double failed = engine.GetCalculatePercentageFailedBaggage();
+            double successed = engine.GetCalculateSuccessedBaggage();
+            series = new SeriesCollection();
+            series.Add(new PieSeries() { Title = "Failed", Values = new ChartValues<double> { failed }});
+            series.Add(new PieSeries() { Title = "Successed ", Values = new ChartValues<double> { successed } });
+
+            pieChartPercentageAllFailedBaggage.Series = series;
         }
     }
 }
