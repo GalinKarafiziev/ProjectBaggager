@@ -15,20 +15,17 @@ namespace Procp_Form.Visuals
     {
         float tileWidth;
         float tileHeight;
-        int tileHorizontalCount = 10;
-        int tileVerticalCount = 10;
+        int tileHorizontalCount = 24;
+        int tileVerticalCount = 24;
         float animBoxWidth;
         float animBoxHeigth;
 
         List<GridTile> gridTiles;
 
         int hideAreaNotCheckInRows = 0;
-
-        int hideAreaNotConveyorRowsTop = 9;
+        int hideAreaNotConveyorRowsTop;
         int hideAreaNotConveyorRowsBottom = 0;
-
-
-        int hideAreaNotForDropOff = 9;
+        int hideAreaNotForDropOff;
 
         public Grid(int animBoxW, int abBoxH)
         {
@@ -38,6 +35,9 @@ namespace Procp_Form.Visuals
             animBoxHeigth = abBoxH;
             tileWidth = (animBoxWidth - 1) / tileHorizontalCount;
             tileHeight = (animBoxHeigth - 1) / tileVerticalCount;
+
+            hideAreaNotForDropOff = tileVerticalCount - 1;
+            hideAreaNotConveyorRowsTop = tileVerticalCount - 1;
 
             CreateGrid();
         }
@@ -103,7 +103,7 @@ namespace Procp_Form.Visuals
         public void AddMPA(GridTile firstTile, MPA mpa)
         {
             int cRange = TileVerticalCount / 4;
-            int rRange = tileHorizontalCount / 3;
+            int rRange = tileHorizontalCount / 4;
 
 
             if (CheckIfTilesAreEmpty(firstTile, cRange, rRange))
