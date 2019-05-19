@@ -12,6 +12,7 @@ using Procp_Form.CoreAbstraction;
 using Procp_Form.Visuals;
 using System.Timers;
 using LiveCharts;
+using LiveCharts.Wpf;
 using Procp_Form.Airport;
 
 namespace Procp_Form
@@ -19,18 +20,17 @@ namespace Procp_Form
     public partial class Baggager : Form
     {
         Grid thisGrid;
-        SeriesCollection series = new SeriesCollection();
 
         bool buildModeActive;
         string buildModeType;
         bool deleteMode;
-
         bool isBuildingConveyor;
         bool isConnectingTiles;
         GridTile selectedTile;
         List<ConveyorTile> conveyorBuilding;
         Engine engine = new Engine();
         int checkinCounter = 0;
+        SeriesCollection series = new SeriesCollection();
         int queueCounter = 0;
 
         System.Timers.Timer aTimer;
@@ -47,6 +47,8 @@ namespace Procp_Form
             isBuildingConveyor = false;
             isConnectingTiles = false;
             conveyorBuilding = new List<ConveyorTile>();
+
+            cartesianChartBaggageProcessedByCheckin.Series = series;
             cbDropOffDest.DataSource = engine.dropOffs;
         }
 
@@ -425,6 +427,16 @@ namespace Procp_Form
         }
 
 
+            series.Clear();
+            checkinCounter = 0;
+            foreach (var number in engine.GetCheckInStats())
+            {
+                checkinCounter++;
+                series.Add(new ColumnSeries() {Title = $"Checkin {checkinCounter.ToString()}", Values = new ChartValues<int> { number }});   
+            }
+            
+
+        }
     }
 }
 
