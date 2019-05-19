@@ -47,6 +47,7 @@ namespace Procp_Form
             isBuildingConveyor = false;
             isConnectingTiles = false;
             conveyorBuilding = new List<ConveyorTile>();
+            cbDropOffDest.DataSource = engine.dropOffs;
         }
 
         private void AnimationBox_Paint(object sender, PaintEventArgs e)
@@ -147,6 +148,11 @@ namespace Procp_Form
                         DropOff dropoff = new DropOff();
                         SelectTile(thisGrid.AddDropOffAtCoordinates(t, dropoff));
                         engine.AddDropOff(dropoff);
+                        RefreshDropOffCombobox();
+                        if (btnAddFlight.Enabled != true)
+                        {
+                            btnAddFlight.Enabled = true;
+                        }
                     }
                 }
                 else if (!(t is EmptyTile) && deleteMode == false)
@@ -272,6 +278,31 @@ namespace Procp_Form
             conveyorBuilding.Clear();
         }
 
+        private void btnRun_Click(object sender, EventArgs e)
+        {
+            if (engine.dispatcher == null)
+            {
+                engine.AddDispatcher();
+            }
+            engine.Run();
+            aTimer = new System.Timers.Timer();
+            aTimer.Elapsed += new ElapsedEventHandler(TimerSequence);
+            aTimer.Interval = 1;
+            aTimer.Start();
+        }
+        private void btnPause_Click(object sender, EventArgs e)
+        {
+            engine.Pause();
+        }
+        private void buttonResume_Click(object sender, EventArgs e)
+        {
+            engine.Resume();
+        }
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            engine.Stop();
+        }
+
         private void btnAddFlight_Click(object sender, EventArgs e)
         {
             DateTime date = (Convert.ToDateTime(tbFlightTime.Text));
@@ -283,8 +314,9 @@ namespace Procp_Form
             }
             else
             {
-                lbFlights.DataSource = null;
-                lbFlights.DataSource = engine.flights;
+                RefreshFlightsListBox();
+                btnDeleteFlight.Enabled = true;
+                btnEditFlight.Enabled = true;
             }
 
         }
@@ -302,18 +334,8 @@ namespace Procp_Form
             }
             else
             {
-                lbFlights.DataSource = null;
-                lbFlights.DataSource = engine.flights;
+                RefreshFlightsListBox();
             }
-            //var item = lbFlights.SelectedItem;
-            //if (!(Engine.EditFlight(date, flightNr, flightBaggage)))
-            //{
-            //    MessageBox.Show("Cannot find flight to edit.");
-            //}
-            //else
-            //{
-            //    lbFlights.Items.Add($"[#{flightNr}] {date.ToString()} ({flightBaggage})");
-            //}
         }
 
         private void btnDeleteFlight_Click(object sender, EventArgs e)
@@ -325,27 +347,24 @@ namespace Procp_Form
             }
             else
             {
-                lbFlights.DataSource = null;
-                lbFlights.DataSource = engine.flights;
+                RefreshFlightsListBox();
+                if (!(engine.CheckFlights()))
+                {
+                    btnDeleteFlight.Enabled = false;
+                    btnEditFlight.Enabled = false;
+                }
             }
         }
-
-        public void RefreshFlightsList()
+        
+        public void RefreshFlightsListBox()
         {
-
+            lbFlights.DataSource = null;
+            lbFlights.DataSource = engine.flights;
         }
-
-        private void Button1_Click(object sender, EventArgs e)
+        public void RefreshDropOffCombobox()
         {
-            if (engine.dispatcher == null)
-            {
-                engine.AddDispatcher();
-            }
-            engine.Run();
-            aTimer = new System.Timers.Timer();
-            aTimer.Elapsed += new ElapsedEventHandler(TimerSequence);
-            aTimer.Interval = 1;
-            aTimer.Start();
+            cbDropOffDest.DataSource = null;
+            cbDropOffDest.DataSource = engine.dropOffs;
         }
 
         private void TimerSequence(object source, ElapsedEventArgs e)
@@ -361,16 +380,6 @@ namespace Procp_Form
             }
             selectedTile = t;
             selectedTile.selected = true;
-        }
-
-        private void buttonStop_Click(object sender, EventArgs e)
-        {
-            engine.Pause();
-        }
-
-        private void buttonStop_Click_1(object sender, EventArgs e)
-        {
-            engine.Stop();
         }
 
         private void buttonShowProcessedBaggage_Click(object sender, EventArgs e)
@@ -410,15 +419,12 @@ namespace Procp_Form
             animationBox.Invalidate();
         }
 
-        private void buttonResume_Click(object sender, EventArgs e)
-        {
-            engine.Resume();
-        }
-
         private void buttonLoadChartBaggageThroughCheckin_Click(object sender, EventArgs e)
         {
 
         }
+
+
     }
 }
 

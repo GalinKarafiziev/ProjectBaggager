@@ -45,6 +45,7 @@
             this.tbFlightNr = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnDeleteFlight = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.btnEditFlight = new System.Windows.Forms.Button();
             this.btnAddFlight = new System.Windows.Forms.Button();
@@ -52,21 +53,22 @@
             this.label5 = new System.Windows.Forms.Label();
             this.tbFlightBaggage = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnRun = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.chbDeleteMode = new System.Windows.Forms.CheckBox();
             this.buttonShowQueuedBaggage = new System.Windows.Forms.Button();
             this.buttonShowProcessedBaggage = new System.Windows.Forms.Button();
             this.buttonResume = new System.Windows.Forms.Button();
-            this.buttonStop = new System.Windows.Forms.Button();
-            this.buttonPause = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageSimVisuals = new System.Windows.Forms.TabPage();
             this.tabPageStats = new System.Windows.Forms.TabPage();
             this.buttonLoadChartBaggageThroughCheckin = new System.Windows.Forms.Button();
             this.cartesianChartBaggageProcessedByCheckin = new LiveCharts.WinForms.CartesianChart();
-            this.btnDeleteFlight = new System.Windows.Forms.Button();
+            this.btnPause = new System.Windows.Forms.Button();
+            this.btnStop = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
+            this.cbDropOffDest = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.animationBox)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -229,7 +231,7 @@
             this.lbFlights.Font = new System.Drawing.Font("Courier New", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbFlights.FormattingEnabled = true;
             this.lbFlights.ItemHeight = 22;
-            this.lbFlights.Location = new System.Drawing.Point(11, 152);
+            this.lbFlights.Location = new System.Drawing.Point(10, 206);
             this.lbFlights.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lbFlights.Name = "lbFlights";
             this.lbFlights.Size = new System.Drawing.Size(375, 92);
@@ -254,6 +256,8 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.cbDropOffDest);
+            this.groupBox2.Controls.Add(this.label9);
             this.groupBox2.Controls.Add(this.btnDeleteFlight);
             this.groupBox2.Controls.Add(this.label8);
             this.groupBox2.Controls.Add(this.btnEditFlight);
@@ -268,10 +272,22 @@
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox2.Size = new System.Drawing.Size(392, 274);
+            this.groupBox2.Size = new System.Drawing.Size(392, 302);
             this.groupBox2.TabIndex = 14;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Flights Info";
+            // 
+            // btnDeleteFlight
+            // 
+            this.btnDeleteFlight.Enabled = false;
+            this.btnDeleteFlight.Location = new System.Drawing.Point(313, 179);
+            this.btnDeleteFlight.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnDeleteFlight.Name = "btnDeleteFlight";
+            this.btnDeleteFlight.Size = new System.Drawing.Size(72, 23);
+            this.btnDeleteFlight.TabIndex = 23;
+            this.btnDeleteFlight.Text = "Delete";
+            this.btnDeleteFlight.UseVisualStyleBackColor = true;
+            this.btnDeleteFlight.Click += new System.EventHandler(this.btnDeleteFlight_Click);
             // 
             // label8
             // 
@@ -284,7 +300,8 @@
             // 
             // btnEditFlight
             // 
-            this.btnEditFlight.Location = new System.Drawing.Point(225, 119);
+            this.btnEditFlight.Enabled = false;
+            this.btnEditFlight.Location = new System.Drawing.Point(224, 179);
             this.btnEditFlight.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnEditFlight.Name = "btnEditFlight";
             this.btnEditFlight.Size = new System.Drawing.Size(83, 23);
@@ -295,7 +312,8 @@
             // 
             // btnAddFlight
             // 
-            this.btnAddFlight.Location = new System.Drawing.Point(11, 117);
+            this.btnAddFlight.Enabled = false;
+            this.btnAddFlight.Location = new System.Drawing.Point(11, 179);
             this.btnAddFlight.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnAddFlight.Name = "btnAddFlight";
             this.btnAddFlight.Size = new System.Drawing.Size(90, 23);
@@ -339,30 +357,30 @@
             this.label3.Size = new System.Drawing.Size(133, 28);
             this.label3.TabIndex = 20;
             // 
-            // button1
+            // btnRun
             // 
-            this.button1.Location = new System.Drawing.Point(187, 15);
-            this.button1.Margin = new System.Windows.Forms.Padding(4);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(100, 28);
-            this.button1.TabIndex = 15;
-            this.button1.Text = "Run";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.Button1_Click);
+            this.btnRun.Location = new System.Drawing.Point(187, 15);
+            this.btnRun.Margin = new System.Windows.Forms.Padding(4);
+            this.btnRun.Name = "btnRun";
+            this.btnRun.Size = new System.Drawing.Size(100, 28);
+            this.btnRun.TabIndex = 15;
+            this.btnRun.Text = "▷ Run";
+            this.btnRun.UseVisualStyleBackColor = true;
+            this.btnRun.Click += new System.EventHandler(this.btnRun_Click);
             // 
             // panel1
             // 
             this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panel1.Controls.Add(this.btnStop);
+            this.panel1.Controls.Add(this.btnPause);
             this.panel1.Controls.Add(this.chbDeleteMode);
             this.panel1.Controls.Add(this.buttonShowQueuedBaggage);
             this.panel1.Controls.Add(this.buttonShowProcessedBaggage);
             this.panel1.Controls.Add(this.buttonResume);
             this.panel1.Controls.Add(this.label3);
-            this.panel1.Controls.Add(this.buttonStop);
-            this.panel1.Controls.Add(this.buttonPause);
             this.panel1.Controls.Add(this.listBox1);
             this.panel1.Controls.Add(this.cmBoxNodeToBuild);
-            this.panel1.Controls.Add(this.button1);
+            this.panel1.Controls.Add(this.btnRun);
             this.panel1.Controls.Add(this.lblTest);
             this.panel1.Controls.Add(this.groupBox2);
             this.panel1.Controls.Add(this.chbBuildMode);
@@ -415,31 +433,9 @@
             this.buttonResume.Name = "buttonResume";
             this.buttonResume.Size = new System.Drawing.Size(100, 28);
             this.buttonResume.TabIndex = 23;
-            this.buttonResume.Text = "Resume";
+            this.buttonResume.Text = " ⟳ Resume";
             this.buttonResume.UseVisualStyleBackColor = true;
             this.buttonResume.Click += new System.EventHandler(this.buttonResume_Click);
-            // 
-            // buttonStop
-            // 
-            this.buttonStop.Location = new System.Drawing.Point(301, 15);
-            this.buttonStop.Margin = new System.Windows.Forms.Padding(4);
-            this.buttonStop.Name = "buttonStop";
-            this.buttonStop.Size = new System.Drawing.Size(100, 28);
-            this.buttonStop.TabIndex = 22;
-            this.buttonStop.Text = "Stop";
-            this.buttonStop.UseVisualStyleBackColor = true;
-            this.buttonStop.Click += new System.EventHandler(this.buttonStop_Click_1);
-            // 
-            // buttonPause
-            // 
-            this.buttonPause.Location = new System.Drawing.Point(187, 69);
-            this.buttonPause.Margin = new System.Windows.Forms.Padding(4);
-            this.buttonPause.Name = "buttonPause";
-            this.buttonPause.Size = new System.Drawing.Size(100, 28);
-            this.buttonPause.TabIndex = 21;
-            this.buttonPause.Text = "Pause";
-            this.buttonPause.UseVisualStyleBackColor = true;
-            this.buttonPause.Click += new System.EventHandler(this.buttonStop_Click);
             // 
             // listBox1
             // 
@@ -507,16 +503,46 @@
             this.cartesianChartBaggageProcessedByCheckin.TabIndex = 0;
             this.cartesianChartBaggageProcessedByCheckin.Text = "BaggageProcessedByCheckin";
             // 
-            // btnDeleteFlight
+            // btnPause
             // 
-            this.btnDeleteFlight.Location = new System.Drawing.Point(314, 119);
-            this.btnDeleteFlight.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btnDeleteFlight.Name = "btnDeleteFlight";
-            this.btnDeleteFlight.Size = new System.Drawing.Size(72, 23);
-            this.btnDeleteFlight.TabIndex = 23;
-            this.btnDeleteFlight.Text = "Delete";
-            this.btnDeleteFlight.UseVisualStyleBackColor = true;
-            this.btnDeleteFlight.Click += new System.EventHandler(this.btnDeleteFlight_Click);
+            this.btnPause.Location = new System.Drawing.Point(187, 69);
+            this.btnPause.Margin = new System.Windows.Forms.Padding(4);
+            this.btnPause.Name = "btnPause";
+            this.btnPause.Size = new System.Drawing.Size(100, 28);
+            this.btnPause.TabIndex = 27;
+            this.btnPause.Text = "❚❚ Pause";
+            this.btnPause.UseVisualStyleBackColor = true;
+            this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
+            // 
+            // btnStop
+            // 
+            this.btnStop.Location = new System.Drawing.Point(301, 15);
+            this.btnStop.Margin = new System.Windows.Forms.Padding(4);
+            this.btnStop.Name = "btnStop";
+            this.btnStop.Size = new System.Drawing.Size(100, 28);
+            this.btnStop.TabIndex = 28;
+            this.btnStop.Text = "◼ Stop";
+            this.btnStop.UseVisualStyleBackColor = true;
+            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(7, 121);
+            this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(97, 17);
+            this.label9.TabIndex = 24;
+            this.label9.Text = "Drop-off Dest.";
+            // 
+            // cbDropOffDest
+            // 
+            this.cbDropOffDest.FormattingEnabled = true;
+            this.cbDropOffDest.Location = new System.Drawing.Point(112, 118);
+            this.cbDropOffDest.Margin = new System.Windows.Forms.Padding(4);
+            this.cbDropOffDest.Name = "cbDropOffDest";
+            this.cbDropOffDest.Size = new System.Drawing.Size(95, 24);
+            this.cbDropOffDest.TabIndex = 29;
             // 
             // Baggager
             // 
@@ -568,10 +594,8 @@
         private System.Windows.Forms.Button btnAddFlight;
         private System.Windows.Forms.Label lblNextNode;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnRun;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button buttonPause;
-        private System.Windows.Forms.Button buttonStop;
         private System.Windows.Forms.Button buttonResume;
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.Button buttonShowQueuedBaggage;
@@ -585,6 +609,10 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button btnDeleteFlight;
+        private System.Windows.Forms.Button btnStop;
+        private System.Windows.Forms.Button btnPause;
+        private System.Windows.Forms.ComboBox cbDropOffDest;
+        private System.Windows.Forms.Label label9;
     }
 }
 

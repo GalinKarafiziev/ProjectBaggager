@@ -92,6 +92,10 @@ namespace Procp_Form
                 return true;
             }
         }
+        public bool CheckFlights()
+        {
+            return flights.Any();
+        }
         public void LinkTwoNodes(Node firstNode, Node secondNode)
         {
             firstNode.NextNode = secondNode;
