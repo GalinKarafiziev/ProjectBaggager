@@ -62,8 +62,8 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageSimVisuals = new System.Windows.Forms.TabPage();
             this.tabPageStats = new System.Windows.Forms.TabPage();
-            this.cartesianChartBaggageProcessedByCheckin = new LiveCharts.WinForms.CartesianChart();
             this.buttonLoadChartBaggageThroughCheckin = new System.Windows.Forms.Button();
+            this.cartesianChartBaggageProcessedByCheckin = new LiveCharts.WinForms.CartesianChart();
             ((System.ComponentModel.ISupportInitialize)(this.animationBox)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -430,14 +430,6 @@
             this.tabPageStats.Text = "Statistics";
             this.tabPageStats.UseVisualStyleBackColor = true;
             // 
-            // cartesianChartBaggageProcessedByCheckin
-            // 
-            this.cartesianChartBaggageProcessedByCheckin.Location = new System.Drawing.Point(3, 3);
-            this.cartesianChartBaggageProcessedByCheckin.Name = "cartesianChartBaggageProcessedByCheckin";
-            this.cartesianChartBaggageProcessedByCheckin.Size = new System.Drawing.Size(572, 347);
-            this.cartesianChartBaggageProcessedByCheckin.TabIndex = 0;
-            this.cartesianChartBaggageProcessedByCheckin.Text = "BaggageProcessedByCheckin";
-            // 
             // buttonLoadChartBaggageThroughCheckin
             // 
             this.buttonLoadChartBaggageThroughCheckin.Location = new System.Drawing.Point(500, 376);
@@ -447,6 +439,14 @@
             this.buttonLoadChartBaggageThroughCheckin.Text = "Load";
             this.buttonLoadChartBaggageThroughCheckin.UseVisualStyleBackColor = true;
             this.buttonLoadChartBaggageThroughCheckin.Click += new System.EventHandler(this.buttonLoadChartBaggageThroughCheckin_Click);
+            // 
+            // cartesianChartBaggageProcessedByCheckin
+            // 
+            this.cartesianChartBaggageProcessedByCheckin.Location = new System.Drawing.Point(3, 3);
+            this.cartesianChartBaggageProcessedByCheckin.Name = "cartesianChartBaggageProcessedByCheckin";
+            this.cartesianChartBaggageProcessedByCheckin.Size = new System.Drawing.Size(572, 347);
+            this.cartesianChartBaggageProcessedByCheckin.TabIndex = 0;
+            this.cartesianChartBaggageProcessedByCheckin.Text = "BaggageProcessedByCheckin";
             // 
             // Baggager
             // 
