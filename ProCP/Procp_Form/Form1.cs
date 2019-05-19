@@ -107,6 +107,10 @@ namespace Procp_Form
             {
                 buildModeType = "DropOff";
             }
+            else if(cmBoxNodeToBuild.Text == "MPA")
+            {
+                buildModeType = "MPA";
+            }
             thisGrid.HideArea(buildModeType);
 
             animationBox.Invalidate();
@@ -125,11 +129,9 @@ namespace Procp_Form
                 {
                     if (buildModeType == "Conveyor")
                     {
-                        // Conveyor conveyor = new Conveyor();
                         SelectTile(thisGrid.AddConveyorLineAtCoordinates(t));
                         conveyorBuilding.Add((ConveyorTile)selectedTile);
 
-                        //Engine.AddConveyorPart(conveyor);
                         isBuildingConveyor = true;
                     }
                     else if (buildModeType == "CheckIn")
@@ -149,6 +151,11 @@ namespace Procp_Form
                         DropOff dropoff = new DropOff();
                         SelectTile(thisGrid.AddDropOffAtCoordinates(t, dropoff));
                         engine.AddDropOff(dropoff);
+                    }
+                    else if(buildModeType == "MPA")
+                    {
+                        MPA mpa = new MPA();
+                        thisGrid.AddMPA(t, mpa);
                     }
                 }
                 else if (!(t is EmptyTile) && deleteMode == false)
@@ -195,11 +202,6 @@ namespace Procp_Form
         {
             var mouseClick = e as MouseEventArgs;
             GridTile t = thisGrid.FindTileInPixelCoordinates(mouseClick.X, mouseClick.Y);
-
-            if (buildModeActive && buildModeType == "Conveyor" && isBuildingConveyor)
-            {
-                System.Diagnostics.Debug.WriteLine("moving " + t.Column + " " + t.Row);
-            }
 
             if (isBuildingConveyor)
             {
@@ -270,6 +272,7 @@ namespace Procp_Form
                 }
                 conveyorBuilding.Last().isLastTile = true;
             }
+
             isBuildingConveyor = false;
             isConnectingTiles = false;
             if (selectedTile != null)
@@ -294,7 +297,6 @@ namespace Procp_Form
                 lbFlights.DataSource = null;
                 lbFlights.DataSource = engine.flights;
             }
-
         }
 
         private void btnEditFlight_Click(object sender, EventArgs e)
@@ -313,15 +315,6 @@ namespace Procp_Form
                 lbFlights.DataSource = null;
                 lbFlights.DataSource = engine.flights;
             }
-            //var item = lbFlights.SelectedItem;
-            //if (!(Engine.EditFlight(date, flightNr, flightBaggage)))
-            //{
-            //    MessageBox.Show("Cannot find flight to edit.");
-            //}
-            //else
-            //{
-            //    lbFlights.Items.Add($"[#{flightNr}] {date.ToString()} ({flightBaggage})");
-            //}
         }
 
         private void btnDeleteFlight_Click(object sender, EventArgs e)
@@ -425,7 +418,6 @@ namespace Procp_Form
 
         private void buttonLoadChartBaggageThroughCheckin_Click(object sender, EventArgs e)
         {
-            
             series.Clear();
             checkinCounter = 0;
             foreach (var number in engine.GetCheckInStats())
@@ -433,8 +425,6 @@ namespace Procp_Form
                 checkinCounter++;
                 series.Add(new ColumnSeries() {Title = $"Checkin {checkinCounter.ToString()}", Values = new ChartValues<int> { number }});   
             }
-            
-
         }
     }
 }
