@@ -35,5 +35,10 @@ namespace Procp_Form.Core
         {
             return this.baggages;
         }
+
+        public override string ToString()
+        {
+            return $"Destination Gate [#{DestinationGate}]";
+        }
     }
 }

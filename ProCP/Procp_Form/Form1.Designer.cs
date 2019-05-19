@@ -45,6 +45,8 @@
             this.tbFlightNr = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cbDropOffDest = new System.Windows.Forms.ComboBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.btnDeleteFlight = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.btnEditFlight = new System.Windows.Forms.Button();
@@ -55,6 +57,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.btnRun = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnStop = new System.Windows.Forms.Button();
+            this.btnPause = new System.Windows.Forms.Button();
             this.chbDeleteMode = new System.Windows.Forms.CheckBox();
             this.buttonShowQueuedBaggage = new System.Windows.Forms.Button();
             this.buttonShowProcessedBaggage = new System.Windows.Forms.Button();
@@ -65,10 +69,6 @@
             this.tabPageStats = new System.Windows.Forms.TabPage();
             this.buttonLoadChartBaggageThroughCheckin = new System.Windows.Forms.Button();
             this.cartesianChartBaggageProcessedByCheckin = new LiveCharts.WinForms.CartesianChart();
-            this.btnPause = new System.Windows.Forms.Button();
-            this.btnStop = new System.Windows.Forms.Button();
-            this.label9 = new System.Windows.Forms.Label();
-            this.cbDropOffDest = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.animationBox)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -278,6 +278,25 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Flights Info";
             // 
+            // cbDropOffDest
+            // 
+            this.cbDropOffDest.FormattingEnabled = true;
+            this.cbDropOffDest.Location = new System.Drawing.Point(112, 118);
+            this.cbDropOffDest.Margin = new System.Windows.Forms.Padding(4);
+            this.cbDropOffDest.Name = "cbDropOffDest";
+            this.cbDropOffDest.Size = new System.Drawing.Size(273, 24);
+            this.cbDropOffDest.TabIndex = 29;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(7, 121);
+            this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(97, 17);
+            this.label9.TabIndex = 24;
+            this.label9.Text = "Drop-off Dest.";
+            // 
             // btnDeleteFlight
             // 
             this.btnDeleteFlight.Enabled = false;
@@ -393,6 +412,28 @@
             this.panel1.Size = new System.Drawing.Size(411, 1055);
             this.panel1.TabIndex = 16;
             // 
+            // btnStop
+            // 
+            this.btnStop.Location = new System.Drawing.Point(301, 15);
+            this.btnStop.Margin = new System.Windows.Forms.Padding(4);
+            this.btnStop.Name = "btnStop";
+            this.btnStop.Size = new System.Drawing.Size(100, 28);
+            this.btnStop.TabIndex = 28;
+            this.btnStop.Text = "◼ Stop";
+            this.btnStop.UseVisualStyleBackColor = true;
+            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
+            // 
+            // btnPause
+            // 
+            this.btnPause.Location = new System.Drawing.Point(187, 69);
+            this.btnPause.Margin = new System.Windows.Forms.Padding(4);
+            this.btnPause.Name = "btnPause";
+            this.btnPause.Size = new System.Drawing.Size(100, 28);
+            this.btnPause.TabIndex = 27;
+            this.btnPause.Text = "❚❚ Pause";
+            this.btnPause.UseVisualStyleBackColor = true;
+            this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
+            // 
             // chbDeleteMode
             // 
             this.chbDeleteMode.AutoSize = true;
@@ -503,47 +544,6 @@
             this.cartesianChartBaggageProcessedByCheckin.Size = new System.Drawing.Size(763, 427);
             this.cartesianChartBaggageProcessedByCheckin.TabIndex = 0;
             this.cartesianChartBaggageProcessedByCheckin.Text = "BaggageProcessedByCheckin";
-            // 
-            // btnPause
-            // 
-            this.btnPause.Location = new System.Drawing.Point(187, 69);
-            this.btnPause.Margin = new System.Windows.Forms.Padding(4);
-            this.btnPause.Name = "btnPause";
-            this.btnPause.Size = new System.Drawing.Size(100, 28);
-            this.btnPause.TabIndex = 27;
-            this.btnPause.Text = "❚❚ Pause";
-            this.btnPause.UseVisualStyleBackColor = true;
-            this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
-            // 
-            // btnStop
-            // 
-            this.btnStop.Location = new System.Drawing.Point(301, 15);
-            this.btnStop.Margin = new System.Windows.Forms.Padding(4);
-            this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(100, 28);
-            this.btnStop.TabIndex = 28;
-            this.btnStop.Text = "◼ Stop";
-            this.btnStop.UseVisualStyleBackColor = true;
-            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(7, 121);
-            this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(97, 17);
-            this.label9.TabIndex = 24;
-            this.label9.Text = "Drop-off Dest.";
-            // 
-            // cbDropOffDest
-            // 
-            this.cbDropOffDest.FormattingEnabled = true;
-            this.cbDropOffDest.Location = new System.Drawing.Point(112, 118);
-            this.cbDropOffDest.Margin = new System.Windows.Forms.Padding(4);
-            this.cbDropOffDest.Name = "cbDropOffDest";
-            this.cbDropOffDest.Size = new System.Drawing.Size(95, 24);
-            this.cbDropOffDest.TabIndex = 29;
             // 
             // Baggager
             // 

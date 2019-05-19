@@ -320,9 +320,11 @@ namespace Procp_Form
             DateTime date = (Convert.ToDateTime(tbFlightTime.Text));
             string flightNr = tbFlightNr.Text;
             int flightBaggage = Convert.ToInt32(tbFlightBaggage.Text);
-            if (!(engine.AddFlight(date, flightNr, flightBaggage)))
+            var selectedDropOff = cbDropOffDest.SelectedItem as DropOff;
+            int destGate = selectedDropOff.DestinationGate;
+            if (!(engine.AddFlight(date, flightNr, flightBaggage, destGate)))
             {
-                MessageBox.Show("This flight already exists.");
+                MessageBox.Show("This flight already exists or the drop-off destination is already taken.");
             }
             else
             {
@@ -337,9 +339,11 @@ namespace Procp_Form
             DateTime date = (Convert.ToDateTime(tbFlightTime.Text));
             string flightNr = tbFlightNr.Text;
             int flightBaggage = Convert.ToInt32(tbFlightBaggage.Text);
+            var selectedDropOff = cbDropOffDest.SelectedItem as DropOff;
+            int destGate = selectedDropOff.DestinationGate;
 
             Flight selectedFlight = lbFlights.SelectedItem as Flight;
-            if (!(engine.EditFlight(selectedFlight.FlightNumber, flightNr, flightBaggage, date)))
+            if (!(engine.EditFlight(selectedFlight.FlightNumber, flightNr, flightBaggage, date, destGate)))
             {
                 MessageBox.Show("Flight not found.");
             }
@@ -428,11 +432,6 @@ namespace Procp_Form
                 cmBoxNodeToBuild.Visible = true;
             }
             animationBox.Invalidate();
-        }
-
-        private void buttonLoadChartBaggageThroughCheckin_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void buttonLoadChartBaggageThroughCheckin_Click(object sender, EventArgs e)
