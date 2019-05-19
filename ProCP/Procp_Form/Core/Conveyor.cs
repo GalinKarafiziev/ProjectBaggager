@@ -10,7 +10,7 @@ namespace Procp_Form.Core
 {
     public class Conveyor : TransportUnit
     {
-        public string FlightNumber { get; set; }
+        public int DestinationGate { get; set; }
 
         public Conveyor(int capacity, int timerSpeed) : base()
         {
@@ -27,7 +27,6 @@ namespace Procp_Form.Core
                 if (lastBaggage != null)
                 {
                     NextNode.PassBaggage(lastBaggage);
-                    System.Diagnostics.Debug.WriteLine("passed baggage from conveyor");
                 }
                 else
                 {

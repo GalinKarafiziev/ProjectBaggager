@@ -8,10 +8,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Procp_Form.Core;
 using Procp_Form.CoreAbstraction;
 using Procp_Form.Visuals;
 using System.Timers;
+using LiveCharts;
+using LiveCharts.Wpf;
 
 namespace Procp_Form
 {
@@ -22,13 +23,13 @@ namespace Procp_Form
         bool buildModeActive;
         string buildModeType;
         bool deleteMode;
-
         bool isBuildingConveyor;
         bool isConnectingTiles;
         GridTile selectedTile;
         List<ConveyorTile> conveyorBuilding;
         Engine engine = new Engine();
         int checkinCounter = 0;
+        SeriesCollection series = new SeriesCollection();
         int queueCounter = 0;
 
         System.Timers.Timer aTimer;
@@ -45,6 +46,8 @@ namespace Procp_Form
             isBuildingConveyor = false;
             isConnectingTiles = false;
             conveyorBuilding = new List<ConveyorTile>();
+
+            cartesianChartBaggageProcessedByCheckin.Series = series;
         }
 
         private void AnimationBox_Paint(object sender, PaintEventArgs e)
@@ -310,20 +313,20 @@ namespace Procp_Form
 
         private void buttonShowProcessedBaggage_Click(object sender, EventArgs e)
         {
-            engine.GetCheckInCounter().ForEach(x =>
-            {
-                checkinCounter++;
-                this.listBox1.Items.Add($"checkin: {checkinCounter}, {x}");
-            });
+            //engine.GetCheckInCounter().ForEach(x =>
+            //{
+            //    checkinCounter++;
+            //    this.listBox1.Items.Add($"checkin: {checkinCounter}, {x}");
+            //});
         }
 
         private void buttonShowQueuedBaggage_Click(object sender, EventArgs e)
         {
-            engine.GetQueueCounter().ForEach(x =>
-            {
-                queueCounter++;
-                this.listBox1.Items.Add($"queues: {queueCounter}, {x}");
-            });
+            //engine.GetQueueCounter().ForEach(x =>
+            //{
+            //    queueCounter++;
+            //    this.listBox1.Items.Add($"queues: {queueCounter}, {x}");
+            //});
         }
 
         private void ChbDeleteMode_CheckedChanged(object sender, EventArgs e)
@@ -343,6 +346,25 @@ namespace Procp_Form
                 cmBoxNodeToBuild.Visible = true;
             }
             animationBox.Invalidate();
+        }
+
+        private void buttonResume_Click(object sender, EventArgs e)
+        {
+            engine.Resume();
+        }
+
+        private void buttonLoadChartBaggageThroughCheckin_Click(object sender, EventArgs e)
+        {
+            
+            series.Clear();
+            checkinCounter = 0;
+            foreach (var number in engine.GetCheckInStats())
+            {
+                checkinCounter++;
+                series.Add(new ColumnSeries() {Title = $"Checkin {checkinCounter.ToString()}", Values = new ChartValues<int> { number }});   
+            }
+            
+
         }
     }
 }
