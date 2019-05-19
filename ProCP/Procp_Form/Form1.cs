@@ -170,7 +170,12 @@ namespace Procp_Form
                         thisGrid.RemoveConveyorLine(t);
                         engine.Remove(t.nodeInGrid);
                     }
-                    else
+                    else if (t is MPATile)
+                    {
+                        thisGrid.RemoveMPA(t);
+                        engine.Remove(t.nodeInGrid);
+                    }
+                    else 
                     {
                         engine.Remove(t.nodeInGrid);
                         thisGrid.RemoveNode(t);
