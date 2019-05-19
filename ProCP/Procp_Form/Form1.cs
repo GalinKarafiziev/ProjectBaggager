@@ -48,7 +48,7 @@ namespace Procp_Form
             isConnectingTiles = false;
             conveyorBuilding = new List<ConveyorTile>();
 
-            cartesianChartBaggageProcessedByCheckin.Series = series;
+            cartesianChartBaggageProcessedByCheckin.Series = series;           
         }
 
         private void AnimationBox_Paint(object sender, PaintEventArgs e)
@@ -137,6 +137,7 @@ namespace Procp_Form
                         CheckIn checkin = new CheckIn();
                         SelectTile(thisGrid.AddCheckInAtCoordinates(t, checkin));
                         engine.AddCheckIn(checkin);
+                        engine.AddStopwatchToCheckIn();
                     }
                     else if (buildModeType == "Security Scanner")
                     {
@@ -149,6 +150,7 @@ namespace Procp_Form
                         DropOff dropoff = new DropOff();
                         SelectTile(thisGrid.AddDropOffAtCoordinates(t, dropoff));
                         engine.AddDropOff(dropoff);
+                        engine.AddStopwatchToDropOff();
                     }
                 }
                 else if (!(t is EmptyTile) && deleteMode == false)
@@ -377,20 +379,11 @@ namespace Procp_Form
 
         private void buttonShowProcessedBaggage_Click(object sender, EventArgs e)
         {
-            //engine.GetCheckInStats().ForEach(x =>
-            //{
-            //    checkinCounter++;
-            //    this.listBox1.Items.Add($"checkin: {checkinCounter}, {x}");
-            //});
-        }
-
-        private void buttonShowQueuedBaggage_Click(object sender, EventArgs e)
-        {
-            //engine.GetQueueCounter().ForEach(x =>
-            //{
-            //    queueCounter++;
-            //    this.listBox1.Items.Add($"queues: {queueCounter}, {x}");
-            //});
+            engine.GetCheckInStats().ForEach(x =>
+            {
+                checkinCounter++;
+                this.listBox1.Items.Add($"checkin: {checkinCounter}, {x}");
+            });
         }
 
         private void ChbDeleteMode_CheckedChanged(object sender, EventArgs e)
@@ -419,7 +412,6 @@ namespace Procp_Form
 
         private void buttonLoadChartBaggageThroughCheckin_Click(object sender, EventArgs e)
         {
-
             series.Clear();
             checkinCounter = 0;
             foreach (var number in engine.GetCheckInStats())
@@ -427,8 +419,11 @@ namespace Procp_Form
                 checkinCounter++;
                 series.Add(new ColumnSeries() {Title = $"Checkin {checkinCounter.ToString()}", Values = new ChartValues<int> { number }});   
             }
-            
+        }
 
+        private void ButtonShowTransferTimePerBaggage_Click(object sender, EventArgs e)
+        {
+            engine.GetTransferTime().ForEach(t => this.listBox1.Items.Add(t));
         }
     }
 }
