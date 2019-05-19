@@ -156,6 +156,7 @@ namespace Procp_Form
                     {
                         MPA mpa = new MPA();
                         thisGrid.AddMPA(t, mpa);
+                        engine.AddMPA(mpa);
                     }
                 }
                 else if (!(t is EmptyTile) && deleteMode == false)
