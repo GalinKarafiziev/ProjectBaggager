@@ -31,7 +31,6 @@ namespace Procp_Form
         Engine engine = new Engine();
         int checkinCounter = 0;
         SeriesCollection series = new SeriesCollection();
-        int queueCounter = 0;
 
         System.Timers.Timer aTimer;
 
@@ -79,11 +78,6 @@ namespace Procp_Form
                 cmBoxNodeToBuild.Visible = false;
                 chbDeleteMode.Checked = false;
                 chbDeleteMode.Visible = false;
-
-                //hide area with null will make everything non hidden
-                //you call HideArea() to remove all of the hiding
-                //im a fuckin idiot - Boris Georgiev
-                //PS: it works doe
                 buildModeType = null;
                 thisGrid.HideArea(buildModeType);
             }

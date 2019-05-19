@@ -38,13 +38,14 @@ namespace Procp_Form.Core
                             Status = BaggageStatus.Free;
                             baggage = null;
                             NextNode.OnNodeStatusChangedToFree -= ProcessBaggage;
+                            break;
                         }
                         else
                         {
                             NextNode.OnNodeStatusChangedToFree += ProcessBaggage;
+                            break;
                         }
                     }
-                    break;
                 }
             }
         }

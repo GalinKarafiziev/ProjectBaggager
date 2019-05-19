@@ -21,17 +21,15 @@ namespace Procp_Form.Core
             Status = BaggageStatus.Busy;
             if (NextNode.Status == BaggageStatus.Free)
             {
-                if (baggage.Secure == 5 || baggage.Secure == 7)
+                if (baggage.Secure == 2 || baggage.Secure == 7)
                 {
                     bufferNotSecure.Add(baggage);
-                    Thread.Sleep(1000);
                     NextNode.OnNodeStatusChangedToFree -= ProcessBaggage;
                     Status = BaggageStatus.Free;
                 }
                 else
                 {
                     NextNode.PassBaggage(baggage);
-                    //Thread.Sleep(1000);
                     NextNode.OnNodeStatusChangedToFree -= ProcessBaggage;
                     Status = BaggageStatus.Free;
                 }

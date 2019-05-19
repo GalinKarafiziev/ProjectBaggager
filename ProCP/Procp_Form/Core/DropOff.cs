@@ -28,6 +28,7 @@ namespace Procp_Form.Core
         {
             Status = BaggageStatus.Busy;
             baggages.Add(Lastbaggage);
+            System.Diagnostics.Debug.Write(baggages.Count());
             Status = BaggageStatus.Free;
         }
 

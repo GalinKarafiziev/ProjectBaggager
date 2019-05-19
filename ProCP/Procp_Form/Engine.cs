@@ -152,6 +152,7 @@ namespace Procp_Form
                         conveyor.conveyorBelt[i] = null;
                     }
                 }
+                conveyor.Status = BaggageStatus.Free;
             }
 
             foreach (var dropOff in dropOffs)
@@ -165,6 +166,9 @@ namespace Procp_Form
                 checkin.baggage = null;
                 checkin.Status = BaggageStatus.Free;
             }
+
+            mainProcessArea.baggage = null;
+            mainProcessArea.Status = BaggageStatus.Free;
 
             if (dispatcher == null)
             {
