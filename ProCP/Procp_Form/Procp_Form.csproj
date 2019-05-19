@@ -84,7 +84,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Statistics\Statistics.cs" />
+    <Compile Include="Statistics\StatisticsManager.cs" />
     <Compile Include="Visuals\DropOffTile.cs" />
     <Compile Include="Visuals\Grid.cs" />
     <Compile Include="Visuals\CheckInTile.cs" />

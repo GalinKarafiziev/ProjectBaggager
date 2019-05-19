@@ -54,7 +54,7 @@ namespace Procp_Form.Core
             var checkIn = checkins[chosen];
             var queue = checkinQueues[chosen];
 
-            baggage.FlightNumber = flight.FlightNumber;
+            baggage.DestinationGate = flight.DestinationGate;
 
             if (checkIn.Status == BaggageStatus.Free)
             {
