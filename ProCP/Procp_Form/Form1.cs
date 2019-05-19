@@ -49,6 +49,7 @@ namespace Procp_Form
             conveyorBuilding = new List<ConveyorTile>();
 
             cartesianChartBaggageProcessedByCheckin.Series = series;
+            cbDropOffDest.DataSource = engine.dropOffs;
         }
 
         private void AnimationBox_Paint(object sender, PaintEventArgs e)
@@ -107,6 +108,10 @@ namespace Procp_Form
             {
                 buildModeType = "DropOff";
             }
+            else if(cmBoxNodeToBuild.Text == "MPA")
+            {
+                buildModeType = "MPA";
+            }
             thisGrid.HideArea(buildModeType);
 
             animationBox.Invalidate();
@@ -125,11 +130,9 @@ namespace Procp_Form
                 {
                     if (buildModeType == "Conveyor")
                     {
-                        // Conveyor conveyor = new Conveyor();
                         SelectTile(thisGrid.AddConveyorLineAtCoordinates(t));
                         conveyorBuilding.Add((ConveyorTile)selectedTile);
 
-                        //Engine.AddConveyorPart(conveyor);
                         isBuildingConveyor = true;
                     }
                     else if (buildModeType == "CheckIn")
@@ -149,6 +152,17 @@ namespace Procp_Form
                         DropOff dropoff = new DropOff();
                         SelectTile(thisGrid.AddDropOffAtCoordinates(t, dropoff));
                         engine.AddDropOff(dropoff);
+                        RefreshDropOffCombobox();
+                        if (btnAddFlight.Enabled != true)
+                        {
+                            btnAddFlight.Enabled = true;
+                        }
+                    }
+                    else if(buildModeType == "MPA")
+                    {
+                        MPA mpa = new MPA();
+                        thisGrid.AddMPA(t, mpa);
+                        engine.AddMPA(mpa);
                     }
                 }
                 else if (!(t is EmptyTile) && deleteMode == false)
@@ -162,7 +176,12 @@ namespace Procp_Form
                         thisGrid.RemoveConveyorLine(t);
                         engine.Remove(t.nodeInGrid);
                     }
-                    else
+                    else if (t is MPATile)
+                    {
+                        thisGrid.RemoveMPA(t);
+                        engine.Remove(t.nodeInGrid);
+                    }
+                    else 
                     {
                         engine.Remove(t.nodeInGrid);
                         thisGrid.RemoveNode(t);
@@ -196,11 +215,6 @@ namespace Procp_Form
             var mouseClick = e as MouseEventArgs;
             GridTile t = thisGrid.FindTileInPixelCoordinates(mouseClick.X, mouseClick.Y);
 
-            if (buildModeActive && buildModeType == "Conveyor" && isBuildingConveyor)
-            {
-                System.Diagnostics.Debug.WriteLine("moving " + t.Column + " " + t.Row);
-            }
-
             if (isBuildingConveyor)
             {
                 if ((Math.Abs(t.Column - selectedTile.Column) == 1 && Math.Abs(t.Row - selectedTile.Row) == 0) || (Math.Abs(t.Column - selectedTile.Column) == 0 && Math.Abs(t.Row - selectedTile.Row) == 1))
@@ -213,6 +227,7 @@ namespace Procp_Form
                         conveyorBuilding.Add((ConveyorTile)created);
 
                         selectedTile.ConnectNext(created);
+                        
                         // Engine.LinkTwoNodes(selectedTile.nodeInGrid, created.nodeInGrid);
                         SelectTile(created);
 
@@ -225,8 +240,18 @@ namespace Procp_Form
                 {
                     if (selectedTile is ConveyorTile && !(t is EmptyTile) && !(t is ConveyorTile) && !(t is CheckInTile))
                     {
-                        engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
-                        selectedTile.ConnectNext(t);
+                        ConveyorTile temp = (ConveyorTile)selectedTile;
+                        if (temp.isLastTile)
+                        {
+                            engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
+                            selectedTile.ConnectNext(t);
+                            if(t is DropOffTile)
+                            {
+                                var selectedConveyor = selectedTile.nodeInGrid as Conveyor;
+                                var tNode = t.nodeInGrid as DropOff;
+                                selectedConveyor.DestinationGate = tNode.DestinationGate;
+                            }
+                        }
                     }
                     else if (selectedTile is ConveyorTile && t is SecurityTile)
                     {
@@ -241,6 +266,13 @@ namespace Procp_Form
                     else if (selectedTile is SecurityTile && t is ConveyorTile)
                     {
                         engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
+                        selectedTile.ConnectNext(t);
+                    }
+                    else if (selectedTile is MPATile && t is ConveyorTile)
+                    {
+                        var selectedMPA = selectedTile.nodeInGrid as MPA;
+                        selectedMPA.AddNextNode(t.nodeInGrid as Conveyor);
+                        //engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
                         selectedTile.ConnectNext(t);
                     }
                 }
@@ -263,7 +295,9 @@ namespace Procp_Form
                     t.PositionInLine = i;
                     i++;
                 }
+                conveyorBuilding.Last().isLastTile = true;
             }
+
             isBuildingConveyor = false;
             isConnectingTiles = false;
             if (selectedTile != null)
@@ -274,21 +308,48 @@ namespace Procp_Form
             conveyorBuilding.Clear();
         }
 
+        private void btnRun_Click(object sender, EventArgs e)
+        {
+            if (engine.dispatcher == null)
+            {
+                engine.AddDispatcher();
+            }
+            engine.Run();
+            aTimer = new System.Timers.Timer();
+            aTimer.Elapsed += new ElapsedEventHandler(TimerSequence);
+            aTimer.Interval = 1;
+            aTimer.Start();
+        }
+        private void btnPause_Click(object sender, EventArgs e)
+        {
+            engine.Pause();
+        }
+        private void buttonResume_Click(object sender, EventArgs e)
+        {
+            engine.Resume();
+        }
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            engine.Stop();
+        }
+
         private void btnAddFlight_Click(object sender, EventArgs e)
         {
             DateTime date = (Convert.ToDateTime(tbFlightTime.Text));
             string flightNr = tbFlightNr.Text;
             int flightBaggage = Convert.ToInt32(tbFlightBaggage.Text);
-            if (!(engine.AddFlight(date, flightNr, flightBaggage)))
+            var selectedDropOff = cbDropOffDest.SelectedItem as DropOff;
+            int destGate = selectedDropOff.DestinationGate;
+            if (!(engine.AddFlight(date, flightNr, flightBaggage, destGate)))
             {
-                MessageBox.Show("This flight already exists.");
+                MessageBox.Show("This flight already exists or the drop-off destination is already taken.");
             }
             else
             {
-                lbFlights.DataSource = null;
-                lbFlights.DataSource = engine.flights;
+                RefreshFlightsListBox();
+                btnDeleteFlight.Enabled = true;
+                btnEditFlight.Enabled = true;
             }
-
         }
 
         private void btnEditFlight_Click(object sender, EventArgs e)
@@ -296,26 +357,18 @@ namespace Procp_Form
             DateTime date = (Convert.ToDateTime(tbFlightTime.Text));
             string flightNr = tbFlightNr.Text;
             int flightBaggage = Convert.ToInt32(tbFlightBaggage.Text);
+            var selectedDropOff = cbDropOffDest.SelectedItem as DropOff;
+            int destGate = selectedDropOff.DestinationGate;
 
             Flight selectedFlight = lbFlights.SelectedItem as Flight;
-            if (!(engine.EditFlight(selectedFlight.FlightNumber, flightNr, flightBaggage, date)))
+            if (!(engine.EditFlight(selectedFlight.FlightNumber, flightNr, flightBaggage, date, destGate)))
             {
-                MessageBox.Show("Flight not found.");
+                MessageBox.Show("The flight number already exists or drop-off destination is already taken.");
             }
             else
             {
-                lbFlights.DataSource = null;
-                lbFlights.DataSource = engine.flights;
+                RefreshFlightsListBox();
             }
-            //var item = lbFlights.SelectedItem;
-            //if (!(Engine.EditFlight(date, flightNr, flightBaggage)))
-            //{
-            //    MessageBox.Show("Cannot find flight to edit.");
-            //}
-            //else
-            //{
-            //    lbFlights.Items.Add($"[#{flightNr}] {date.ToString()} ({flightBaggage})");
-            //}
         }
 
         private void btnDeleteFlight_Click(object sender, EventArgs e)
@@ -327,27 +380,24 @@ namespace Procp_Form
             }
             else
             {
-                lbFlights.DataSource = null;
-                lbFlights.DataSource = engine.flights;
+                RefreshFlightsListBox();
+                if (!(engine.CheckFlights()))
+                {
+                    btnDeleteFlight.Enabled = false;
+                    btnEditFlight.Enabled = false;
+                }
             }
         }
-
-        public void RefreshFlightsList()
+        
+        public void RefreshFlightsListBox()
         {
-
+            lbFlights.DataSource = null;
+            lbFlights.DataSource = engine.flights;
         }
-
-        private void Button1_Click(object sender, EventArgs e)
+        public void RefreshDropOffCombobox()
         {
-            if (engine.dispatcher == null)
-            {
-                engine.AddDispatcher();
-            }
-            engine.Run();
-            aTimer = new System.Timers.Timer();
-            aTimer.Elapsed += new ElapsedEventHandler(TimerSequence);
-            aTimer.Interval = 1;
-            aTimer.Start();
+            cbDropOffDest.DataSource = null;
+            cbDropOffDest.DataSource = engine.dropOffs;
         }
 
         private void TimerSequence(object source, ElapsedEventArgs e)
@@ -363,16 +413,6 @@ namespace Procp_Form
             }
             selectedTile = t;
             selectedTile.selected = true;
-        }
-
-        private void buttonStop_Click(object sender, EventArgs e)
-        {
-            engine.Pause();
-        }
-
-        private void buttonStop_Click_1(object sender, EventArgs e)
-        {
-            engine.Stop();
         }
 
         private void buttonShowProcessedBaggage_Click(object sender, EventArgs e)
@@ -412,14 +452,8 @@ namespace Procp_Form
             animationBox.Invalidate();
         }
 
-        private void buttonResume_Click(object sender, EventArgs e)
-        {
-            engine.Resume();
-        }
-
         private void buttonLoadChartBaggageThroughCheckin_Click(object sender, EventArgs e)
         {
-
             series.Clear();
             checkinCounter = 0;
             foreach (var number in engine.GetCheckInStats())
@@ -427,8 +461,6 @@ namespace Procp_Form
                 checkinCounter++;
                 series.Add(new ColumnSeries() {Title = $"Checkin {checkinCounter.ToString()}", Values = new ChartValues<int> { number }});   
             }
-            
-
         }
     }
 }

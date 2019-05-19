@@ -81,6 +81,49 @@ namespace Procp_Form.Visuals
             gridTiles.Add(newLineTile);
             return newLineTile;
         }
+
+        public bool CheckIfTilesAreEmpty(GridTile firstTile, int cRange, int rRange)
+        {
+            int firstC = firstTile.Column;
+            int firstR = firstTile.Row;
+            for(int i = firstC; i < firstC + cRange; i++)
+            {
+                for(int y = firstR; y < firstR + rRange; y++)
+                {
+                    GridTile temp = FindTileInRowColumnCoordinates(i, y);
+                    if(!(temp is EmptyTile) || temp.Unselectable)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        public void AddMPA(GridTile firstTile, MPA mpa)
+        {
+            int cRange = TileVerticalCount / 4;
+            int rRange = tileHorizontalCount / 3;
+
+
+            if (CheckIfTilesAreEmpty(firstTile, cRange, rRange))
+            {
+                for (int i = firstTile.Column; i < firstTile.Column + cRange; i++)
+                {
+                    for (int y = firstTile.Row; y < firstTile.Row + rRange; y++)
+                    {
+                        MPATile mpaTile = new MPATile();
+                        mpaTile.Column = i;
+                        mpaTile.Row = y;
+                        GridTile temp = FindTileInRowColumnCoordinates(i, y);
+                        gridTiles.Remove(temp);
+                        gridTiles.Add(mpaTile);
+                        mpaTile.nodeInGrid = mpa;
+                    }
+                }
+            }
+        }
+
         public GridTile AddCheckInAtCoordinates(GridTile toReplace, Node nodeToPlace)
         {
             CheckInTile newCheckInTile = new CheckInTile();
@@ -153,11 +196,11 @@ namespace Procp_Form.Visuals
             }
             else if(buildType == "Conveyor")
             {
-                HideAreNotForConveyorAndSecurity();
+                HideAreNotForConveyorAndSecurityAndMPA();
             }
             else if (buildType == "Security Scanner")
             {
-                HideAreNotForConveyorAndSecurity();
+                HideAreNotForConveyorAndSecurityAndMPA();
             }
             else if(buildType == "CheckIn")
             {
@@ -167,9 +210,13 @@ namespace Procp_Form.Visuals
             {
                 HideAreaNotForDropOff();
             }
+            else if(buildType == "MPA")
+            {
+                HideAreNotForConveyorAndSecurityAndMPA();
+            }
         }
 
-        private void HideAreNotForConveyorAndSecurity()
+        private void HideAreNotForConveyorAndSecurityAndMPA()
         {
             foreach (GridTile t in gridTiles)
             {
@@ -272,6 +319,22 @@ namespace Procp_Form.Visuals
                 {
                     t.nextTile = null;
                     break;
+                }
+            }
+        }
+
+        public void RemoveMPA(GridTile toRemove)
+        {
+            foreach(GridTile t in gridTiles.ToList())
+            {
+                if(t.nodeInGrid == toRemove.nodeInGrid)
+                {
+                    int index = gridTiles.IndexOf(t, 0);
+                    EmptyTile empty = new EmptyTile();
+                    empty.Column = t.Column;
+                    empty.Row = t.Row;
+                    gridTiles.Remove(t);
+                    gridTiles.Insert(index, empty);
                 }
             }
         }

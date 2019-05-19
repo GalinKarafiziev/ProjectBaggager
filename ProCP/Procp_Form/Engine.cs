@@ -50,14 +50,14 @@ namespace Procp_Form
 
         public void AddMPA(MPA mpa) => this.mainProcessArea = mpa;
 
-        public bool AddFlight(DateTime time, string number, int baggage)
+        public bool AddFlight(DateTime time, string number, int baggage, int destGate)
         {
-            flight = new Flight(time, number, baggage);
+            flight = new Flight(time, number, baggage, destGate);
             if (flights.Count != 0)
             {
                 foreach (var f in flights)
                 {
-                    if (this.flight.FlightNumber == f.FlightNumber)
+                    if ((this.flight.FlightNumber == f.FlightNumber && this.flight.DestinationGate == f.DestinationGate) || (this.flight.FlightNumber != f.FlightNumber && this.flight.DestinationGate == f.DestinationGate))
                     {
                         return false;
                     }
@@ -79,7 +79,7 @@ namespace Procp_Form
                 return true;
             }
         }
-        public bool EditFlight(string number, string newNumber, int baggage, DateTime time)
+        public bool EditFlight(string number, string newNumber, int baggage, DateTime time, int destGate)
         {
             Flight selectedFlight = flights.Find(f => f.FlightNumber == number);
             if (selectedFlight == null)
@@ -88,11 +88,23 @@ namespace Procp_Form
             }
             else
             {
+                foreach (var f in flights)
+                {
+                    if ((selectedFlight.FlightNumber == f.FlightNumber && selectedFlight.DestinationGate == f.DestinationGate) || (selectedFlight.FlightNumber != f.FlightNumber && selectedFlight.DestinationGate == f.DestinationGate))
+                    {
+                        return false;
+                    }
+                }
                 selectedFlight.FlightNumber = newNumber;
                 selectedFlight.DepartureTime = time;
                 selectedFlight.AmountOfBaggage = baggage;
+                selectedFlight.DestinationGate = destGate;
                 return true;
             }
+        }
+        public bool CheckFlights()
+        {
+            return flights.Any();
         }
         public void LinkTwoNodes(Node firstNode, Node secondNode)
         {
