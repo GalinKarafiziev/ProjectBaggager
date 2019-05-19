@@ -91,7 +91,7 @@ namespace Procp_Form.Visuals
                 for(int y = firstR; y < firstR + rRange; y++)
                 {
                     GridTile temp = FindTileInRowColumnCoordinates(i, y);
-                    if(!(temp is EmptyTile))
+                    if(!(temp is EmptyTile) || temp.Unselectable)
                     {
                         return false;
                     }
@@ -102,8 +102,9 @@ namespace Procp_Form.Visuals
 
         public void AddMPA(GridTile firstTile, MPA mpa)
         {
-            int cRange = 2;
-            int rRange = 2;
+            int cRange = TileVerticalCount / 4;
+            int rRange = tileHorizontalCount / 3;
+
 
             if (CheckIfTilesAreEmpty(firstTile, cRange, rRange))
             {
@@ -195,11 +196,11 @@ namespace Procp_Form.Visuals
             }
             else if(buildType == "Conveyor")
             {
-                HideAreNotForConveyorAndSecurity();
+                HideAreNotForConveyorAndSecurityAndMPA();
             }
             else if (buildType == "Security Scanner")
             {
-                HideAreNotForConveyorAndSecurity();
+                HideAreNotForConveyorAndSecurityAndMPA();
             }
             else if(buildType == "CheckIn")
             {
@@ -209,9 +210,13 @@ namespace Procp_Form.Visuals
             {
                 HideAreaNotForDropOff();
             }
+            else if(buildType == "MPA")
+            {
+                HideAreNotForConveyorAndSecurityAndMPA();
+            }
         }
 
-        private void HideAreNotForConveyorAndSecurity()
+        private void HideAreNotForConveyorAndSecurityAndMPA()
         {
             foreach (GridTile t in gridTiles)
             {
@@ -314,6 +319,22 @@ namespace Procp_Form.Visuals
                 {
                     t.nextTile = null;
                     break;
+                }
+            }
+        }
+
+        public void RemoveMPA(GridTile toRemove)
+        {
+            foreach(GridTile t in gridTiles.ToList())
+            {
+                if(t.nodeInGrid == toRemove.nodeInGrid)
+                {
+                    int index = gridTiles.IndexOf(t, 0);
+                    EmptyTile empty = new EmptyTile();
+                    empty.Column = t.Column;
+                    empty.Row = t.Row;
+                    gridTiles.Remove(t);
+                    gridTiles.Insert(index, empty);
                 }
             }
         }
