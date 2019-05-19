@@ -1,6 +1,7 @@
 ﻿using Procp_Form.Airport;
 using Procp_Form.Core;
 using Procp_Form.CoreAbstraction;
+using Procp_Form.Statistics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace Procp_Form
 {
     public class Engine
     {
+        private StatisticsManager statistics;
         private MPA mainProcessArea;
         private Security security;
         public CheckInDispatcher dispatcher;
@@ -19,8 +21,7 @@ namespace Procp_Form
         public List<Conveyor> conveyors;
         public List<Flight> flights;
         private Flight flight;
-        public List<int> baggageInCheckIn;
-        public List<int> baggageInQueue;
+        
 
         public Engine()
         {
@@ -28,8 +29,7 @@ namespace Procp_Form
             checkIns = new List<CheckIn>();
             dropOffs = new List<DropOff>();
             flights = new List<Flight>();
-            baggageInCheckIn = new List<int>();
-            baggageInQueue = new List<int>();
+            statistics = new StatisticsManager(checkIns);
         }
 
         public void AddDispatcher()
@@ -53,25 +53,47 @@ namespace Procp_Form
         public bool AddFlight(DateTime time, string number, int baggage)
         {
             flight = new Flight(time, number, baggage);
-            if (flights.Count == 0)
+            if (flights.Count != 0)
             {
-                flights.Add(flight);
-                return true;
-            }
-            else
-            {
-                foreach (Flight f in flights)
+                foreach (var f in flights)
                 {
                     if (this.flight.FlightNumber == f.FlightNumber)
                     {
                         return false;
                     }
                 }
-                flights.Add(flight);
             }
+            flights.Add(flight);
             return true;
         }
-
+        public bool RemoveFlight(string number)
+        {
+            var item = flights.Find(f => f.FlightNumber == number);
+            if(item == null)
+            {
+                return false;
+            }
+            else
+            {
+                flights.Remove(item);
+                return true;
+            }
+        }
+        public bool EditFlight(string number, string newNumber, int baggage, DateTime time)
+        {
+            Flight selectedFlight = flights.Find(f => f.FlightNumber == number);
+            if (selectedFlight == null)
+            {
+                return false;
+            }
+            else
+            {
+                selectedFlight.FlightNumber = newNumber;
+                selectedFlight.DepartureTime = time;
+                selectedFlight.AmountOfBaggage = baggage;
+                return true;
+            }
+        }
         public void LinkTwoNodes(Node firstNode, Node secondNode)
         {
             firstNode.NextNode = secondNode;
@@ -108,12 +130,6 @@ namespace Procp_Form
 
         public void Stop()
         {
-            if (dispatcher == null)
-            {
-                return;
-            }
-            dispatcher.Stop();
-            dispatcher = null;
             foreach (var conveyor in conveyors)
             {
                 conveyor.Stop();
@@ -129,24 +145,43 @@ namespace Procp_Form
             foreach (var dropOff in dropOffs)
             {
                 dropOff.baggages.Clear();
+                dropOff.Status = BaggageStatus.Free;
             }
 
             foreach (var checkin in checkIns)
             {
-                checkin.baggage = null; 
+                checkin.baggage = null;
+                checkin.Status = BaggageStatus.Free;
             }
+
+            if (dispatcher == null)
+            {
+                return;
+            }
+            dispatcher.Stop();
+            dispatcher = null;
         }
 
-        public List<int> GetCheckInCounter()
+        public void Remove(Node rem)
         {
-            checkIns.ForEach(x => baggageInCheckIn.Add(x.bagageInCheckIn));
-            return baggageInCheckIn;
+            if(rem is Conveyor)
+            {
+                conveyors.Remove((Conveyor)rem);
+            }
+            else if(rem is CheckIn)
+            {
+                checkIns.Remove((CheckIn)rem);
+            }
+            else if (rem is DropOff)
+            {
+                dropOffs.Remove((DropOff)rem);
+            }
+            rem = null;
         }
 
-        public List<int> GetQueueCounter()
+        public List<int> GetCheckInStats()
         {
-            dispatcher.checkinQueues.ForEach(q => baggageInQueue.Add(q.Count));
-            return baggageInQueue;
+            return statistics.GetCheckInBaggageCount();
         }
     }
 }

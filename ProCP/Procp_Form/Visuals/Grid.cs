@@ -79,7 +79,6 @@ namespace Procp_Form.Visuals
             newLineTile.Row = toReplace.Row;
             gridTiles.Remove(toReplace);
             gridTiles.Add(newLineTile);
-            
             return newLineTile;
         }
         public GridTile AddCheckInAtCoordinates(GridTile toReplace, Node nodeToPlace)
@@ -92,6 +91,18 @@ namespace Procp_Form.Visuals
             newCheckInTile.nodeInGrid = nodeToPlace;
             return newCheckInTile;
         }
+
+        public GridTile AddSecurityAtCoordinates(GridTile toReplace, Node nodeToPlace)
+        {
+            SecurityTile newSecurityTile = new SecurityTile();
+            newSecurityTile.Column = toReplace.Column;
+            newSecurityTile.Row = toReplace.Row;
+            gridTiles.Remove(toReplace);
+            gridTiles.Add(newSecurityTile);
+            newSecurityTile.nodeInGrid = nodeToPlace;
+            return newSecurityTile;
+        }
+
         public GridTile AddDropOffAtCoordinates(GridTile toReplace, Node nodeToPlace)
         {
             DropOffTile newDropOffTile = new DropOffTile();
@@ -132,7 +143,6 @@ namespace Procp_Form.Visuals
 
         public void HideArea(string buildType)
         {
-
             if (buildType == null)
             {
                 foreach(GridTile t in gridTiles)
@@ -143,7 +153,11 @@ namespace Procp_Form.Visuals
             }
             else if(buildType == "Conveyor")
             {
-                HideAreNotForConveyor();
+                HideAreNotForConveyorAndSecurity();
+            }
+            else if (buildType == "Security Scanner")
+            {
+                HideAreNotForConveyorAndSecurity();
             }
             else if(buildType == "CheckIn")
             {
@@ -155,7 +169,7 @@ namespace Procp_Form.Visuals
             }
         }
 
-        private void HideAreNotForConveyor()
+        private void HideAreNotForConveyorAndSecurity()
         {
             foreach (GridTile t in gridTiles)
             {
@@ -209,6 +223,57 @@ namespace Procp_Form.Visuals
         public Node ReturnNodeOnPosition(GridTile clickedTile)
         {
             return clickedTile.nodeInGrid;
+        }
+
+        public void RemoveNode(GridTile toRemove)
+        {
+            foreach(GridTile t in gridTiles)
+            {
+                if(t.nextTile == toRemove)
+                {
+                    t.nextTile = null;
+                    break;
+                }
+            }
+            int index = gridTiles.IndexOf(toRemove, 0);
+            EmptyTile empty = new EmptyTile();
+            empty.Column = toRemove.Column;
+            empty.Row = toRemove.Row;
+            gridTiles.Remove(toRemove);
+            gridTiles.Insert(index, empty);
+        }
+
+        //removes all tiles of a conveyor Line
+        //the fact that the conveyor is not one tile completely goes agains the core design, and therefore we have methods like this one
+        //I really cannot think of a better way to do this and I hate it - Boris Georgiev
+        public void RemoveConveyorLine(GridTile toRemove)
+        {
+            ConveyorTile first = new ConveyorTile();
+            foreach(GridTile t in gridTiles.ToList())
+            {
+                if(toRemove.nodeInGrid == t.nodeInGrid)
+                {
+                    ConveyorTile temp = (ConveyorTile) t;
+                    if(temp.PositionInLine == 0)
+                    {
+                        first = temp;
+                    }
+                    int index = gridTiles.IndexOf(t, 0);
+                    EmptyTile empty = new EmptyTile();
+                    empty.Column = t.Column;
+                    empty.Row = t.Row;
+                    gridTiles.Remove(t);
+                    gridTiles.Insert(index, empty);
+                }
+            }
+            foreach(GridTile t in gridTiles.ToList())
+            {
+                if(t.nextTile == first)
+                {
+                    t.nextTile = null;
+                    break;
+                }
+            }
         }
     }
 }

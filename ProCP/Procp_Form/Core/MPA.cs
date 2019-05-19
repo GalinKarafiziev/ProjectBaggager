@@ -31,11 +31,11 @@ namespace Procp_Form.Core
             {
                 foreach (Conveyor conv in nextNodes)
                 {
-                    if (conv.FlightNumber == baggage.FlightNumber)
+                    if (conv.DestinationGate == baggage.DestinationGate)
                     {
                         this.NextNode = conv;
                         NextNode.PassBaggage(baggage);
-                        Thread.Sleep(800);
+                        Thread.Sleep(500);
                         baggage = null;
                         Status = BaggageStatus.Free;
                         break;

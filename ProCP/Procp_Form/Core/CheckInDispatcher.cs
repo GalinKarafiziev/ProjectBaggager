@@ -54,13 +54,11 @@ namespace Procp_Form.Core
             var checkIn = checkins[chosen];
             var queue = checkinQueues[chosen];
 
-            baggage.FlightNumber = flight.FlightNumber;
+            baggage.DestinationGate = flight.DestinationGate;
 
             if (checkIn.Status == BaggageStatus.Free)
             {
                 checkIn.PassBaggage(baggage);
-                System.Diagnostics.Debug.WriteLine("passed baggage from checkin");
-
             }
             else
             {
@@ -78,7 +76,6 @@ namespace Procp_Form.Core
             if (queue.Count != 0)
             {
                 checkIn.PassBaggage(queue.Dequeue());
-                System.Diagnostics.Debug.WriteLine("passed baggage to checkin");
             }
         }
 
@@ -134,7 +131,6 @@ namespace Procp_Form.Core
                 if (checkins.ElementAt(checkIn).Status == BaggageStatus.Free)
                 {
                     chosenIndex = checkIn;
-                    System.Diagnostics.Debug.WriteLine("chosen checkin" + chosenIndex.ToString());
 
                     return chosenIndex;
                 }
@@ -145,8 +141,6 @@ namespace Procp_Form.Core
                 if (checkinQueues.ElementAt(queue).Count <= initialQueue.Count)
                 {
                     chosenIndex = queue;
-                    System.Diagnostics.Debug.WriteLine("chosen queue" + chosenIndex.ToString());
-
                 }
             }
 

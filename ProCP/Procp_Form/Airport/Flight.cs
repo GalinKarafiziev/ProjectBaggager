@@ -10,6 +10,8 @@ namespace Procp_Form.Airport
     {
         public string FlightNumber { get; set; }
 
+        public int DestinationGate { get; set; }
+
         public int BaggageDispatched { get; set; }
 
         public int AmountOfBaggage { get; set; }
@@ -22,6 +24,11 @@ namespace Procp_Form.Airport
             this.DepartureTime = time;
             this.AmountOfBaggage = baggage;
             this.BaggageDispatched = 0;
+        }
+
+        public override string ToString()
+        {
+            return $"[#{FlightNumber}][⌚{DepartureTime.Hour}:{DepartureTime.Minute}][💼{AmountOfBaggage}]";
         }
     }
 }

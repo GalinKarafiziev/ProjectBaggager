@@ -8,10 +8,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Procp_Form.Core;
 using Procp_Form.CoreAbstraction;
 using Procp_Form.Visuals;
 using System.Timers;
+using LiveCharts;
+using LiveCharts.Wpf;
+using Procp_Form.Airport;
 
 namespace Procp_Form
 {
@@ -21,13 +23,14 @@ namespace Procp_Form
 
         bool buildModeActive;
         string buildModeType;
-
+        bool deleteMode;
         bool isBuildingConveyor;
         bool isConnectingTiles;
         GridTile selectedTile;
         List<ConveyorTile> conveyorBuilding;
         Engine engine = new Engine();
         int checkinCounter = 0;
+        SeriesCollection series = new SeriesCollection();
         int queueCounter = 0;
 
         System.Timers.Timer aTimer;
@@ -37,11 +40,15 @@ namespace Procp_Form
             InitializeComponent();
             thisGrid = new Grid(animationBox.Width, animationBox.Height);
 
+            chbDeleteMode.Visible = false;
             buildModeActive = false;
+            deleteMode = false;
             cmBoxNodeToBuild.Visible = false;
             isBuildingConveyor = false;
             isConnectingTiles = false;
             conveyorBuilding = new List<ConveyorTile>();
+
+            cartesianChartBaggageProcessedByCheckin.Series = series;
         }
 
         private void AnimationBox_Paint(object sender, PaintEventArgs e)
@@ -56,18 +63,26 @@ namespace Procp_Form
                 cmBoxNodeToBuild.SelectedIndex = 0;
 
                 buildModeActive = true;
-                lblTest.Text = buildModeActive.ToString();
+                lblTest.Text = buildModeActive ? "[On]" : "[Off]";
                 cmBoxNodeToBuild.Visible = true;
+                chbDeleteMode.Visible = true;
 
                 buildModeType = cmBoxNodeToBuild.Text;
                 thisGrid.HideArea(buildModeType);
+
             }
             else
             {
                 buildModeActive = false;
-                lblTest.Text = buildModeActive.ToString();
+                lblTest.Text = buildModeActive ? "[On]" : "[Off]";
                 cmBoxNodeToBuild.Visible = false;
+                chbDeleteMode.Checked = false;
+                chbDeleteMode.Visible = false;
 
+                //hide area with null will make everything non hidden
+                //you call HideArea() to remove all of the hiding
+                //im a fuckin idiot - Boris Georgiev
+                //PS: it works doe
                 buildModeType = null;
                 thisGrid.HideArea(buildModeType);
             }
@@ -79,6 +94,10 @@ namespace Procp_Form
             if (cmBoxNodeToBuild.Text == "CheckIn")
             {
                 buildModeType = "CheckIn";
+            }
+            else if (cmBoxNodeToBuild.Text == "Security Scanner")
+            {
+                buildModeType = "Security Scanner";
             }
             else if (cmBoxNodeToBuild.Text == "Conveyor")
             {
@@ -119,6 +138,12 @@ namespace Procp_Form
                         SelectTile(thisGrid.AddCheckInAtCoordinates(t, checkin));
                         engine.AddCheckIn(checkin);
                     }
+                    else if (buildModeType == "Security Scanner")
+                    {
+                        Security security = new Security();
+                        SelectTile(thisGrid.AddSecurityAtCoordinates(t, security));
+                        engine.AddSecurity(security);
+                    }
                     else if (buildModeType == "DropOff")
                     {
                         DropOff dropoff = new DropOff();
@@ -126,9 +151,22 @@ namespace Procp_Form
                         engine.AddDropOff(dropoff);
                     }
                 }
-                else if (!(t is EmptyTile))
+                else if (!(t is EmptyTile) && deleteMode == false)
                 {
                     isConnectingTiles = true;
+                }
+                else if (!(t is EmptyTile) && deleteMode == true)
+                {
+                    if (t is ConveyorTile)
+                    {
+                        thisGrid.RemoveConveyorLine(t);
+                        engine.Remove(t.nodeInGrid);
+                    }
+                    else
+                    {
+                        engine.Remove(t.nodeInGrid);
+                        thisGrid.RemoveNode(t);
+                    }
                 }
             }
             else
@@ -174,8 +212,10 @@ namespace Procp_Form
                         //Engine.AddConveyorPart(conveyor);
                         conveyorBuilding.Add((ConveyorTile)created);
 
+                        selectedTile.ConnectNext(created);
                         // Engine.LinkTwoNodes(selectedTile.nodeInGrid, created.nodeInGrid);
                         SelectTile(created);
+
                     }
                 }
             }
@@ -183,9 +223,25 @@ namespace Procp_Form
             {
                 if ((Math.Abs(t.Column - selectedTile.Column) == 1 && Math.Abs(t.Row - selectedTile.Row) == 0) || (Math.Abs(t.Column - selectedTile.Column) == 0 && Math.Abs(t.Row - selectedTile.Row) == 1))
                 {
-                    if (!(t is EmptyTile))
+                    if (selectedTile is ConveyorTile && !(t is EmptyTile) && !(t is ConveyorTile) && !(t is CheckInTile))
                     {
                         engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
+                        selectedTile.ConnectNext(t);
+                    }
+                    else if (selectedTile is ConveyorTile && t is SecurityTile)
+                    {
+                        engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
+                        selectedTile.ConnectNext(t);
+                    }
+                    else if (selectedTile is CheckInTile && t is ConveyorTile)
+                    {
+                        engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
+                        selectedTile.ConnectNext(t);
+                    }
+                    else if (selectedTile is SecurityTile && t is ConveyorTile)
+                    {
+                        engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
+                        selectedTile.ConnectNext(t);
                     }
                 }
             }
@@ -195,7 +251,7 @@ namespace Procp_Form
 
         private void AnimationBox_MouseUp(object sender, MouseEventArgs e)
         {
-            if (buildModeActive && buildModeType == "Conveyor")
+            if (buildModeActive && isBuildingConveyor)
             {
                 Conveyor conveyor = new Conveyor(conveyorBuilding.Count, 1500);
                 engine.AddConveyorPart(conveyor);
@@ -210,8 +266,11 @@ namespace Procp_Form
             }
             isBuildingConveyor = false;
             isConnectingTiles = false;
-            selectedTile.selected = false;
-            selectedTile = null;
+            if (selectedTile != null)
+            {
+                selectedTile.selected = false;
+                selectedTile = null;
+            }
             conveyorBuilding.Clear();
         }
 
@@ -220,11 +279,60 @@ namespace Procp_Form
             DateTime date = (Convert.ToDateTime(tbFlightTime.Text));
             string flightNr = tbFlightNr.Text;
             int flightBaggage = Convert.ToInt32(tbFlightBaggage.Text);
-            engine.AddFlight(date, flightNr, flightBaggage);
-            lbFlights.Items.Add($"[#{flightNr}] {date.ToString()} ({flightBaggage})");
+            if (!(engine.AddFlight(date, flightNr, flightBaggage)))
+            {
+                MessageBox.Show("This flight already exists.");
+            }
+            else
+            {
+                lbFlights.DataSource = null;
+                lbFlights.DataSource = engine.flights;
+            }
+
         }
 
         private void btnEditFlight_Click(object sender, EventArgs e)
+        {
+            DateTime date = (Convert.ToDateTime(tbFlightTime.Text));
+            string flightNr = tbFlightNr.Text;
+            int flightBaggage = Convert.ToInt32(tbFlightBaggage.Text);
+
+            Flight selectedFlight = lbFlights.SelectedItem as Flight;
+            if (!(engine.EditFlight(selectedFlight.FlightNumber, flightNr, flightBaggage, date)))
+            {
+                MessageBox.Show("Flight not found.");
+            }
+            else
+            {
+                lbFlights.DataSource = null;
+                lbFlights.DataSource = engine.flights;
+            }
+            //var item = lbFlights.SelectedItem;
+            //if (!(Engine.EditFlight(date, flightNr, flightBaggage)))
+            //{
+            //    MessageBox.Show("Cannot find flight to edit.");
+            //}
+            //else
+            //{
+            //    lbFlights.Items.Add($"[#{flightNr}] {date.ToString()} ({flightBaggage})");
+            //}
+        }
+
+        private void btnDeleteFlight_Click(object sender, EventArgs e)
+        {
+            Flight selectedFlight = lbFlights.SelectedItem as Flight;
+            if (!(engine.RemoveFlight(selectedFlight.FlightNumber)))
+            {
+                MessageBox.Show("Flight not found.");
+            }
+            else
+            {
+                lbFlights.DataSource = null;
+                lbFlights.DataSource = engine.flights;
+            }
+        }
+
+        public void RefreshFlightsList()
         {
 
         }
@@ -269,20 +377,58 @@ namespace Procp_Form
 
         private void buttonShowProcessedBaggage_Click(object sender, EventArgs e)
         {
-            engine.GetCheckInCounter().ForEach(x =>
-            {
-                checkinCounter++;
-                this.listBox1.Items.Add($"checkin: {checkinCounter}, {x}");
-            });
+            //engine.GetCheckInStats().ForEach(x =>
+            //{
+            //    checkinCounter++;
+            //    this.listBox1.Items.Add($"checkin: {checkinCounter}, {x}");
+            //});
         }
 
         private void buttonShowQueuedBaggage_Click(object sender, EventArgs e)
         {
-            engine.GetQueueCounter().ForEach(x =>
+            //engine.GetQueueCounter().ForEach(x =>
+            //{
+            //    queueCounter++;
+            //    this.listBox1.Items.Add($"queues: {queueCounter}, {x}");
+            //});
+        }
+
+        private void ChbDeleteMode_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chbDeleteMode.Checked)
             {
-                queueCounter++;
-                this.listBox1.Items.Add($"queues: {queueCounter}, {x}");
-            });
+                deleteMode = true;
+                buildModeType = null;
+                thisGrid.HideArea(buildModeType);
+                cmBoxNodeToBuild.Visible = false;
+            }
+            else
+            {
+                deleteMode = false;
+                buildModeType = cmBoxNodeToBuild.Text;
+                thisGrid.HideArea(buildModeType);
+                cmBoxNodeToBuild.Visible = true;
+            }
+            animationBox.Invalidate();
+        }
+
+        private void buttonResume_Click(object sender, EventArgs e)
+        {
+            engine.Resume();
+        }
+
+        private void buttonLoadChartBaggageThroughCheckin_Click(object sender, EventArgs e)
+        {
+
+            series.Clear();
+            checkinCounter = 0;
+            foreach (var number in engine.GetCheckInStats())
+            {
+                checkinCounter++;
+                series.Add(new ColumnSeries() {Title = $"Checkin {checkinCounter.ToString()}", Values = new ChartValues<int> { number }});   
+            }
+            
+
         }
     }
 }
