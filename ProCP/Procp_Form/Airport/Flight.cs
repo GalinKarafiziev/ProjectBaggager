@@ -10,6 +10,8 @@ namespace Procp_Form.Airport
     {
         public string FlightNumber { get; set; }
 
+        public int DestinationGate { get; set; }
+
         public int BaggageDispatched { get; set; }
 
         public int AmountOfBaggage { get; set; }

@@ -10,7 +10,7 @@ namespace Procp_Form.Core
 {
     public class Conveyor : TransportUnit
     {
-        public string FlightNumber { get; set; }
+        public int DestinationGate { get; set; }
 
         public Conveyor(int capacity, int timerSpeed) : base()
         {

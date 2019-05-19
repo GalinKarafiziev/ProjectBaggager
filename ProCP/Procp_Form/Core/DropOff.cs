@@ -13,16 +13,21 @@ namespace Procp_Form.Core
     {
         public List<Baggage> baggages;
 
+        static int destinationGate = 0;
+
+        public int DestinationGate { get; set; }
+
         public DropOff()
         {
+            destinationGate++;
             baggages = new List<Baggage>();
+            DestinationGate = destinationGate;
         }
 
         public override void PassBaggage(Baggage Lastbaggage)
         {
             Status = BaggageStatus.Busy;
             baggages.Add(Lastbaggage);
-            Thread.Sleep(500);
             Status = BaggageStatus.Free;
         }
 

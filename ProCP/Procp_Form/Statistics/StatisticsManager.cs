@@ -1,41 +1,39 @@
 ﻿using Procp_Form.Core;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using Procp_Form.Core;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace Procp_Form.Statistics
 {
     public class StatisticsManager
     {
+        private List<CheckIn> checkIns;
         public List<int> baggageInCheckIn;
-        public Engine engine;
-        Stopwatch stopwatch;
-        Baggage baggage;
 
-        public StatisticsManager()
+        public StatisticsManager(List<CheckIn> checkIns)
         {
+            this.checkIns = checkIns;
             baggageInCheckIn = new List<int>();
-            engine = new Engine();
-            stopwatch = new Stopwatch();
         }
 
-        public List<int> GetCheckInCounter()
+        public List<int> GetCheckInBaggageCount()
         {
-            engine.checkIns.ForEach(x => baggageInCheckIn.Add(x.bagageInCheckIn));
+            checkIns.ForEach(x => baggageInCheckIn.Add(x.bagageInCheckIn));
             return baggageInCheckIn;
         }
 
-        public void StartStopwatch()
+        public void CalculateAverageTimeNeededToTransferBaggage()
         {
-            
+
         }
 
-        public void StopStopwatch()
+        public void SetBaggageTransferTime()
         {
-
+            
         }
     }
 }

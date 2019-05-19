@@ -28,7 +28,7 @@ namespace Procp_Form
             checkIns = new List<CheckIn>();
             dropOffs = new List<DropOff>();
             flights = new List<Flight>();
-            statistics = new StatisticsManager();
+            statistics = new StatisticsManager(checkIns);
         }
 
         public void AddDispatcher()
@@ -107,7 +107,6 @@ namespace Procp_Form
 
         public void Stop()
         {
-            dispatcher.Stop();
             foreach (var conveyor in conveyors)
             {
                 conveyor.Stop();
@@ -136,6 +135,7 @@ namespace Procp_Form
             {
                 return;
             }
+            dispatcher.Stop();
             dispatcher = null;
         }
 
@@ -158,7 +158,7 @@ namespace Procp_Form
 
         public List<int> GetCheckInStats()
         {
-            return null;
+            return statistics.GetCheckInBaggageCount();
         }
     }
 }
