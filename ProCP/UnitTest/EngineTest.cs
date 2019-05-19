@@ -10,17 +10,19 @@ namespace UnitTest
     [TestClass]
     public class EngineTest
     {
-        [TestMethod]
+        //WARNING! TO RUN THIS TEST YOU HAVE TO REMOVE TIMER.ELAPSED FROM CHECKINDISPATCHER AND KEEP ONLY THE IF STATEMENT!!
+        //[TestMethod]
         public void Run_Test()
         {
             Engine engine = new Engine();
             CheckIn checkIn = new CheckIn(){Status = BaggageStatus.Free};
-            DropOff dropOff = new DropOff(){FlightNumber = "BBB", Status = BaggageStatus.Free };
+            DropOff dropOff = new DropOff(){DestinationGate = 1, Status = BaggageStatus.Free };
             MPA mpa = new MPA();
-            DateTime date = new DateTime(2019, 5, 14, 21, 27, 0);
-            Conveyor conveyor = new Conveyor(5,5){Status = BaggageStatus.Free};
-            Flight flight = new Flight(date, "BBB", 5);
+            DateTime date = new DateTime(2019, 5, 19, 14, 10, 0);
+            Conveyor conveyor = new Conveyor(5,1000){DestinationGate = 1, Status = BaggageStatus.Free};
+            Flight flight = new Flight(date, "BBB", 5){DestinationGate = 1};
             CheckInDispatcher checkInDispatcher = new CheckInDispatcher();
+            engine.AddDispatcher();
             engine.AddCheckIn(checkIn);
             engine.conveyors.Add(conveyor);
             engine.AddDropOff(dropOff);

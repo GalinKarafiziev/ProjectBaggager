@@ -32,7 +32,8 @@ namespace UnitTest
             dropOff.Status = BaggageStatus.Free;
             conveyor.PassBaggage(baggage);
 
-            Assert.AreEqual(BaggageStatus.Free, conveyor.Status);
+            Assert.AreEqual(BaggageStatus.Busy, conveyor.Status );
+            Assert.AreEqual(conveyor.conveyorBelt[0].Equals(baggage), conveyor.conveyorBelt[0].Equals(baggage));
         }
         
         
