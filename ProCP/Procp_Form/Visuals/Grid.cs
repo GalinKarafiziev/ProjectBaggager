@@ -91,6 +91,18 @@ namespace Procp_Form.Visuals
             newCheckInTile.nodeInGrid = nodeToPlace;
             return newCheckInTile;
         }
+
+        public GridTile AddSecurityAtCoordinates(GridTile toReplace, Node nodeToPlace)
+        {
+            SecurityTile newSecurityTile = new SecurityTile();
+            newSecurityTile.Column = toReplace.Column;
+            newSecurityTile.Row = toReplace.Row;
+            gridTiles.Remove(toReplace);
+            gridTiles.Add(newSecurityTile);
+            newSecurityTile.nodeInGrid = nodeToPlace;
+            return newSecurityTile;
+        }
+
         public GridTile AddDropOffAtCoordinates(GridTile toReplace, Node nodeToPlace)
         {
             DropOffTile newDropOffTile = new DropOffTile();
@@ -141,7 +153,11 @@ namespace Procp_Form.Visuals
             }
             else if(buildType == "Conveyor")
             {
-                HideAreNotForConveyor();
+                HideAreNotForConveyorAndSecurity();
+            }
+            else if (buildType == "Security Scanner")
+            {
+                HideAreNotForConveyorAndSecurity();
             }
             else if(buildType == "CheckIn")
             {
@@ -153,7 +169,7 @@ namespace Procp_Form.Visuals
             }
         }
 
-        private void HideAreNotForConveyor()
+        private void HideAreNotForConveyorAndSecurity()
         {
             foreach (GridTile t in gridTiles)
             {

@@ -11,10 +11,10 @@ namespace Procp_Form.Visuals
     {
         public SecurityTile()
         {
-            clickableColor = Brushes.Blue;
-            unclickableColour = Brushes.DarkBlue;
+            clickableColor = Brushes.Yellow;
+            unclickableColour = Brushes.Yellow;
 
-            fillBrush = Brushes.Blue;
+            fillBrush = Brushes.Yellow;
         }
     }
 }

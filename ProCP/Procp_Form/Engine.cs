@@ -51,25 +51,47 @@ namespace Procp_Form
         public bool AddFlight(DateTime time, string number, int baggage)
         {
             flight = new Flight(time, number, baggage);
-            if (flights.Count == 0)
+            if (flights.Count != 0)
             {
-                flights.Add(flight);
-                return true;
-            }
-            else
-            {
-                foreach (Flight f in flights)
+                foreach (var f in flights)
                 {
                     if (this.flight.FlightNumber == f.FlightNumber)
                     {
                         return false;
                     }
                 }
-                flights.Add(flight);
             }
+            flights.Add(flight);
             return true;
         }
-
+        public bool RemoveFlight(string number)
+        {
+            var item = flights.Find(f => f.FlightNumber == number);
+            if(item == null)
+            {
+                return false;
+            }
+            else
+            {
+                flights.Remove(item);
+                return true;
+            }
+        }
+        public bool EditFlight(string number, string newNumber, int baggage, DateTime time)
+        {
+            Flight selectedFlight = flights.Find(f => f.FlightNumber == number);
+            if (selectedFlight == null)
+            {
+                return false;
+            }
+            else
+            {
+                selectedFlight.FlightNumber = newNumber;
+                selectedFlight.DepartureTime = time;
+                selectedFlight.AmountOfBaggage = baggage;
+                return true;
+            }
+        }
         public void LinkTwoNodes(Node firstNode, Node secondNode)
         {
             firstNode.NextNode = secondNode;
@@ -106,7 +128,6 @@ namespace Procp_Form
 
         public void Stop()
         {
-            dispatcher.Stop();
             foreach (var conveyor in conveyors)
             {
                 conveyor.Stop();
@@ -135,6 +156,7 @@ namespace Procp_Form
             {
                 return;
             }
+            dispatcher.Stop();
             dispatcher = null;
         }
 
