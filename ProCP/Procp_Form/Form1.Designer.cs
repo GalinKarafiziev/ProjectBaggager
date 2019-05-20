@@ -452,14 +452,13 @@
             // 
             // buttonShowQueuedBaggage
             // 
-            this.buttonShowQueuedBaggage.Location = new System.Drawing.Point(13, 804);
+            this.buttonShowQueuedBaggage.Location = new System.Drawing.Point(4, 804);
             this.buttonShowQueuedBaggage.Margin = new System.Windows.Forms.Padding(4);
             this.buttonShowQueuedBaggage.Name = "buttonShowQueuedBaggage";
             this.buttonShowQueuedBaggage.Size = new System.Drawing.Size(251, 28);
             this.buttonShowQueuedBaggage.TabIndex = 24;
-            this.buttonShowQueuedBaggage.Text = "Show queued baggage";
+            this.buttonShowQueuedBaggage.Text = "Show transfer time per baggage";
             this.buttonShowQueuedBaggage.UseVisualStyleBackColor = true;
-            this.buttonShowQueuedBaggage.Click += new System.EventHandler(this.buttonShowQueuedBaggage_Click);
             // 
             // buttonShowProcessedBaggage
             // 

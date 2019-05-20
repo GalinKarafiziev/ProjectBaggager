@@ -4,6 +4,7 @@ using Procp_Form.CoreAbstraction;
 using Procp_Form.Statistics;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,16 +13,16 @@ namespace Procp_Form
 {
     public class Engine
     {
-        private StatisticsManager statistics;
+        public StatisticsManager statistics;
         private MPA mainProcessArea;
-        private List<Security> securities;
         public CheckInDispatcher dispatcher;
         public List<CheckIn> checkIns;
         public List<DropOff> dropOffs;
         public List<Conveyor> conveyors;
         public List<Flight> flights;
+        public List<Security> securities;
         private Flight flight;
-        
+        public Stopwatch stopwatch;
 
         public Engine()
         {
@@ -31,21 +32,20 @@ namespace Procp_Form
             dropOffs = new List<DropOff>();
             flights = new List<Flight>();
             statistics = new StatisticsManager(checkIns);
+            stopwatch = statistics.stopwatch;
         }
 
-        public void AddDispatcher()
-        {
-            dispatcher = new CheckInDispatcher();
-        }
+        public void AddDispatcher() => dispatcher = new CheckInDispatcher();
 
         public void AddCheckIn(CheckIn checkin) => checkIns.Add(checkin);
 
+        public void AddStopwatchToCheckIn() => this.checkIns.ForEach(x => x.stopwatch = stopwatch);
+
         public void AddDropOff(DropOff dropOff) => dropOffs.Add(dropOff);
 
-        public void AddConveyorPart(Conveyor conveyor)
-        {
-            conveyors.Add(conveyor);
-        }
+        public void AddStopwatchToDropOff() => this.dropOffs.ForEach(x => x.stopwatch = stopwatch);
+
+        public void AddConveyorPart(Conveyor conveyor) => conveyors.Add(conveyor);
 
         public void AddSecurity(Security security) => this.securities.Add(security);
 
@@ -71,7 +71,7 @@ namespace Procp_Form
         public bool RemoveFlight(string number)
         {
             var item = flights.Find(f => f.FlightNumber == number);
-            if(item == null)
+            if (item == null)
             {
                 return false;
             }
@@ -114,7 +114,7 @@ namespace Procp_Form
         }
 
         public void Run()
-        {        
+        {
             foreach (var conveyor in conveyors)
             {
                 conveyor.Start();
@@ -182,11 +182,11 @@ namespace Procp_Form
 
         public void Remove(Node rem)
         {
-            if(rem is Conveyor)
+            if (rem is Conveyor)
             {
                 conveyors.Remove((Conveyor)rem);
             }
-            else if(rem is CheckIn)
+            else if (rem is CheckIn)
             {
                 checkIns.Remove((CheckIn)rem);
             }
@@ -201,10 +201,9 @@ namespace Procp_Form
             rem = null;
         }
 
-        public List<int> GetCheckInStats()
-        {
-            return statistics.GetCheckInBaggageCount();
-        }
+        public List<int> GetCheckInStats() => statistics.GetCheckInBaggageCount();
+
+        public List<TimeSpan> GetTransferTime() => statistics.CalculateAverageTimeNeededToTransferBaggage();
 
         public List<int> GetSecurityStats()
         {
@@ -220,6 +219,7 @@ namespace Procp_Form
         {
             return statistics.CalculateFailedBaggage();
         }
+
         public double GetCalculateSuccessedBaggage()
         {
             return statistics.CalculateSuccessedBaggage();
