@@ -12,8 +12,8 @@ namespace Procp_Form.Core
     public class CheckInDispatcher : Node
     {
         public List<Queue<Baggage>> checkinQueues;
-        List<Timer> timers;
-        List<CheckIn> checkins;
+        public List<Timer> timers;
+        public List<CheckIn> checkins;
 
         public CheckInDispatcher()
         {
@@ -106,7 +106,8 @@ namespace Procp_Form.Core
                 timer = new Timer();
                 timers.Add(timer);
                 timer.Interval = CalculateDispatchRate(f);
-
+                
+                
                 timer.Elapsed += (sender, args) =>
                 {
                     if (f.AmountOfBaggage > f.BaggageDispatched)

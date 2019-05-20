@@ -31,7 +31,7 @@ namespace Procp_Form.Core
                 else
                 {
                     NextNode.PassBaggage(baggage);
-                    Thread.Sleep(1000);
+                    //Thread.Sleep(1000);
                     NextNode.OnNodeStatusChangedToFree -= ProcessBaggage;
                     Status = BaggageStatus.Free;
                 }

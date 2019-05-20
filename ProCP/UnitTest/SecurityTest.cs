@@ -9,14 +9,13 @@ namespace UnitTest
     [TestClass]
     public class SecurityTest
     {
-        
         [TestMethod]
         public void ProcessBaggage_If_Statement()
         {
             Baggage baggage = new Baggage(){ Secure = 5 };
             Security security = new Security();
             CheckIn checkIn = new CheckIn();
-            Conveyor conveyor = new Conveyor();
+            Conveyor conveyor = new Conveyor(5 ,4);
             DropOff dropOff = new DropOff();
             checkIn.NextNode = conveyor;
             conveyor.NextNode = security;
@@ -33,7 +32,7 @@ namespace UnitTest
             
             Security security = new Security();
             CheckIn checkIn = new CheckIn();
-            Conveyor conveyor = new Conveyor();
+            Conveyor conveyor = new Conveyor(5,6);
             DropOff dropOff = new DropOff();
             checkIn.NextNode = conveyor;
             conveyor.NextNode = security;
@@ -49,7 +48,7 @@ namespace UnitTest
             Baggage baggage = new Baggage() { Secure = 6 };
             Security security = new Security();
             CheckIn checkIn = new CheckIn();
-            Conveyor conveyor = new Conveyor();
+            Conveyor conveyor = new Conveyor(5,6);
             DropOff dropOff = new DropOff();
             checkIn.NextNode = conveyor;
             conveyor.NextNode = security;
@@ -67,7 +66,5 @@ namespace UnitTest
 
 
         }
-
-        
     }
 }
