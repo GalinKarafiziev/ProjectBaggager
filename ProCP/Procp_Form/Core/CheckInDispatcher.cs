@@ -72,7 +72,7 @@ namespace Procp_Form.Core
         {
             var checkIn = checkins[index];
             var queue = checkinQueues[index];
-            
+
             if (queue.Count != 0)
             {
                 checkIn.PassBaggage(queue.Dequeue());
@@ -105,9 +105,15 @@ namespace Procp_Form.Core
             {
                 timer = new Timer();
                 timers.Add(timer);
-                timer.Interval = CalculateDispatchRate(f);
-                
-                
+                if (CalculateDispatchRate(f) == 0)
+                {
+                    return;
+                }
+                else
+                {
+                    timer.Interval = CalculateDispatchRate(f);
+                }
+
                 timer.Elapsed += (sender, args) =>
                 {
                     if (f.AmountOfBaggage > f.BaggageDispatched)
@@ -156,6 +162,8 @@ namespace Procp_Form.Core
             double dispatchRate = (interval.Minutes);
             dispatchRate = dispatchRate * 60000;
             dispatchRate = dispatchRate / flight.AmountOfBaggage;
+
+
 
             return dispatchRate;
         }

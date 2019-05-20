@@ -14,7 +14,7 @@ namespace Procp_Form
     {
         private StatisticsManager statistics;
         private MPA mainProcessArea;
-        private Security security;
+        private List<Security> securities;
         public CheckInDispatcher dispatcher;
         public List<CheckIn> checkIns;
         public List<DropOff> dropOffs;
@@ -25,6 +25,7 @@ namespace Procp_Form
 
         public Engine()
         {
+            securities = new List<Security>();
             conveyors = new List<Conveyor>();
             checkIns = new List<CheckIn>();
             dropOffs = new List<DropOff>();
@@ -46,7 +47,7 @@ namespace Procp_Form
             conveyors.Add(conveyor);
         }
 
-        public void AddSecurity(Security security) => this.security = security;
+        public void AddSecurity(Security security) => this.securities.Add(security);
 
         public void AddMPA(MPA mpa) => this.mainProcessArea = mpa;
 
@@ -64,6 +65,7 @@ namespace Procp_Form
                 }
             }
             flights.Add(flight);
+            getAllBaggage();
             return true;
         }
         public bool RemoveFlight(string number)
@@ -192,12 +194,35 @@ namespace Procp_Form
             {
                 dropOffs.Remove((DropOff)rem);
             }
+            else if (rem is Security)
+            {
+                securities.Remove((Security)rem);
+            }
             rem = null;
         }
 
         public List<int> GetCheckInStats()
         {
             return statistics.GetCheckInBaggageCount();
+        }
+
+        public List<int> GetSecurityStats()
+        {
+            return statistics.GetFailedToPassBaggageThroughSecurity(securities);
+        }
+
+        public void getAllBaggage()
+        {
+            statistics.getAllBaggage(flights);
+        }
+
+        public double GetCalculatePercentageFailedBaggage()
+        {
+            return statistics.CalculateFailedBaggage();
+        }
+        public double GetCalculateSuccessedBaggage()
+        {
+            return statistics.CalculateSuccessedBaggage();
         }
     }
 }

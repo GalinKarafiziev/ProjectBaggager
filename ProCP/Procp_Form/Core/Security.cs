@@ -11,6 +11,7 @@ namespace Procp_Form.Core
     public class Security : ProcessUnit
     {
         public List<Baggage> bufferNotSecure;
+
         public Security()
         {
             bufferNotSecure = new List<Baggage>();
@@ -23,7 +24,7 @@ namespace Procp_Form.Core
             {
                 if (baggage.Secure == 2 || baggage.Secure == 7)
                 {
-                    bufferNotSecure.Add(baggage);
+                    bufferNotSecure.Add(baggage);;
                     NextNode.OnNodeStatusChangedToFree -= ProcessBaggage;
                     Status = BaggageStatus.Free;
                 }
