@@ -455,7 +455,6 @@
             this.buttonShowQueuedBaggage.TabIndex = 24;
             this.buttonShowQueuedBaggage.Text = "Show transfer time per baggage";
             this.buttonShowQueuedBaggage.UseVisualStyleBackColor = true;
-            this.buttonShowQueuedBaggage.Click += new System.EventHandler(this.ButtonShowTransferTimePerBaggage_Click);
             // 
             // buttonShowProcessedBaggage
             // 

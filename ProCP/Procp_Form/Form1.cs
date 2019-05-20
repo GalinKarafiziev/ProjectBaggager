@@ -108,7 +108,7 @@ namespace Procp_Form
             {
                 buildModeType = "DropOff";
             }
-            else if(cmBoxNodeToBuild.Text == "MPA")
+            else if (cmBoxNodeToBuild.Text == "MPA")
             {
                 buildModeType = "MPA";
             }
@@ -159,7 +159,7 @@ namespace Procp_Form
                             btnAddFlight.Enabled = true;
                         }
                     }
-                    else if(buildModeType == "MPA")
+                    else if (buildModeType == "MPA")
                     {
                         MPA mpa = new MPA();
                         thisGrid.AddMPA(t, mpa);
@@ -182,7 +182,7 @@ namespace Procp_Form
                         thisGrid.RemoveMPA(t);
                         engine.Remove(t.nodeInGrid);
                     }
-                    else 
+                    else
                     {
                         engine.Remove(t.nodeInGrid);
                         thisGrid.RemoveNode(t);
@@ -228,7 +228,7 @@ namespace Procp_Form
                         conveyorBuilding.Add((ConveyorTile)created);
 
                         selectedTile.ConnectNext(created);
-                        
+
                         // Engine.LinkTwoNodes(selectedTile.nodeInGrid, created.nodeInGrid);
                         SelectTile(created);
 
@@ -246,7 +246,7 @@ namespace Procp_Form
                         {
                             engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
                             selectedTile.ConnectNext(t);
-                            if(t is DropOffTile)
+                            if (t is DropOffTile)
                             {
                                 var selectedConveyor = selectedTile.nodeInGrid as Conveyor;
                                 var tNode = t.nodeInGrid as DropOff;
@@ -389,7 +389,7 @@ namespace Procp_Form
                 }
             }
         }
-        
+
         public void RefreshFlightsListBox()
         {
             lbFlights.DataSource = null;
@@ -451,7 +451,7 @@ namespace Procp_Form
             foreach (var number in engine.GetCheckInStats())
             {
                 checkinCounter++;
-                series.Add(new ColumnSeries() {Title = $"Checkin {checkinCounter.ToString()}", Values = new ChartValues<int> { number }});   
+                series.Add(new ColumnSeries() { Title = $"Checkin {checkinCounter.ToString()}", Values = new ChartValues<int> { number } });
             }
         }
     }
