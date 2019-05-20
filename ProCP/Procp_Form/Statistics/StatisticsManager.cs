@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Procp_Form.Core;
+using System;
 using System.Collections.Generic;
-using Procp_Form.Core;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +13,8 @@ namespace Procp_Form.Statistics
     {
         private List<CheckIn> checkIns;
         public List<int> baggageInCheckIn;
+        public Stopwatch stopwatch;
+        List<TimeSpan> transferTimes;
         public List<int> failedToPassSecurity;
         public double allBaggage = 0;
 
@@ -21,8 +23,11 @@ namespace Procp_Form.Statistics
             this.checkIns = checkIns;
             baggageInCheckIn = new List<int>();
             failedToPassSecurity = new List<int>();
+            transferTimes = new List<TimeSpan>();
+            stopwatch = new Stopwatch();            
         }
 
+        public void GetStopwatch() => checkIns.ForEach(x => x.stopwatch = stopwatch);
 
         public List<int> GetCheckInBaggageCount()
         {
@@ -31,14 +36,11 @@ namespace Procp_Form.Statistics
             return baggageInCheckIn;
         }
 
-        public void CalculateAverageTimeNeededToTransferBaggage()
+        public List<TimeSpan> CalculateAverageTimeNeededToTransferBaggage()
         {
-
-        }
-
-        public void SetBaggageTransferTime()
-        {
-            
+            TimeSpan transferTime = stopwatch.Elapsed;
+            transferTimes.Add(transferTime);
+            return transferTimes;
         }
 
         public List<int> GetFailedToPassBaggageThroughSecurity(List<Security> securities)
@@ -52,6 +54,7 @@ namespace Procp_Form.Statistics
 
             return failedToPassSecurity;
         }
+
         public void getAllBaggage(List<Flight> flights)
         {
             allBaggage = 0;
@@ -63,7 +66,6 @@ namespace Procp_Form.Statistics
 
         public double CalculateFailedBaggage()
         {
-            
             double sum = 0;
             foreach (var item in failedToPassSecurity)
             {
@@ -72,6 +74,12 @@ namespace Procp_Form.Statistics
 
             return sum;
         }
+
+        public void SetBaggageTransferTime()
+        {
+            
+        }
+
         public double CalculateSuccessedBaggage()
         {
             return allBaggage - CalculateFailedBaggage();

@@ -102,7 +102,7 @@ namespace Procp_Form
             {
                 buildModeType = "DropOff";
             }
-            else if(cmBoxNodeToBuild.Text == "MPA")
+            else if (cmBoxNodeToBuild.Text == "MPA")
             {
                 buildModeType = "MPA";
             }
@@ -134,6 +134,7 @@ namespace Procp_Form
                         CheckIn checkin = new CheckIn();
                         SelectTile(thisGrid.AddCheckInAtCoordinates(t, checkin));
                         engine.AddCheckIn(checkin);
+                        engine.AddStopwatchToCheckIn();
                     }
                     else if (buildModeType == "Security Scanner")
                     {
@@ -152,7 +153,7 @@ namespace Procp_Form
                             btnAddFlight.Enabled = true;
                         }
                     }
-                    else if(buildModeType == "MPA")
+                    else if (buildModeType == "MPA")
                     {
                         MPA mpa = new MPA();
                         thisGrid.AddMPA(t, mpa);
@@ -175,7 +176,7 @@ namespace Procp_Form
                         thisGrid.RemoveMPA(t);
                         engine.Remove(t.nodeInGrid);
                     }
-                    else 
+                    else
                     {
                         engine.Remove(t.nodeInGrid);
                         thisGrid.RemoveNode(t);
@@ -221,7 +222,7 @@ namespace Procp_Form
                         conveyorBuilding.Add((ConveyorTile)created);
 
                         selectedTile.ConnectNext(created);
-                        
+
                         // Engine.LinkTwoNodes(selectedTile.nodeInGrid, created.nodeInGrid);
                         SelectTile(created);
 
@@ -239,7 +240,7 @@ namespace Procp_Form
                         {
                             engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
                             selectedTile.ConnectNext(t);
-                            if(t is DropOffTile)
+                            if (t is DropOffTile)
                             {
                                 var selectedConveyor = selectedTile.nodeInGrid as Conveyor;
                                 var tNode = t.nodeInGrid as DropOff;
@@ -340,7 +341,7 @@ namespace Procp_Form
             }
             else
             {
-                RefreshFlightsListBox();
+                RefreshFlightsList();
                 btnDeleteFlight.Enabled = true;
                 btnEditFlight.Enabled = true;
             }
@@ -361,7 +362,7 @@ namespace Procp_Form
             }
             else
             {
-                RefreshFlightsListBox();
+                RefreshFlightsList();
             }
         }
 
@@ -414,20 +415,11 @@ namespace Procp_Form
 
         private void buttonShowProcessedBaggage_Click(object sender, EventArgs e)
         {
-            //engine.GetCheckInStats().ForEach(x =>
-            //{
-            //    checkinCounter++;
-            //    this.listBox1.Items.Add($"checkin: {checkinCounter}, {x}");
-            //});
-        }
-
-        private void buttonShowQueuedBaggage_Click(object sender, EventArgs e)
-        {
-            //engine.GetQueueCounter().ForEach(x =>
-            //{
-            //    queueCounter++;
-            //    this.listBox1.Items.Add($"queues: {queueCounter}, {x}");
-            //});
+            engine.GetCheckInStats().ForEach(x =>
+            {
+                checkinCounter++;
+                this.listBox1.Items.Add($"checkin: {checkinCounter}, {x}");
+            });
         }
 
         private void ChbDeleteMode_CheckedChanged(object sender, EventArgs e)
