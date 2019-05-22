@@ -30,8 +30,6 @@ namespace Procp_Form
         List<ConveyorTile> conveyorBuilding;
         Engine engine = new Engine();
         int checkinCounter = 0;
-        SeriesCollection series = new SeriesCollection();
-        int queueCounter = 0;
 
         System.Timers.Timer aTimer;
 
@@ -47,8 +45,6 @@ namespace Procp_Form
             isBuildingConveyor = false;
             isConnectingTiles = false;
             conveyorBuilding = new List<ConveyorTile>();
-
-            cartesianChartBaggageProcessedByCheckin.Series = series;
         }
 
         private void AnimationBox_Paint(object sender, PaintEventArgs e)
@@ -443,8 +439,7 @@ namespace Procp_Form
 
         private void buttonLoadChartBaggageThroughCheckin_Click(object sender, EventArgs e)
         {
-
-            series.Clear();
+            SeriesCollection series = new SeriesCollection();
             checkinCounter = 0;
             foreach (var number in engine.GetCheckInStats())
             {
@@ -456,7 +451,7 @@ namespace Procp_Form
 
         private void buttonFailedSecurityCheck_Click(object sender, EventArgs e)
         {
-            series = new SeriesCollection();
+            SeriesCollection series = new SeriesCollection();
             int securityCounter = 0;
             foreach (var number in engine.GetSecurityStats())
             {
@@ -468,13 +463,22 @@ namespace Procp_Form
 
         private void buttonRefreshPercentageFailedBags_Click(object sender, EventArgs e)
         {
+            SeriesCollection series = new SeriesCollection();
             double failed = engine.GetCalculatePercentageFailedBaggage();
             double successed = engine.GetCalculateSuccessedBaggage();
-            series = new SeriesCollection();
             series.Add(new PieSeries() { Title = "Failed", Values = new ChartValues<double> { failed }});
             series.Add(new PieSeries() { Title = "Successed ", Values = new ChartValues<double> { successed } });
 
             pieChartPercentageAllFailedBaggage.Series = series;
+        }
+
+        private void buttonShowQueuedBaggage_Click(object sender, EventArgs e)
+        {
+            listBox1.Items.Clear();
+            foreach (var time in engine.GetTransferTime())
+            {
+                listBox1.Items.Add(time);
+            }
         }
     }
 }

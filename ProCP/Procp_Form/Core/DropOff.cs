@@ -1,4 +1,5 @@
-﻿using Procp_Form.CoreAbstraction;
+﻿using Procp_Form.Airport;
+using Procp_Form.CoreAbstraction;
 using Procp_Form.Statistics;
 using System;
 using System.Collections.Generic;
@@ -14,25 +15,43 @@ namespace Procp_Form.Core
     public class DropOff : Node
     {
         public List<Baggage> baggages;
+        List<Flight> flights;
         static int destinationGate = 0;
-        public Stopwatch stopwatch;
 
         public int DestinationGate { get; set; }
 
         public DropOff()
         {
             destinationGate++;
+            flights = new List<Flight>();
             baggages = new List<Baggage>();
             DestinationGate = destinationGate;
-            stopwatch = new Stopwatch();
         }
 
         public override void PassBaggage(Baggage Lastbaggage)
         {
             Status = BaggageStatus.Busy;
             baggages.Add(Lastbaggage);
-            stopwatch.Stop();
+            if (GetDesiredFlight() != null)
+            {
+                if (baggages.Count() == GetDesiredFlight().AmountOfBaggage)
+                {
+                    
+                }
+            }
             Status = BaggageStatus.Free;
+        }
+
+        public void SetupFlights(Flight flight)
+        {
+            flights.Add(flight);
+        }
+
+        public Flight GetDesiredFlight()
+        {
+            var flight = flights.FirstOrDefault(x => x.DestinationGate == this.DestinationGate);
+
+            return flight;
         }
 
         public List<Baggage> GetBaggages()

@@ -21,7 +21,6 @@ namespace Procp_Form.Core
         public override void Move()
         {
             this.Stop();
-
             if (CanMove())
             {
                 if (lastBaggage != null)

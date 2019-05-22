@@ -67,12 +67,12 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageSimVisuals = new System.Windows.Forms.TabPage();
             this.tabPageStats = new System.Windows.Forms.TabPage();
+            this.buttonRefreshPercentageFailedBags = new System.Windows.Forms.Button();
+            this.pieChartPercentageAllFailedBaggage = new LiveCharts.WinForms.PieChart();
             this.buttonFailedSecurityCheck = new System.Windows.Forms.Button();
             this.cartesianChartFailedToPassBaggage = new LiveCharts.WinForms.CartesianChart();
             this.buttonLoadChartBaggageThroughCheckin = new System.Windows.Forms.Button();
             this.cartesianChartBaggageProcessedByCheckin = new LiveCharts.WinForms.CartesianChart();
-            this.pieChartPercentageAllFailedBaggage = new LiveCharts.WinForms.PieChart();
-            this.buttonRefreshPercentageFailedBags = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.animationBox)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -459,6 +459,7 @@
             this.buttonShowQueuedBaggage.TabIndex = 24;
             this.buttonShowQueuedBaggage.Text = "Show transfer time per baggage";
             this.buttonShowQueuedBaggage.UseVisualStyleBackColor = true;
+            this.buttonShowQueuedBaggage.Click += new System.EventHandler(this.buttonShowQueuedBaggage_Click);
             // 
             // buttonShowProcessedBaggage
             // 
@@ -532,6 +533,25 @@
             this.tabPageStats.Text = "Statistics";
             this.tabPageStats.UseVisualStyleBackColor = true;
             // 
+            // buttonRefreshPercentageFailedBags
+            // 
+            this.buttonRefreshPercentageFailedBags.Location = new System.Drawing.Point(381, 803);
+            this.buttonRefreshPercentageFailedBags.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonRefreshPercentageFailedBags.Name = "buttonRefreshPercentageFailedBags";
+            this.buttonRefreshPercentageFailedBags.Size = new System.Drawing.Size(100, 28);
+            this.buttonRefreshPercentageFailedBags.TabIndex = 29;
+            this.buttonRefreshPercentageFailedBags.Text = "Refresh";
+            this.buttonRefreshPercentageFailedBags.UseVisualStyleBackColor = true;
+            this.buttonRefreshPercentageFailedBags.Click += new System.EventHandler(this.buttonRefreshPercentageFailedBags_Click);
+            // 
+            // pieChartPercentageAllFailedBaggage
+            // 
+            this.pieChartPercentageAllFailedBaggage.Location = new System.Drawing.Point(38, 531);
+            this.pieChartPercentageAllFailedBaggage.Name = "pieChartPercentageAllFailedBaggage";
+            this.pieChartPercentageAllFailedBaggage.Size = new System.Drawing.Size(434, 265);
+            this.pieChartPercentageAllFailedBaggage.TabIndex = 28;
+            this.pieChartPercentageAllFailedBaggage.Text = "pieChart1";
+            // 
             // buttonFailedSecurityCheck
             // 
             this.buttonFailedSecurityCheck.Location = new System.Drawing.Point(1424, 463);
@@ -571,25 +591,6 @@
             this.cartesianChartBaggageProcessedByCheckin.Size = new System.Drawing.Size(763, 427);
             this.cartesianChartBaggageProcessedByCheckin.TabIndex = 0;
             this.cartesianChartBaggageProcessedByCheckin.Text = "BaggageProcessedByCheckin";
-            // 
-            // pieChartPercentageAllFailedBaggage
-            // 
-            this.pieChartPercentageAllFailedBaggage.Location = new System.Drawing.Point(38, 531);
-            this.pieChartPercentageAllFailedBaggage.Name = "pieChartPercentageAllFailedBaggage";
-            this.pieChartPercentageAllFailedBaggage.Size = new System.Drawing.Size(434, 265);
-            this.pieChartPercentageAllFailedBaggage.TabIndex = 28;
-            this.pieChartPercentageAllFailedBaggage.Text = "pieChart1";
-            // 
-            // buttonRefreshPercentageFailedBags
-            // 
-            this.buttonRefreshPercentageFailedBags.Location = new System.Drawing.Point(381, 803);
-            this.buttonRefreshPercentageFailedBags.Margin = new System.Windows.Forms.Padding(4);
-            this.buttonRefreshPercentageFailedBags.Name = "buttonRefreshPercentageFailedBags";
-            this.buttonRefreshPercentageFailedBags.Size = new System.Drawing.Size(100, 28);
-            this.buttonRefreshPercentageFailedBags.TabIndex = 29;
-            this.buttonRefreshPercentageFailedBags.Text = "Refresh";
-            this.buttonRefreshPercentageFailedBags.UseVisualStyleBackColor = true;
-            this.buttonRefreshPercentageFailedBags.Click += new System.EventHandler(this.buttonRefreshPercentageFailedBags_Click);
             // 
             // Baggager
             // 
