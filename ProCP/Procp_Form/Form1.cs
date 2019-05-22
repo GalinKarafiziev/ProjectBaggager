@@ -41,7 +41,6 @@ namespace Procp_Form
             chbDeleteMode.Visible = false;
             buildModeActive = false;
             deleteMode = false;
-            cmBoxNodeToBuild.Visible = false;
             isBuildingConveyor = false;
             isConnectingTiles = false;
             conveyorBuilding = new List<ConveyorTile>();
@@ -56,14 +55,10 @@ namespace Procp_Form
         {
             if (chbBuildMode.Checked)
             {
-                cmBoxNodeToBuild.SelectedIndex = 0;
-
                 buildModeActive = true;
                 lblTest.Text = buildModeActive ? "[On]" : "[Off]";
-                cmBoxNodeToBuild.Visible = true;
+                gbBuildType.Visible = true;
                 chbDeleteMode.Visible = true;
-
-                buildModeType = cmBoxNodeToBuild.Text;
                 thisGrid.HideArea(buildModeType);
 
             }
@@ -71,7 +66,7 @@ namespace Procp_Form
             {
                 buildModeActive = false;
                 lblTest.Text = buildModeActive ? "[On]" : "[Off]";
-                cmBoxNodeToBuild.Visible = false;
+                gbBuildType.Visible = false;
                 chbDeleteMode.Checked = false;
                 chbDeleteMode.Visible = false;
                 buildModeType = null;
@@ -80,30 +75,29 @@ namespace Procp_Form
             animationBox.Invalidate();
         }
 
-        private void CmBoxNodeToBuild_SelectedIndexChanged(object sender, EventArgs e)
+        private void BuildType_CheckedChanged(object sender, EventArgs e)
         {
-            if (cmBoxNodeToBuild.Text == "CheckIn")
+            if (rbCheckIn.Checked)
             {
                 buildModeType = "CheckIn";
             }
-            else if (cmBoxNodeToBuild.Text == "Security Scanner")
+            else if (rbSecurity.Checked)
             {
                 buildModeType = "Security Scanner";
             }
-            else if (cmBoxNodeToBuild.Text == "Conveyor")
+            else if (rbConveyor.Checked)
             {
                 buildModeType = "Conveyor";
             }
-            else if (cmBoxNodeToBuild.Text == "DropOff")
+            else if (rbDropOff.Checked)
             {
                 buildModeType = "DropOff";
             }
-            else if (cmBoxNodeToBuild.Text == "MPA")
+            else if (rbMPA.Checked)
             {
                 buildModeType = "MPA";
             }
             thisGrid.HideArea(buildModeType);
-
             animationBox.Invalidate();
         }
 
@@ -423,16 +417,16 @@ namespace Procp_Form
             if (chbDeleteMode.Checked)
             {
                 deleteMode = true;
-                buildModeType = null;
+                //buildModeType = null;
+                gbBuildType.Visible = false;
                 thisGrid.HideArea(buildModeType);
-                cmBoxNodeToBuild.Visible = false;
+                
             }
             else
             {
                 deleteMode = false;
-                buildModeType = cmBoxNodeToBuild.Text;
                 thisGrid.HideArea(buildModeType);
-                cmBoxNodeToBuild.Visible = true;
+                gbBuildType.Visible = true;
             }
             animationBox.Invalidate();
         }
@@ -472,6 +466,7 @@ namespace Procp_Form
             pieChartPercentageAllFailedBaggage.Series = series;
         }
 
+        
     }
 }
 
