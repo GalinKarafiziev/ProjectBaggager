@@ -27,12 +27,10 @@ namespace Procp_Form.Statistics
             stopwatch = new Stopwatch();            
         }
 
-        public void GetStopwatch() => checkIns.ForEach(x => x.stopwatch = stopwatch);
 
         public List<int> GetCheckInBaggageCount()
         {
             baggageInCheckIn.Clear();
-            checkIns.ForEach(x => baggageInCheckIn.Add(x.bagageInCheckIn));
             return baggageInCheckIn;
         }
 

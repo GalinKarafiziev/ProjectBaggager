@@ -30,8 +30,6 @@ namespace Procp_Form
         List<ConveyorTile> conveyorBuilding;
         Engine engine = new Engine();
         int checkinCounter = 0;
-        SeriesCollection series = new SeriesCollection();
-        int queueCounter = 0;
 
         System.Timers.Timer aTimer;
 
@@ -47,8 +45,6 @@ namespace Procp_Form
             isBuildingConveyor = false;
             isConnectingTiles = false;
             conveyorBuilding = new List<ConveyorTile>();
-
-            cartesianChartBaggageProcessedByCheckin.Series = series;
         }
 
         private void AnimationBox_Paint(object sender, PaintEventArgs e)
@@ -134,7 +130,7 @@ namespace Procp_Form
                         CheckIn checkin = new CheckIn();
                         SelectTile(thisGrid.AddCheckInAtCoordinates(t, checkin));
                         engine.AddCheckIn(checkin);
-                        engine.AddStopwatchToCheckIn();
+                        RefreshCheckInCombobox();
                     }
                     else if (buildModeType == "Security Scanner")
                     {
@@ -181,6 +177,8 @@ namespace Procp_Form
                         engine.Remove(t.nodeInGrid);
                         thisGrid.RemoveNode(t);
                     }
+                    RefreshCheckInCombobox();
+                    RefreshDropOffCombobox();
                 }
             }
             else
@@ -333,6 +331,7 @@ namespace Procp_Form
             DateTime date = (Convert.ToDateTime(tbFlightTime.Text));
             string flightNr = tbFlightNr.Text;
             int flightBaggage = Convert.ToInt32(tbFlightBaggage.Text);
+            var selectedCheckIn = cbCheckInFlight.SelectedItem as CheckIn;
             var selectedDropOff = cbDropOffDest.SelectedItem as DropOff;
             int destGate = selectedDropOff.DestinationGate;
             if (!(engine.AddFlight(date, flightNr, flightBaggage, destGate)))
@@ -342,6 +341,7 @@ namespace Procp_Form
             else
             {
                 RefreshFlightsList();
+                selectedCheckIn.DestinationGate = destGate;
                 btnDeleteFlight.Enabled = true;
                 btnEditFlight.Enabled = true;
             }
@@ -397,6 +397,11 @@ namespace Procp_Form
             cbDropOffDest.DataSource = null;
             cbDropOffDest.DataSource = engine.dropOffs;
         }
+        public void RefreshCheckInCombobox()
+        {
+            cbCheckInFlight.DataSource = null;
+            cbCheckInFlight.DataSource = engine.checkIns;
+        }
 
         private void TimerSequence(object source, ElapsedEventArgs e)
         {
@@ -411,15 +416,6 @@ namespace Procp_Form
             }
             selectedTile = t;
             selectedTile.selected = true;
-        }
-
-        private void buttonShowProcessedBaggage_Click(object sender, EventArgs e)
-        {
-            engine.GetCheckInStats().ForEach(x =>
-            {
-                checkinCounter++;
-                this.listBox1.Items.Add($"checkin: {checkinCounter}, {x}");
-            });
         }
 
         private void ChbDeleteMode_CheckedChanged(object sender, EventArgs e)
@@ -443,8 +439,7 @@ namespace Procp_Form
 
         private void buttonLoadChartBaggageThroughCheckin_Click(object sender, EventArgs e)
         {
-
-            series.Clear();
+            SeriesCollection series = new SeriesCollection();
             checkinCounter = 0;
             foreach (var number in engine.GetCheckInStats())
             {
@@ -456,7 +451,7 @@ namespace Procp_Form
 
         private void buttonFailedSecurityCheck_Click(object sender, EventArgs e)
         {
-            series = new SeriesCollection();
+            SeriesCollection series = new SeriesCollection();
             int securityCounter = 0;
             foreach (var number in engine.GetSecurityStats())
             {
@@ -468,14 +463,15 @@ namespace Procp_Form
 
         private void buttonRefreshPercentageFailedBags_Click(object sender, EventArgs e)
         {
+            SeriesCollection series = new SeriesCollection();
             double failed = engine.GetCalculatePercentageFailedBaggage();
             double successed = engine.GetCalculateSuccessedBaggage();
-            series = new SeriesCollection();
             series.Add(new PieSeries() { Title = "Failed", Values = new ChartValues<double> { failed }});
             series.Add(new PieSeries() { Title = "Successed ", Values = new ChartValues<double> { successed } });
 
             pieChartPercentageAllFailedBaggage.Series = series;
         }
+
     }
 }
 
