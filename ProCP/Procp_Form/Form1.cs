@@ -49,7 +49,6 @@ namespace Procp_Form
             conveyorBuilding = new List<ConveyorTile>();
 
             cartesianChartBaggageProcessedByCheckin.Series = series;
-            cbDropOffDest.DataSource = engine.dropOffs;
         }
 
         private void AnimationBox_Paint(object sender, PaintEventArgs e)
@@ -79,11 +78,6 @@ namespace Procp_Form
                 cmBoxNodeToBuild.Visible = false;
                 chbDeleteMode.Checked = false;
                 chbDeleteMode.Visible = false;
-
-                //hide area with null will make everything non hidden
-                //you call HideArea() to remove all of the hiding
-                //im a fuckin idiot - Boris Georgiev
-                //PS: it works doe
                 buildModeType = null;
                 thisGrid.HideArea(buildModeType);
             }
@@ -108,7 +102,7 @@ namespace Procp_Form
             {
                 buildModeType = "DropOff";
             }
-            else if(cmBoxNodeToBuild.Text == "MPA")
+            else if (cmBoxNodeToBuild.Text == "MPA")
             {
                 buildModeType = "MPA";
             }
@@ -140,6 +134,7 @@ namespace Procp_Form
                         CheckIn checkin = new CheckIn();
                         SelectTile(thisGrid.AddCheckInAtCoordinates(t, checkin));
                         engine.AddCheckIn(checkin);
+                        engine.AddStopwatchToCheckIn();
                     }
                     else if (buildModeType == "Security Scanner")
                     {
@@ -158,7 +153,7 @@ namespace Procp_Form
                             btnAddFlight.Enabled = true;
                         }
                     }
-                    else if(buildModeType == "MPA")
+                    else if (buildModeType == "MPA")
                     {
                         MPA mpa = new MPA();
                         thisGrid.AddMPA(t, mpa);
@@ -181,7 +176,7 @@ namespace Procp_Form
                         thisGrid.RemoveMPA(t);
                         engine.Remove(t.nodeInGrid);
                     }
-                    else 
+                    else
                     {
                         engine.Remove(t.nodeInGrid);
                         thisGrid.RemoveNode(t);
@@ -227,7 +222,7 @@ namespace Procp_Form
                         conveyorBuilding.Add((ConveyorTile)created);
 
                         selectedTile.ConnectNext(created);
-                        
+
                         // Engine.LinkTwoNodes(selectedTile.nodeInGrid, created.nodeInGrid);
                         SelectTile(created);
 
@@ -245,7 +240,7 @@ namespace Procp_Form
                         {
                             engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
                             selectedTile.ConnectNext(t);
-                            if(t is DropOffTile)
+                            if (t is DropOffTile)
                             {
                                 var selectedConveyor = selectedTile.nodeInGrid as Conveyor;
                                 var tNode = t.nodeInGrid as DropOff;
@@ -346,7 +341,7 @@ namespace Procp_Form
             }
             else
             {
-                RefreshFlightsListBox();
+                RefreshFlightsList();
                 btnDeleteFlight.Enabled = true;
                 btnEditFlight.Enabled = true;
             }
@@ -367,29 +362,32 @@ namespace Procp_Form
             }
             else
             {
-                RefreshFlightsListBox();
+                RefreshFlightsList();
             }
         }
 
         private void btnDeleteFlight_Click(object sender, EventArgs e)
         {
             Flight selectedFlight = lbFlights.SelectedItem as Flight;
-            if (!(engine.RemoveFlight(selectedFlight.FlightNumber)))
+            if (selectedFlight != null)
             {
-                MessageBox.Show("Flight not found.");
+                if (!(engine.RemoveFlight(selectedFlight.FlightNumber)))
+                {
+                    MessageBox.Show("Flight not found.");
+                }
+                else
+                {
+                    lbFlights.DataSource = null;
+                    lbFlights.DataSource = engine.flights;
+                }
             }
             else
             {
-                RefreshFlightsListBox();
-                if (!(engine.CheckFlights()))
-                {
-                    btnDeleteFlight.Enabled = false;
-                    btnEditFlight.Enabled = false;
-                }
+                MessageBox.Show("Select a flight first!");
             }
         }
-        
-        public void RefreshFlightsListBox()
+
+        public void RefreshFlightsList()
         {
             lbFlights.DataSource = null;
             lbFlights.DataSource = engine.flights;
@@ -417,20 +415,11 @@ namespace Procp_Form
 
         private void buttonShowProcessedBaggage_Click(object sender, EventArgs e)
         {
-            //engine.GetCheckInStats().ForEach(x =>
-            //{
-            //    checkinCounter++;
-            //    this.listBox1.Items.Add($"checkin: {checkinCounter}, {x}");
-            //});
-        }
-
-        private void buttonShowQueuedBaggage_Click(object sender, EventArgs e)
-        {
-            //engine.GetQueueCounter().ForEach(x =>
-            //{
-            //    queueCounter++;
-            //    this.listBox1.Items.Add($"queues: {queueCounter}, {x}");
-            //});
+            engine.GetCheckInStats().ForEach(x =>
+            {
+                checkinCounter++;
+                this.listBox1.Items.Add($"checkin: {checkinCounter}, {x}");
+            });
         }
 
         private void ChbDeleteMode_CheckedChanged(object sender, EventArgs e)
@@ -454,13 +443,38 @@ namespace Procp_Form
 
         private void buttonLoadChartBaggageThroughCheckin_Click(object sender, EventArgs e)
         {
+
             series.Clear();
             checkinCounter = 0;
             foreach (var number in engine.GetCheckInStats())
             {
                 checkinCounter++;
-                series.Add(new ColumnSeries() {Title = $"Checkin {checkinCounter.ToString()}", Values = new ChartValues<int> { number }});   
+                series.Add(new ColumnSeries() { Title = $"Checkin {checkinCounter.ToString()}", Values = new ChartValues<int> { number } });
             }
+            cartesianChartBaggageProcessedByCheckin.Series = series;
+        }
+
+        private void buttonFailedSecurityCheck_Click(object sender, EventArgs e)
+        {
+            series = new SeriesCollection();
+            int securityCounter = 0;
+            foreach (var number in engine.GetSecurityStats())
+            {
+                securityCounter++;
+                series.Add(new ColumnSeries() { Title = $"Security {securityCounter.ToString()}", Values = new ChartValues<int> { number } });
+            }
+            cartesianChartFailedToPassBaggage.Series = series;
+        }
+
+        private void buttonRefreshPercentageFailedBags_Click(object sender, EventArgs e)
+        {
+            double failed = engine.GetCalculatePercentageFailedBaggage();
+            double successed = engine.GetCalculateSuccessedBaggage();
+            series = new SeriesCollection();
+            series.Add(new PieSeries() { Title = "Failed", Values = new ChartValues<double> { failed }});
+            series.Add(new PieSeries() { Title = "Successed ", Values = new ChartValues<double> { successed } });
+
+            pieChartPercentageAllFailedBaggage.Series = series;
         }
     }
 }

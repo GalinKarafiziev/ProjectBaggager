@@ -1,6 +1,7 @@
 ﻿using Procp_Form.CoreAbstraction;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -12,10 +13,12 @@ namespace Procp_Form.Core
     {
         public List<Baggage> queue;
         public int bagageInCheckIn = 0;
+        public Stopwatch stopwatch;
 
         public CheckIn()
         {
             queue = new List<Baggage>();
+            stopwatch = new Stopwatch();
         }
 
         public override void ProcessBaggage()
@@ -36,7 +39,8 @@ namespace Procp_Form.Core
         public override void PassBaggage(Baggage Lastbaggage)
         {
             Status = BaggageStatus.Busy;
-            bagageInCheckIn++;
+            bagageInCheckIn++;            
+            stopwatch.Start();
             baggage = Lastbaggage;
             ProcessBaggage();
         }

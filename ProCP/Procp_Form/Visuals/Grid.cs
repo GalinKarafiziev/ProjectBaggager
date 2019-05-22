@@ -290,9 +290,6 @@ namespace Procp_Form.Visuals
             gridTiles.Insert(index, empty);
         }
 
-        //removes all tiles of a conveyor Line
-        //the fact that the conveyor is not one tile completely goes agains the core design, and therefore we have methods like this one
-        //I really cannot think of a better way to do this and I hate it - Boris Georgiev
         public void RemoveConveyorLine(GridTile toRemove)
         {
             ConveyorTile first = new ConveyorTile();
