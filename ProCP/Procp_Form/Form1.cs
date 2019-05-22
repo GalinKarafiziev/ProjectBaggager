@@ -130,7 +130,6 @@ namespace Procp_Form
                         CheckIn checkin = new CheckIn();
                         SelectTile(thisGrid.AddCheckInAtCoordinates(t, checkin));
                         engine.AddCheckIn(checkin);
-                        engine.AddStopwatchToCheckIn();
                         RefreshCheckInCombobox();
                     }
                     else if (buildModeType == "Security Scanner")
@@ -332,6 +331,7 @@ namespace Procp_Form
             DateTime date = (Convert.ToDateTime(tbFlightTime.Text));
             string flightNr = tbFlightNr.Text;
             int flightBaggage = Convert.ToInt32(tbFlightBaggage.Text);
+            var selectedCheckIn = cbCheckInFlight.SelectedItem as CheckIn;
             var selectedDropOff = cbDropOffDest.SelectedItem as DropOff;
             int destGate = selectedDropOff.DestinationGate;
             if (!(engine.AddFlight(date, flightNr, flightBaggage, destGate)))
@@ -341,6 +341,7 @@ namespace Procp_Form
             else
             {
                 RefreshFlightsList();
+                selectedCheckIn.DestinationGate = destGate;
                 btnDeleteFlight.Enabled = true;
                 btnEditFlight.Enabled = true;
             }
@@ -471,14 +472,6 @@ namespace Procp_Form
             pieChartPercentageAllFailedBaggage.Series = series;
         }
 
-        private void buttonShowQueuedBaggage_Click(object sender, EventArgs e)
-        {
-            listBox1.Items.Clear();
-            foreach (var time in engine.GetTransferTime())
-            {
-                listBox1.Items.Add(time);
-            }
-        }
     }
 }
 

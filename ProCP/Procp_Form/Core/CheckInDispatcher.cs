@@ -112,6 +112,7 @@ namespace Procp_Form.Core
                     if (f.AmountOfBaggage > f.BaggageDispatched)
                     {
                         DispatchBaggage(f);
+                        System.Diagnostics.Debug.WriteLine("entered dispatch");
                     }
                     else
                     {

@@ -39,11 +39,7 @@ namespace Procp_Form
 
         public void AddCheckIn(CheckIn checkin) => checkIns.Add(checkin);
 
-        public void AddStopwatchToCheckIn() => this.checkIns.ForEach(x => x.stopwatch = stopwatch);
-
         public void AddDropOff(DropOff dropOff) => dropOffs.Add(dropOff);
-
-        public void AddStopwatchToDropOff() => this.dropOffs.ForEach(x => x.stopwatch = stopwatch);
 
         public void AddConveyorPart(Conveyor conveyor) => conveyors.Add(conveyor);
 
