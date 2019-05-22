@@ -44,5 +44,9 @@ namespace Procp_Form.Core
             baggage = Lastbaggage;
             ProcessBaggage();
         }
+        public override string ToString()
+        {
+            return $"Check-In [#]";
+        }
     }
 }

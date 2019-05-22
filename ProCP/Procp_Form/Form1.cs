@@ -135,6 +135,7 @@ namespace Procp_Form
                         SelectTile(thisGrid.AddCheckInAtCoordinates(t, checkin));
                         engine.AddCheckIn(checkin);
                         engine.AddStopwatchToCheckIn();
+                        RefreshCheckInCombobox();
                     }
                     else if (buildModeType == "Security Scanner")
                     {
@@ -181,6 +182,8 @@ namespace Procp_Form
                         engine.Remove(t.nodeInGrid);
                         thisGrid.RemoveNode(t);
                     }
+                    RefreshCheckInCombobox();
+                    RefreshDropOffCombobox();
                 }
             }
             else
@@ -397,6 +400,11 @@ namespace Procp_Form
             cbDropOffDest.DataSource = null;
             cbDropOffDest.DataSource = engine.dropOffs;
         }
+        public void RefreshCheckInCombobox()
+        {
+            cbCheckInFlight.DataSource = null;
+            cbCheckInFlight.DataSource = engine.checkIns;
+        }
 
         private void TimerSequence(object source, ElapsedEventArgs e)
         {
@@ -411,15 +419,6 @@ namespace Procp_Form
             }
             selectedTile = t;
             selectedTile.selected = true;
-        }
-
-        private void buttonShowProcessedBaggage_Click(object sender, EventArgs e)
-        {
-            engine.GetCheckInStats().ForEach(x =>
-            {
-                checkinCounter++;
-                this.listBox1.Items.Add($"checkin: {checkinCounter}, {x}");
-            });
         }
 
         private void ChbDeleteMode_CheckedChanged(object sender, EventArgs e)
