@@ -30,6 +30,10 @@ namespace Procp_Form.Core
                 }
                 else
                 {
+                    if (bufferNotSecure.Count() != 0)
+                    {
+                        ReturnFromBuffer();
+                    }
                     NextNode.PassBaggage(baggage);
                     NextNode.OnNodeStatusChangedToFree -= ProcessBaggage;
                     Status = BaggageStatus.Free;
@@ -48,6 +52,7 @@ namespace Procp_Form.Core
         public void ReturnFromBuffer()
         {
             NextNode.PassBaggage(bufferNotSecure.Dequeue());
+            NextNode.OnNodeStatusChangedToFree -= ReturnFromBuffer;
         }
 
         public override void PassBaggage(Baggage Lastbaggage)
