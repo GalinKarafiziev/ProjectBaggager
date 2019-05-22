@@ -479,9 +479,10 @@
             // 
             // buttonRefreshPercentageFailedBags
             // 
-            this.buttonRefreshPercentageFailedBags.Location = new System.Drawing.Point(286, 652);
+            this.buttonRefreshPercentageFailedBags.Location = new System.Drawing.Point(381, 803);
+            this.buttonRefreshPercentageFailedBags.Margin = new System.Windows.Forms.Padding(4);
             this.buttonRefreshPercentageFailedBags.Name = "buttonRefreshPercentageFailedBags";
-            this.buttonRefreshPercentageFailedBags.Size = new System.Drawing.Size(75, 23);
+            this.buttonRefreshPercentageFailedBags.Size = new System.Drawing.Size(100, 28);
             this.buttonRefreshPercentageFailedBags.TabIndex = 29;
             this.buttonRefreshPercentageFailedBags.Text = "Refresh";
             this.buttonRefreshPercentageFailedBags.UseVisualStyleBackColor = true;
@@ -489,10 +490,9 @@
             // 
             // pieChartPercentageAllFailedBaggage
             // 
-            this.pieChartPercentageAllFailedBaggage.Location = new System.Drawing.Point(28, 431);
-            this.pieChartPercentageAllFailedBaggage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pieChartPercentageAllFailedBaggage.Location = new System.Drawing.Point(38, 531);
             this.pieChartPercentageAllFailedBaggage.Name = "pieChartPercentageAllFailedBaggage";
-            this.pieChartPercentageAllFailedBaggage.Size = new System.Drawing.Size(326, 215);
+            this.pieChartPercentageAllFailedBaggage.Size = new System.Drawing.Size(434, 265);
             this.pieChartPercentageAllFailedBaggage.TabIndex = 28;
             this.pieChartPercentageAllFailedBaggage.Text = "pieChart1";
             // 

@@ -11,14 +11,14 @@ namespace Procp_Form.Core
 {
     public class CheckIn : ProcessUnit
     {
-        public List<Baggage> queue;
-        public int bagageInCheckIn = 0;
-        public Stopwatch stopwatch;
+        public int baggageInCheckIn = 0;
+        public DateTime startOfBaggageTransfer;
+
+        public int DestinationGate { get; set; }
 
         public CheckIn()
         {
-            queue = new List<Baggage>();
-            stopwatch = new Stopwatch();
+
         }
 
         public override void ProcessBaggage()
@@ -26,8 +26,11 @@ namespace Procp_Form.Core
             if (NextNode.Status == BaggageStatus.Free)
             {
                 NextNode.PassBaggage(baggage);
+                if (baggageInCheckIn == 1)
+                {
+                    startOfBaggageTransfer = DateTime.Now;
+                }
                 Status = BaggageStatus.Free;
-                baggage = null;
                 NextNode.OnNodeStatusChangedToFree -= ProcessBaggage;
             }
             else
@@ -39,8 +42,7 @@ namespace Procp_Form.Core
         public override void PassBaggage(Baggage Lastbaggage)
         {
             Status = BaggageStatus.Busy;
-            bagageInCheckIn++;            
-            stopwatch.Start();
+            baggageInCheckIn++;
             baggage = Lastbaggage;
             ProcessBaggage();
         }

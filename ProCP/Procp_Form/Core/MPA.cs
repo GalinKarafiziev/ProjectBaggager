@@ -36,7 +36,6 @@ namespace Procp_Form.Core
                         {
                             NextNode.PassBaggage(baggage);
                             Status = BaggageStatus.Free;
-                            baggage = null;
                             NextNode.OnNodeStatusChangedToFree -= ProcessBaggage;
                             break;
                         }
