@@ -15,24 +15,24 @@ namespace UnitTest
     public class CheckInDispatcher
     {
         //[TestMethod]
-        public void CalculateDispatchRate_Test()
-        {
-            DateTime date = new DateTime(2019, 5,14,20, 44, 0 );
-            Flight flight = new Flight(date, "BABY98", 3);
-            Procp_Form.Core.CheckInDispatcher checkInDispatcher = new Procp_Form.Core.CheckInDispatcher();
+        //public void CalculateDispatchRate_Test()
+        //{
+        //    DateTime date = new DateTime(2019, 5,14,20, 44, 0 );
+        //    Flight flight = new Flight(date, "BABY98", 3, 1);
+        //    Procp_Form.Core.CheckInDispatcher checkInDispatcher = new Procp_Form.Core.CheckInDispatcher();
 
-            double a = checkInDispatcher.CalculateDispatchRate(flight);
+        //    double a = checkInDispatcher.CalculateDispatchRate(flight);
             
-            //works if and only if you set the date to half an hour after the current time,
-            //so if for an example the time right now is 12, the date should be set to 12:30.
-            Assert.AreEqual(600000, a);
-        }
+        //    //works if and only if you set the date to half an hour after the current time,
+        //    //so if for an example the time right now is 12, the date should be set to 12:30.
+        //    Assert.AreEqual(600000, a);
+        //}
         //WARNING! IN ORDER FOR THIS TEST TO WORK YOU SHOULD CHANGE THE DATE TO MORE THAN THE CURRENT TIME
         //[TestMethod]
         public void SetupTimersIfStatement_Test()
         {
           DateTime date = new DateTime(2019, 5, 19, 20, 20, 0);
-          Flight flight = new Flight(date, "BABY98", 3);
+          Flight flight = new Flight(date, "BABY98", 3, 1);
           flight.BaggageDispatched = 1;
 
           List<Flight> flights = new List<Flight>();
@@ -49,7 +49,7 @@ namespace UnitTest
         public void SetupTimersElseStatement_Test()
         {
             DateTime date = new DateTime(2019, 5, 19, 20, 50, 0);
-            Flight flight = new Flight(date, "BABY98", 3);
+            Flight flight = new Flight(date, "BABY98", 3, 1);
             flight.BaggageDispatched = 4;
 
             List<Flight> flights = new List<Flight>();
@@ -74,10 +74,10 @@ namespace UnitTest
         public void DispatchBaggageIfStatement_Test()
         {
             CheckIn checkIn = new CheckIn();
-            DropOff dropOff = new DropOff() { Status = BaggageStatus.Free };
+            DropOff dropOff = new DropOff() { Status = BaggageStatus.Free, DestinationGate = 1 };
             checkIn.NextNode = dropOff;
             Procp_Form.Core.CheckInDispatcher checkInDispatcher = new Procp_Form.Core.CheckInDispatcher();
-            Flight flight = new Flight(DateTime.Now, "GGG", 0);
+            Flight flight = new Flight(DateTime.Now, "GGG", 0, 1);
 
             Queue<Baggage> baggageQueue = new Queue<Baggage>();
             Baggage baggage = new Baggage();
@@ -96,10 +96,10 @@ namespace UnitTest
         public void DispatchBaggageElseStatement_Test()
         {
             CheckIn checkIn = new CheckIn(){Status = BaggageStatus.Busy};
-            DropOff dropOff = new DropOff() { Status = BaggageStatus.Free };
+            DropOff dropOff = new DropOff() { Status = BaggageStatus.Free, DestinationGate = 1 };
             checkIn.NextNode = dropOff;
             Procp_Form.Core.CheckInDispatcher checkInDispatcher = new Procp_Form.Core.CheckInDispatcher();
-            Flight flight = new Flight(DateTime.Now, "GGG", 0);
+            Flight flight = new Flight(DateTime.Now, "GGG", 0, 1);
 
             Queue<Baggage> baggageQueue = new Queue<Baggage>();
             Baggage baggage = new Baggage();
@@ -117,10 +117,10 @@ namespace UnitTest
         public void PassQueuedBaggage_Test()
         {
             CheckIn checkIn = new CheckIn();
-            DropOff dropOff = new DropOff(){Status = BaggageStatus.Free };
+            DropOff dropOff = new DropOff(){Status = BaggageStatus.Free, DestinationGate = 1 };
             checkIn.NextNode = dropOff;
             Procp_Form.Core.CheckInDispatcher checkInDispatcher = new Procp_Form.Core.CheckInDispatcher();
-            Flight flight = new Flight(DateTime.Now, "GGG", 1);
+            Flight flight = new Flight(DateTime.Now, "GGG", 1, 1);
 
             Queue<Baggage> baggageQueue = new Queue<Baggage>();
             Baggage baggage = new Baggage();
@@ -158,9 +158,12 @@ namespace UnitTest
             Procp_Form.Core.CheckInDispatcher dispatcher = new Procp_Form.Core.CheckInDispatcher();
             
             List<CheckIn> checkIns = new List<CheckIn>();
+            Baggage baggage = new Baggage();
+            Queue<Baggage> baggagesQ = new Queue<Baggage>();
+            baggagesQ.Enqueue(baggage);
             List<Queue<Baggage>> baggages = new List<Queue<Baggage>>()
             {
-                new Queue<Baggage>(),
+                baggagesQ,
                 new Queue<Baggage>(),
             };
             checkIns.Add(checkIn);
@@ -168,7 +171,7 @@ namespace UnitTest
 
             dispatcher.SetupCheckins(checkIns);
 
-            int a = dispatcher.FindMostSuitableCheckin();
+            int a = dispatcher.FindMostSuitableCheckin(baggage);
 
             Assert.AreEqual(a, 1);
 
@@ -202,7 +205,7 @@ namespace UnitTest
             dispatcher.checkinQueues.Add(baggagesQueue_True);
             dispatcher.checkins = checkIns;
             
-            int a = dispatcher.FindMostSuitableCheckin();
+            int a = dispatcher.FindMostSuitableCheckin(baggage);
 
             Assert.AreEqual(a, 1);
 
