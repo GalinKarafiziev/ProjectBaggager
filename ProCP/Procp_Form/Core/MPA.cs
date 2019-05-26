@@ -11,10 +11,12 @@ namespace Procp_Form.Core
     public class MPA : ProcessUnit
     {
         public List<Conveyor> nextNodes;
+        public List<Baggage> baggagesToWait;
 
         public MPA()
         {
             nextNodes = new List<Conveyor>();
+            baggagesToWait = new List<Baggage>();
         }
 
         public void AddNextNode(Conveyor node)
@@ -25,34 +27,51 @@ namespace Procp_Form.Core
 
         public override void ProcessBaggage()
         {
-            if (baggage != null)
+            foreach (var conv in nextNodes.ToList())
             {
-                foreach (Conveyor conv in nextNodes)
+                if (conv.DestinationGate == baggage.DestinationGate)
                 {
-                    if (conv.DestinationGate == baggage.DestinationGate)
+                    NextNode = conv;
+                    if (NextNode.Status == BaggageStatus.Free)
                     {
-                        NextNode = conv;
-                        if (NextNode.Status == BaggageStatus.Free)
+                        NextNode.PassBaggage(baggage);
+                        Status = BaggageStatus.Free;
+                        baggage = null;
+                        if (OnNodeStatusChangedToFree != null)
                         {
-                            NextNode.PassBaggage(baggage);
-                            Status = BaggageStatus.Free;
-                            NextNode.OnNodeStatusChangedToFree -= ProcessBaggage;
-                            break;
+                            NextNode.OnNodeStatusChangedToFree -= () => PassWaitingBaggage(conv);
                         }
-                        else
-                        {
-                            NextNode.OnNodeStatusChangedToFree += ProcessBaggage;
-                            break;
-                        }
+                        break;
                     }
+                    else
+                    {
+                        baggagesToWait.Add(baggage);
+                        NextNode.OnNodeStatusChangedToFree += () => PassWaitingBaggage(conv);
+                        break;
+                    }
+                }
+            }
+        }
+
+        public void PassWaitingBaggage(Conveyor chosen)
+        {
+            var chosenConveyor = chosen;
+            foreach (var bag in baggagesToWait)
+            {
+                if (bag.DestinationGate == chosenConveyor.DestinationGate)
+                {
+                    chosenConveyor.PassBaggage(bag);
+                    Status = BaggageStatus.Free;
+                    baggagesToWait.Remove(bag);
+                    break;
                 }
             }
         }
 
         public override void PassBaggage(Baggage Lastbaggage)
         {
-            Status = BaggageStatus.Busy;
             baggage = Lastbaggage;
+            Status = BaggageStatus.Busy;
             ProcessBaggage();
         }
     }

@@ -140,6 +140,8 @@ namespace Procp_Form
 
         public void Stop()
         {
+
+            flights.Clear();
             foreach (var conveyor in conveyors)
             {
                 conveyor.Stop();

@@ -59,6 +59,10 @@ namespace Procp_Form.Core
             if (checkIn.Status == BaggageStatus.Free)
             {
                 checkIn.PassBaggage(baggage);
+                if (OnNodeStatusChangedToFree != null)
+                {
+                    checkIn.OnNodeStatusChangedToFree -= () => PassQueuedBaggage(chosen);
+                }
             }
             else
             {
@@ -109,16 +113,14 @@ namespace Procp_Form.Core
 
                 timer.Elapsed += (sender, args) =>
                 {
-                    //System.Diagnostics.Debug.WriteLine(f.BaggageDispatched);
+                    System.Diagnostics.Debug.WriteLine($"{f.AmountOfBaggage} - {f.BaggageDispatched}");
                     if (f.AmountOfBaggage > f.BaggageDispatched)
                     {
                         DispatchBaggage(f);
-                        System.Diagnostics.Debug.WriteLine("entered dispatch");
                     }
                     else
                     {
                         timer.Stop();
-                        System.Diagnostics.Debug.WriteLine("timer stopped");
                     }
                 };
             }
@@ -135,15 +137,12 @@ namespace Procp_Form.Core
                     if (checkins.ElementAt(checkIn).Status == BaggageStatus.Free)
                     {
                         chosenIndex = checkIn;
-                        System.Diagnostics.Debug.WriteLine(chosenIndex);
                         return chosenIndex;
                     }
                     chosenIndex = checkIn;
                 }
             }
-
             return chosenIndex;
-
         }
 
         //public double CalculateDispatchRate(Flight flight)
