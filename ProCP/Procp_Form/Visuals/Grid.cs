@@ -39,6 +39,9 @@ namespace Procp_Form.Visuals
             tileWidth = (animBoxWidth - 1) / tileHorizontalCount;
             tileHeight = (animBoxHeigth - 1) / tileVerticalCount;
 
+            hideAreaNotForDropOff = tileVerticalCount - 1;
+            hideAreaNotConveyorRowsTop = tileVerticalCount - 1;
+
             CreateGrid();
         }
         public int TileHorizontalCount

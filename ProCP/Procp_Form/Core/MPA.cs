@@ -58,11 +58,18 @@ namespace Procp_Form.Core
             var chosenConveyor = chosen;
             foreach (var bag in baggagesToWait)
             {
-                if (bag.DestinationGate == chosenConveyor.DestinationGate)
+                if (bag != null)
                 {
-                    chosenConveyor.PassBaggage(bag);
-                    Status = BaggageStatus.Free;
-                    baggagesToWait.Remove(bag);
+                    if (bag.DestinationGate == chosenConveyor.DestinationGate)
+                    {
+                        chosenConveyor.PassBaggage(bag);
+                        Status = BaggageStatus.Free;
+                        baggagesToWait.Remove(bag);
+                        break;
+                    }
+                }
+                else
+                {
                     break;
                 }
             }
