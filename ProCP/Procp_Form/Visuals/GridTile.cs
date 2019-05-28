@@ -22,7 +22,24 @@ namespace Procp_Form.Visuals
         public Brush fillBrush;
         public Brush clickableColor;
         public Brush unclickableColour;
-        
+
+        protected Image img;
+        protected string imgpath;
+
+        protected void loadImage(string path, int width, int height)
+        {
+            using (var srce = new Bitmap(path))
+            {
+                var dest = new Bitmap(width,height, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+                using (var gr = Graphics.FromImage(dest))
+                {
+                    gr.DrawImage(srce, new Rectangle(Point.Empty, dest.Size));
+                }
+                if (img != null) img.Dispose();
+                img = dest;
+            }
+        }
+
         public int Column
         {
             get { return column; }
@@ -42,8 +59,10 @@ namespace Procp_Form.Visuals
         {
             Graphics g = e.Graphics;
             Pen p = new Pen(Color.Red);
+            RectangleF r = new RectangleF(Column * width, Row * height, width, height);
 
-            g.FillRectangle(fillBrush, Column * width, Row * height, width, height);
+            g.FillRectangle(fillBrush, r);
+            g.DrawImage(img, r);
             g.DrawRectangle(p, Column * width, Row * height, width, height);
 
             if(nextTile != null)

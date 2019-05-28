@@ -39,6 +39,9 @@ namespace Procp_Form.Visuals
             tileWidth = (animBoxWidth - 1) / tileHorizontalCount;
             tileHeight = (animBoxHeigth - 1) / tileVerticalCount;
 
+            hideAreaNotForDropOff = tileVerticalCount - 1;
+            hideAreaNotConveyorRowsTop = tileVerticalCount - 1;
+
             CreateGrid();
         }
         public int TileHorizontalCount
@@ -58,7 +61,7 @@ namespace Procp_Form.Visuals
             {
                 for (int r = 0; r < tileVerticalCount; r++)
                 {
-                    gridTiles.Add(new EmptyTile(c, r));
+                    gridTiles.Add(new EmptyTile(c, r, (int)tileWidth, (int)tileHeight));
                 }
             }
         }
@@ -74,7 +77,7 @@ namespace Procp_Form.Visuals
         }
         public ConveyorTile AddConveyorLineAtCoordinates(GridTile toReplace)
         {
-            ConveyorTile newLineTile = new ConveyorTile();
+            ConveyorTile newLineTile = new ConveyorTile((int)tileWidth, (int)tileHeight);
             newLineTile.Column = toReplace.Column;
             newLineTile.Row = toReplace.Row;
             gridTiles.Remove(toReplace);
@@ -126,7 +129,7 @@ namespace Procp_Form.Visuals
 
         public GridTile AddCheckInAtCoordinates(GridTile toReplace, Node nodeToPlace)
         {
-            CheckInTile newCheckInTile = new CheckInTile();
+            CheckInTile newCheckInTile = new CheckInTile((int)tileWidth, (int)tileHeight);
             newCheckInTile.Column = toReplace.Column;
             newCheckInTile.Row = toReplace.Row;
             gridTiles.Remove(toReplace);
@@ -292,7 +295,7 @@ namespace Procp_Form.Visuals
 
         public void RemoveConveyorLine(GridTile toRemove)
         {
-            ConveyorTile first = new ConveyorTile();
+            ConveyorTile first = new ConveyorTile(1,1);
             foreach(GridTile t in gridTiles.ToList())
             {
                 if(toRemove.nodeInGrid == t.nodeInGrid)
