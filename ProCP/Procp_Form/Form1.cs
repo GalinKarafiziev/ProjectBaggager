@@ -59,6 +59,7 @@ namespace Procp_Form
                 lblTest.Text = buildModeActive ? "[On]" : "[Off]";
                 gbBuildType.Visible = true;
                 chbDeleteMode.Visible = true;
+
                 thisGrid.HideArea(buildModeType);
 
             }
@@ -474,7 +475,12 @@ namespace Procp_Form
             pieChartPercentageAllFailedBaggage.Series = series;
         }
 
-        
+        private void BtnClearGrid_Click(object sender, EventArgs e)
+        {
+            thisGrid.ClearGrid();
+
+            animationBox.Invalidate();
+        }
     }
 }
 

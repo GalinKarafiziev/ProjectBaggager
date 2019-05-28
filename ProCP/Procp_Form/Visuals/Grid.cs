@@ -466,5 +466,11 @@ namespace Procp_Form.Visuals
                 c.nextTile = temp;
             }
         }
+
+        public void ClearGrid()
+        {
+            gridTiles.Clear();
+            CreateGrid();
+        }
     }
 }
