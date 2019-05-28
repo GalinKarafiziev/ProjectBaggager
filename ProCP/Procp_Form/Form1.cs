@@ -59,6 +59,8 @@ namespace Procp_Form
                 lblTest.Text = buildModeActive ? "[On]" : "[Off]";
                 gbBuildType.Visible = true;
                 chbDeleteMode.Visible = true;
+                rbCheckIn.Checked = true;
+                buildModeType = "CheckIn";
 
                 thisGrid.HideArea(buildModeType);
 
@@ -117,7 +119,12 @@ namespace Procp_Form
                     {
                         SelectTile(thisGrid.AddConveyorLineAtCoordinates(t));
                         conveyorBuilding.Add((ConveyorTile)selectedTile);
-                        thisGrid.AutoConnectToConveyor(selectedTile);
+
+                        GridTile temp = thisGrid.AutoConnectToPrevious(selectedTile);
+                        if (temp != null)
+                        {
+                            engine.LinkTwoNodes(temp.nodeInGrid, selectedTile.nodeInGrid);
+                        }
 
                         isBuildingConveyor = true;
                     }
@@ -128,8 +135,11 @@ namespace Procp_Form
                         engine.AddCheckIn(checkin);
                         RefreshCheckInCombobox();
 
-                        thisGrid.AutoConnectToConveyor(selectedTile);
-
+                        GridTile temp = thisGrid.AutoConnectNext(selectedTile);
+                        if(temp != null)
+                        {
+                            engine.LinkTwoNodes(selectedTile.nodeInGrid, temp.nodeInGrid);
+                        }
                     }
                     else if (buildModeType == "Security Scanner")
                     {
@@ -137,7 +147,17 @@ namespace Procp_Form
                         SelectTile(thisGrid.AddSecurityAtCoordinates(t, security));
                         engine.AddSecurity(security);
 
-                        thisGrid.AutoConnectToConveyor(selectedTile);
+                        GridTile temp = thisGrid.AutoConnectToPrevious(selectedTile);
+                        if (temp != null)
+                        {
+                            engine.LinkTwoNodes(temp.nodeInGrid, selectedTile.nodeInGrid);
+                        }
+
+                        temp = thisGrid.AutoConnectNext(selectedTile);
+                        if (temp != null)
+                        {
+                            engine.LinkTwoNodes(selectedTile.nodeInGrid, temp.nodeInGrid);
+                        }
                     }
                     else if (buildModeType == "DropOff")
                     {
@@ -148,6 +168,12 @@ namespace Procp_Form
                         if (btnAddFlight.Enabled != true)
                         {
                             btnAddFlight.Enabled = true;
+                        }
+
+                        GridTile temp = thisGrid.AutoConnectToPrevious(selectedTile);
+                        if (temp != null)
+                        {
+                            engine.LinkTwoNodes(temp.nodeInGrid, selectedTile.nodeInGrid);
                         }
                     }
                     else if (buildModeType == "MPA")
@@ -291,7 +317,11 @@ namespace Procp_Form
                 }
                 conveyorBuilding.Last().isLastTile = true;
 
-                thisGrid.AutoConnectFromConveyor(selectedTile);
+                GridTile temp = thisGrid.AutoConnectNext(selectedTile);
+                if (temp != null)
+                {
+                    engine.LinkTwoNodes(selectedTile.nodeInGrid, temp.nodeInGrid);
+                }
             }
 
             isBuildingConveyor = false;
@@ -478,7 +508,8 @@ namespace Procp_Form
         private void BtnClearGrid_Click(object sender, EventArgs e)
         {
             thisGrid.ClearGrid();
-
+            RefreshCheckInCombobox();
+            RefreshDropOffCombobox();
             animationBox.Invalidate();
         }
     }
