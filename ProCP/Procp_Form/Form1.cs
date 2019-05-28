@@ -120,11 +120,7 @@ namespace Procp_Form
                         SelectTile(thisGrid.AddConveyorLineAtCoordinates(t));
                         conveyorBuilding.Add((ConveyorTile)selectedTile);
 
-                        GridTile temp = thisGrid.AutoConnectToPrevious(selectedTile);
-                        if (temp != null)
-                        {
-                            engine.LinkTwoNodes(temp.nodeInGrid, selectedTile.nodeInGrid);
-                        }
+                      
 
                         isBuildingConveyor = true;
                     }
@@ -311,7 +307,16 @@ namespace Procp_Form
                 int i = 0;
                 foreach (ConveyorTile t in conveyorBuilding)
                 {
+                   
                     t.nodeInGrid = conveyor;
+                    if (t.PositionInLine == 0)
+                    {
+                        GridTile igiveuponthisshittycodefuckthisyesiknowiwroteitbutthebackendisalsogarbagethiswholeprojectis = thisGrid.AutoConnectToPrevious(t);
+                        if (igiveuponthisshittycodefuckthisyesiknowiwroteitbutthebackendisalsogarbagethiswholeprojectis != null)
+                        {
+                            engine.LinkTwoNodes(igiveuponthisshittycodefuckthisyesiknowiwroteitbutthebackendisalsogarbagethiswholeprojectis.nodeInGrid, t.nodeInGrid);
+                        }
+                    }
                     t.PositionInLine = i;
                     i++;
                 }

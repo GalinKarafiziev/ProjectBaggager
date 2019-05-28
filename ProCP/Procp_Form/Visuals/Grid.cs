@@ -450,7 +450,7 @@ namespace Procp_Form.Visuals
                     return temp;
                 }
             }
-            else if (!(temp is EmptyTile) && !(temp is CheckInTile))
+            else if (!(temp is EmptyTile))
             {
                 temp.nextTile = c;
                 return temp;
@@ -465,7 +465,7 @@ namespace Procp_Form.Visuals
                     return temp;
                 }
             }
-            else if (!(temp is EmptyTile) && !(temp is CheckInTile))
+            else if (!(temp is EmptyTile))
             {
                 temp.nextTile = c;
                 return temp;
@@ -480,7 +480,7 @@ namespace Procp_Form.Visuals
                     return temp;
                 }
             }
-            else if (!(temp is EmptyTile) && !(temp is CheckInTile))
+            else if (!(temp is EmptyTile))
             {
                 temp.nextTile = c;
                 return temp;
