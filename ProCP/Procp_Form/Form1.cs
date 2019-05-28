@@ -116,6 +116,7 @@ namespace Procp_Form
                     {
                         SelectTile(thisGrid.AddConveyorLineAtCoordinates(t));
                         conveyorBuilding.Add((ConveyorTile)selectedTile);
+                        thisGrid.AutoConnectToConveyor(selectedTile);
 
                         isBuildingConveyor = true;
                     }
@@ -125,12 +126,17 @@ namespace Procp_Form
                         SelectTile(thisGrid.AddCheckInAtCoordinates(t, checkin));
                         engine.AddCheckIn(checkin);
                         RefreshCheckInCombobox();
+
+                        thisGrid.AutoConnectToConveyor(selectedTile);
+
                     }
                     else if (buildModeType == "Security Scanner")
                     {
                         Security security = new Security();
                         SelectTile(thisGrid.AddSecurityAtCoordinates(t, security));
                         engine.AddSecurity(security);
+
+                        thisGrid.AutoConnectToConveyor(selectedTile);
                     }
                     else if (buildModeType == "DropOff")
                     {
@@ -283,6 +289,8 @@ namespace Procp_Form
                     i++;
                 }
                 conveyorBuilding.Last().isLastTile = true;
+
+                thisGrid.AutoConnectFromConveyor(selectedTile);
             }
 
             isBuildingConveyor = false;

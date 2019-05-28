@@ -338,5 +338,133 @@ namespace Procp_Form.Visuals
                 }
             }
         }
+
+        public void AutoConnectCheckInToConveyor(GridTile c)
+        {
+            
+        }
+
+        public void AutoConnectToConveyor(GridTile c)
+        {
+            if (c is ConveyorTile)
+            {
+                GridTile temp = FindTileInRowColumnCoordinates(c.Column, c.Row - 1);
+                if (!(temp is EmptyTile) && !(temp is ConveyorTile))
+                {
+                    temp.nextTile = c;
+                }
+
+                temp = FindTileInRowColumnCoordinates(c.Column, c.Row + 1);
+                if (!(temp is EmptyTile) && !(temp is DropOffTile) && !(temp is ConveyorTile))
+                {
+                    temp.nextTile = c;
+                }
+
+                temp = FindTileInRowColumnCoordinates(c.Column + 1, c.Row);
+                if (!(temp is EmptyTile) && !(temp is ConveyorTile))
+                {
+                    temp.nextTile = c;
+                }
+
+                temp = FindTileInRowColumnCoordinates(c.Column - 1, c.Row);
+                if (!(temp is EmptyTile) && !(temp is ConveyorTile))
+                {
+                    temp.nextTile = c;
+                }
+            }
+            else if(c is CheckInTile)
+            {
+                GridTile temp = FindTileInRowColumnCoordinates(c.Column, c.Row + 1);
+                if (!(temp is EmptyTile))
+                {
+                    c.nextTile = temp;
+                }
+            }
+            else if(c is SecurityTile)
+            {
+                GridTile temp = FindTileInRowColumnCoordinates(c.Column, c.Row - 1);
+                if (temp is ConveyorTile)
+                {
+                    ConveyorTile t = (ConveyorTile)temp;
+                    if (t.PositionInLine == 0)
+                    {
+                        c.nextTile = temp;
+                    }
+                    else if (t.isLastTile)
+                    {
+                        temp.nextTile = c;
+                    }
+                }
+
+                temp = FindTileInRowColumnCoordinates(c.Column, c.Row + 1);
+                if (temp is ConveyorTile)
+                {
+                    ConveyorTile t = (ConveyorTile)temp;
+                    if (t.PositionInLine == 0)
+                    {
+                        c.nextTile = temp;
+                    }
+                    else if (t.isLastTile)
+                    {
+                        temp.nextTile = c;
+                    }
+                }
+
+                temp = FindTileInRowColumnCoordinates(c.Column + 1, c.Row);
+                if (temp is ConveyorTile)
+                {
+                    ConveyorTile t = (ConveyorTile)temp;
+                    if (t.PositionInLine == 0)
+                    {
+                        c.nextTile = temp;
+                    }
+                    else if (t.isLastTile)
+                    {
+                        temp.nextTile = c;
+                    }
+                }
+
+                temp = FindTileInRowColumnCoordinates(c.Column - 1, c.Row);
+                if (temp is ConveyorTile)
+                {
+                    ConveyorTile t = (ConveyorTile)temp;
+                    if (t.PositionInLine == 0)
+                    {
+                        c.nextTile = temp;
+                    }
+                    else if (t.isLastTile)
+                    {
+                        temp.nextTile = c;
+                    }
+                }
+            }
+        }
+
+        public void AutoConnectFromConveyor(GridTile c)
+        {
+            GridTile temp = FindTileInRowColumnCoordinates(c.Column, c.Row - 1);
+            if (!(temp is EmptyTile) && !(temp is ConveyorTile))
+            {
+                c.nextTile = temp;
+            }
+
+            temp = FindTileInRowColumnCoordinates(c.Column, c.Row + 1);
+            if (!(temp is EmptyTile) && !(temp is ConveyorTile))
+            {
+                c.nextTile = temp;
+            }
+
+            temp = FindTileInRowColumnCoordinates(c.Column + 1, c.Row);
+            if (!(temp is EmptyTile) && !(temp is ConveyorTile))
+            {
+                c.nextTile = temp;
+            }
+
+            temp = FindTileInRowColumnCoordinates(c.Column - 1, c.Row);
+            if (!(temp is EmptyTile) && !(temp is ConveyorTile))
+            {
+                c.nextTile = temp;
+            }
+        }
     }
 }
