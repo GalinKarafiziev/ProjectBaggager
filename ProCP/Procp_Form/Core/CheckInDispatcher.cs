@@ -113,7 +113,7 @@ namespace Procp_Form.Core
 
                 timer.Elapsed += (sender, args) =>
                 {
-                    System.Diagnostics.Debug.WriteLine($"{f.AmountOfBaggage} - {f.BaggageDispatched}");
+                    //System.Diagnostics.Debug.WriteLine($"{f.AmountOfBaggage} - {f.BaggageDispatched}");
                     if (f.AmountOfBaggage > f.BaggageDispatched)
                     {
                         DispatchBaggage(f);

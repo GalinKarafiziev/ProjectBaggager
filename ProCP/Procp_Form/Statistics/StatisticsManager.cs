@@ -47,7 +47,7 @@ namespace Procp_Form.Statistics
 
             foreach (var security in securities)
             {
-                failedToPassSecurity.Add(security.bufferNotSecure.Count());
+                failedToPassSecurity.Add(security.baggageAgainstSecurityPolicy.Count());
             }
 
             return failedToPassSecurity;

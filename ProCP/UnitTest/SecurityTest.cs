@@ -23,7 +23,7 @@ namespace UnitTest
 
             security.PassBaggage(baggage);
 
-            Assert.AreEqual(1, security.bufferNotSecure.Count);
+            Assert.AreEqual(1, security.baggageAgainstSecurityPolicy.Count);
         }
         [TestMethod]
         public void ProcessBaggage_If_Else_Statement()
