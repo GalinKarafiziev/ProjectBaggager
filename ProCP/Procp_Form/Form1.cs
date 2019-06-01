@@ -59,6 +59,9 @@ namespace Procp_Form
                 lblTest.Text = buildModeActive ? "[On]" : "[Off]";
                 gbBuildType.Visible = true;
                 chbDeleteMode.Visible = true;
+                rbCheckIn.Checked = true;
+                buildModeType = "CheckIn";
+
                 thisGrid.HideArea(buildModeType);
 
             }
@@ -117,6 +120,8 @@ namespace Procp_Form
                         SelectTile(thisGrid.AddConveyorLineAtCoordinates(t));
                         conveyorBuilding.Add((ConveyorTile)selectedTile);
 
+                      
+
                         isBuildingConveyor = true;
                     }
                     else if (buildModeType == "CheckIn")
@@ -125,12 +130,30 @@ namespace Procp_Form
                         SelectTile(thisGrid.AddCheckInAtCoordinates(t, checkin));
                         engine.AddCheckIn(checkin);
                         RefreshCheckInCombobox();
+
+                        GridTile temp = thisGrid.AutoConnectNext(selectedTile);
+                        if(temp != null)
+                        {
+                            engine.LinkTwoNodes(selectedTile.nodeInGrid, temp.nodeInGrid);
+                        }
                     }
                     else if (buildModeType == "Security Scanner")
                     {
                         Security security = new Security();
                         SelectTile(thisGrid.AddSecurityAtCoordinates(t, security));
                         engine.AddSecurity(security);
+
+                        GridTile temp = thisGrid.AutoConnectToPrevious(selectedTile);
+                        if (temp != null)
+                        {
+                            engine.LinkTwoNodes(temp.nodeInGrid, selectedTile.nodeInGrid);
+                        }
+
+                        temp = thisGrid.AutoConnectNext(selectedTile);
+                        if (temp != null)
+                        {
+                            engine.LinkTwoNodes(selectedTile.nodeInGrid, temp.nodeInGrid);
+                        }
                     }
                     else if (buildModeType == "DropOff")
                     {
@@ -141,6 +164,12 @@ namespace Procp_Form
                         if (btnAddFlight.Enabled != true)
                         {
                             btnAddFlight.Enabled = true;
+                        }
+
+                        GridTile temp = thisGrid.AutoConnectToPrevious(selectedTile);
+                        if (temp != null)
+                        {
+                            engine.LinkTwoNodes(temp.nodeInGrid, selectedTile.nodeInGrid);
                         }
                     }
                     else if (buildModeType == "MPA")
@@ -277,11 +306,26 @@ namespace Procp_Form
                 int i = 0;
                 foreach (ConveyorTile t in conveyorBuilding)
                 {
+                   
                     t.nodeInGrid = conveyor;
+                    if (t.PositionInLine == 0)
+                    {
+                        GridTile igiveuponthisshittycodefuckthisyesiknowiwroteitbutthebackendisalsogarbagethiswholeprojectis = thisGrid.AutoConnectToPrevious(t);
+                        if (igiveuponthisshittycodefuckthisyesiknowiwroteitbutthebackendisalsogarbagethiswholeprojectis != null)
+                        {
+                            engine.LinkTwoNodes(igiveuponthisshittycodefuckthisyesiknowiwroteitbutthebackendisalsogarbagethiswholeprojectis.nodeInGrid, t.nodeInGrid);
+                        }
+                    }
                     t.PositionInLine = i;
                     i++;
                 }
                 conveyorBuilding.Last().isLastTile = true;
+
+                GridTile temp = thisGrid.AutoConnectNext(selectedTile);
+                if (temp != null)
+                {
+                    engine.LinkTwoNodes(selectedTile.nodeInGrid, temp.nodeInGrid);
+                }
             }
 
             isBuildingConveyor = false;
@@ -484,7 +528,13 @@ namespace Procp_Form
             pieChartPercentageAllFailedBaggage.Series = series;
         }
 
-        
+        private void BtnClearGrid_Click(object sender, EventArgs e)
+        {
+            thisGrid.ClearGrid();
+            RefreshCheckInCombobox();
+            RefreshDropOffCombobox();
+            animationBox.Invalidate();
+        }
     }
 }
 
