@@ -302,22 +302,21 @@ namespace Procp_Form
             if (buildModeActive && isBuildingConveyor)
             {
                 Conveyor conveyor = new Conveyor(conveyorBuilding.Count, 1500);
-                engine.AddConveyorPart(conveyor);
+                engine.AddConveyorPart(conveyor);   
                 System.Diagnostics.Debug.WriteLine("uppress");
                 int i = 0;
                 foreach (ConveyorTile t in conveyorBuilding)
                 {
-                   
                     t.nodeInGrid = conveyor;
+                    t.PositionInLine = i;
                     if (t.PositionInLine == 0)
                     {
-                        GridTile igiveuponthisshittycodefuckthisyesiknowiwroteitbutthebackendisalsogarbagethiswholeprojectis = thisGrid.AutoConnectToPrevious(t);
-                        if (igiveuponthisshittycodefuckthisyesiknowiwroteitbutthebackendisalsogarbagethiswholeprojectis != null)
+                        GridTile tt = thisGrid.AutoConnectToPrevious(t);
+                        if (tt != null)
                         {
-                            engine.LinkTwoNodes(igiveuponthisshittycodefuckthisyesiknowiwroteitbutthebackendisalsogarbagethiswholeprojectis.nodeInGrid, t.nodeInGrid);
+                            engine.LinkTwoNodes(tt.nodeInGrid, t.nodeInGrid);
                         }
                     }
-                    t.PositionInLine = i;
                     i++;
                 }
                 conveyorBuilding.Last().isLastTile = true;
