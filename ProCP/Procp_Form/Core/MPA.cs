@@ -37,12 +37,10 @@ namespace Procp_Form.Core
             {
                 if (conv.DestinationGate == baggage.DestinationGate)
                 {
-                    System.Diagnostics.Debug.WriteLine("in the if condition");
                     NextNode = conv;
                     if (NextNode.Status == BaggageStatus.Free)
                     {
                         NextNode.PassBaggage(baggage);
-                        System.Diagnostics.Debug.WriteLine("passed");
                         baggage = null;
                         Status = BaggageStatus.Free;
                         NextNode.OnNodeStatusChangedToFree -= ProcessBaggage;
@@ -51,7 +49,6 @@ namespace Procp_Form.Core
                     else
                     {
                         NextNode.OnNodeStatusChangedToFree += ProcessBaggage;
-                        System.Diagnostics.Debug.WriteLine("waiting");
                         break;
                     }
                 }
@@ -77,7 +74,6 @@ namespace Procp_Form.Core
         {
             baggage = Lastbaggage;
             Status = BaggageStatus.Busy;
-            System.Diagnostics.Debug.WriteLine("MPA PassBaggage");
             ProcessBaggage();
         }
     }

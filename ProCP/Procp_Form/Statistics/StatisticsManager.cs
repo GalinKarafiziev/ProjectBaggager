@@ -73,7 +73,7 @@ namespace Procp_Form.Statistics
             return sum;
         }
 
-        public void SetBaggageTransferTime()
+        public void GetBaggageTransferTime()
         {
             
         }

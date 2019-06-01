@@ -33,14 +33,6 @@ namespace Procp_Form.Core
         {
             Status = BaggageStatus.Busy;
             baggages.Add(Lastbaggage);
-            System.Diagnostics.Debug.WriteLine(baggages.Count());
-            if (GetDesiredFlight() != null)
-            {
-                if (baggages.Count() == GetDesiredFlight().AmountOfBaggage)
-                {
-                    endOfTransportation = DateTime.Now;
-                }
-            }
             Status = BaggageStatus.Free;
         }
 

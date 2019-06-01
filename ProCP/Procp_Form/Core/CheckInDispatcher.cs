@@ -113,7 +113,6 @@ namespace Procp_Form.Core
 
                 timer.Elapsed += (sender, args) =>
                 {
-                    //System.Diagnostics.Debug.WriteLine($"{f.AmountOfBaggage} - {f.BaggageDispatched}");
                     if (f.AmountOfBaggage > f.BaggageDispatched)
                     {
                         DispatchBaggage(f);
@@ -144,17 +143,6 @@ namespace Procp_Form.Core
             }
             return chosenIndex;
         }
-
-        //public double CalculateDispatchRate(Flight flight)
-        //{
-        //    //var currentTime = DateTime.Now;
-        //    double interval = 0;
-        //    //interval = flight.DepartureTime - currentTime;
-        //    double arrivalRate = 13 / 120;
-        //    interval = arrivalRate / flight.AmountOfBaggage;
-
-        //    return dispatchRate;
-        //}
 
         public override void PassBaggage(Baggage Lastbaggage)
         {
