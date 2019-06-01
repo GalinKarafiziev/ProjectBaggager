@@ -301,9 +301,8 @@ namespace Procp_Form
         {
             if (buildModeActive && isBuildingConveyor)
             {
-                Conveyor conveyor = new Conveyor(conveyorBuilding.Count, 1500);
+                Conveyor conveyor = new Conveyor(conveyorBuilding.Count, 1);
                 engine.AddConveyorPart(conveyor);
-                System.Diagnostics.Debug.WriteLine("uppress");
                 int i = 0;
                 foreach (ConveyorTile t in conveyorBuilding)
                 {
@@ -366,22 +365,41 @@ namespace Procp_Form
 
         private void btnAddFlight_Click(object sender, EventArgs e)
         {
-            DateTime date = (Convert.ToDateTime(tbFlightTime.Text));
-            string flightNr = tbFlightNr.Text;
-            int flightBaggage = Convert.ToInt32(tbFlightBaggage.Text);
-            var selectedCheckIn = cbCheckInFlight.SelectedItem as CheckIn;
-            var selectedDropOff = cbDropOffDest.SelectedItem as DropOff;
-            int destGate = selectedDropOff.DestinationGate;
-            if (!(engine.AddFlight(date, flightNr, flightBaggage, destGate)))
+            int flightBaggage = 0;
+
+            if (tbFlightNr.Text != "" && tbFlightBaggage.Text != "")
             {
-                MessageBox.Show("This flight already exists or the drop-off destination is already taken.");
+                DateTime date = (Convert.ToDateTime(tbFlightTime.Text));
+                string flightNr = tbFlightNr.Text;
+
+                try
+                {
+                    flightBaggage = Convert.ToInt32(tbFlightBaggage.Text);
+                }
+                catch (FormatException)
+                {
+                    MessageBox.Show("Gnidooo pishi 4isla");
+                }
+             
+                var selectedCheckIn = cbCheckInFlight.SelectedItem as CheckIn;
+                var selectedDropOff = cbDropOffDest.SelectedItem as DropOff;
+                int destGate = selectedDropOff.DestinationGate;
+
+                if (!(engine.AddFlight(date, flightNr, flightBaggage, destGate)))
+                {
+                    MessageBox.Show("This flight already exists or the drop-off destination is already taken.");
+                }
+                else
+                {
+                    RefreshFlightsList();
+                    selectedCheckIn.DestinationGate = destGate;
+                    btnDeleteFlight.Enabled = true;
+                    btnEditFlight.Enabled = true;
+                }
             }
             else
             {
-                RefreshFlightsList();
-                selectedCheckIn.DestinationGate = destGate;
-                btnDeleteFlight.Enabled = true;
-                btnEditFlight.Enabled = true;
+                MessageBox.Show("Please fill-in all required fields correctly");
             }
         }
 

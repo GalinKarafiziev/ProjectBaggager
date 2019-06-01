@@ -55,16 +55,21 @@ namespace Procp_Form.Core
             var checkIn = checkins[chosen];
             var queue = checkinQueues[chosen];
 
+
             if (checkIn.Status == BaggageStatus.Free)
             {
                 checkIn.PassBaggage(baggage);
-                flight.BaggageDispatched++;
+                if (OnNodeStatusChangedToFree != null)
+                {
+                    checkIn.OnNodeStatusChangedToFree -= () => PassQueuedBaggage(chosen);
+                }
             }
             else
             {
                 queue.Enqueue(baggage);
                 checkIn.OnNodeStatusChangedToFree += () => PassQueuedBaggage(chosen);
             }
+            flight.BaggageDispatched++;
         }
 
         public void PassQueuedBaggage(int index)
@@ -108,16 +113,14 @@ namespace Procp_Form.Core
 
                 timer.Elapsed += (sender, args) =>
                 {
-                    System.Diagnostics.Debug.WriteLine(f.BaggageDispatched);
+                    //System.Diagnostics.Debug.WriteLine($"{f.AmountOfBaggage} - {f.BaggageDispatched}");
                     if (f.AmountOfBaggage > f.BaggageDispatched)
                     {
                         DispatchBaggage(f);
-                        System.Diagnostics.Debug.WriteLine("entered dispatch");
                     }
                     else
                     {
                         timer.Stop();
-                        System.Diagnostics.Debug.WriteLine("timer stopped");
                     }
                 };
             }
@@ -126,7 +129,6 @@ namespace Procp_Form.Core
         public int FindMostSuitableCheckin(Baggage baggage)
         {
             int chosenIndex = 0;
-            var initialQueue = checkinQueues[chosenIndex];
 
             foreach (var checkIn in Enumerable.Range(0, checkins.Count))
             {
@@ -137,17 +139,9 @@ namespace Procp_Form.Core
                         chosenIndex = checkIn;
                         return chosenIndex;
                     }
+                    chosenIndex = checkIn;
                 }
             }
-
-            foreach (var queue in Enumerable.Range(0, checkinQueues.Count))
-            {
-                if (checkinQueues.ElementAt(queue).Count <= initialQueue.Count)
-                {
-                    chosenIndex = queue;
-                }
-            }
-
             return chosenIndex;
         }
 

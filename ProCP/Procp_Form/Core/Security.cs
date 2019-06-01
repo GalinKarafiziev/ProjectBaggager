@@ -3,51 +3,43 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Timers;
 
 namespace Procp_Form.Core
 {
+    /// <summary>
+    /// At this moment security unit excludes the unsecure baggage and doens't return it due to security measures. 
+    /// In later stage i will try to add the possibility to return it after certain time.
+    /// </summary>
     public class Security : ProcessUnit
     {
-        public Queue<Baggage> bufferNotSecure;
+        public Queue<Baggage> baggageAgainstSecurityPolicy;
 
         public Security()
         {
-            bufferNotSecure = new Queue<Baggage>();
+            baggageAgainstSecurityPolicy = new Queue<Baggage>();
         }
 
         public override void ProcessBaggage()
         {
-            Status = BaggageStatus.Busy;
             if (NextNode.Status == BaggageStatus.Free)
             {
                 if (baggage.Secure == 2 || baggage.Secure == 7)
                 {
-                    bufferNotSecure.Enqueue(baggage);
+                    baggageAgainstSecurityPolicy.Enqueue(baggage);
                     NextNode.OnNodeStatusChangedToFree -= ProcessBaggage;
-                    Status = BaggageStatus.Free;
                 }
                 else
                 {
                     NextNode.PassBaggage(baggage);
                     NextNode.OnNodeStatusChangedToFree -= ProcessBaggage;
-                    Status = BaggageStatus.Free;
                 }
             }
             else
             {
                 NextNode.OnNodeStatusChangedToFree += ProcessBaggage;
-                if (bufferNotSecure.Count() != 0)
-                {
-                    NextNode.OnNodeStatusChangedToFree += ReturnFromBuffer;
-                }
             }
-        }
-        
-        public void ReturnFromBuffer()
-        {
-            NextNode.PassBaggage(bufferNotSecure.Dequeue());
+            Status = BaggageStatus.Free;
         }
 
         public override void PassBaggage(Baggage Lastbaggage)

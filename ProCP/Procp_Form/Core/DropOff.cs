@@ -16,6 +16,7 @@ namespace Procp_Form.Core
     {
         public List<Baggage> baggages;
         List<Flight> flights;
+        DateTime endOfTransportation;
         static int destinationGate = 0;
 
         public int DestinationGate { get; set; }
@@ -32,11 +33,12 @@ namespace Procp_Form.Core
         {
             Status = BaggageStatus.Busy;
             baggages.Add(Lastbaggage);
+            System.Diagnostics.Debug.WriteLine(baggages.Count());
             if (GetDesiredFlight() != null)
             {
                 if (baggages.Count() == GetDesiredFlight().AmountOfBaggage)
                 {
-                    
+                    endOfTransportation = DateTime.Now;
                 }
             }
             Status = BaggageStatus.Free;
