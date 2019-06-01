@@ -272,7 +272,7 @@ namespace Procp_Form
         {
             if (buildModeActive && isBuildingConveyor)
             {
-                Conveyor conveyor = new Conveyor(conveyorBuilding.Count, 1000);
+                Conveyor conveyor = new Conveyor(conveyorBuilding.Count, 1);
                 engine.AddConveyorPart(conveyor);
                 int i = 0;
                 foreach (ConveyorTile t in conveyorBuilding)

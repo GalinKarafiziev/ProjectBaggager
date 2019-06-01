@@ -45,8 +45,8 @@ namespace Procp_Form.Core
         public override void PassBaggage(Baggage Lastbaggage)
         {
             Status = BaggageStatus.Busy;
-            baggageInCheckIn++;
             baggage = Lastbaggage;
+            baggageInCheckIn++;
             ProcessBaggage();
         }
         public override string ToString()

@@ -3,8 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Timers;
 
 namespace Procp_Form.Core
 {
@@ -22,7 +21,14 @@ namespace Procp_Form.Core
         public void AddNextNode(Conveyor node)
         {
             var nextNode = node;
-            nextNodes.Add(nextNode);
+            if (nextNodes.Contains(nextNode))
+            {
+                return;
+            }
+            else
+            {
+                nextNodes.Add(nextNode);
+            }
         }
 
         public override void ProcessBaggage()
@@ -31,22 +37,21 @@ namespace Procp_Form.Core
             {
                 if (conv.DestinationGate == baggage.DestinationGate)
                 {
+                    System.Diagnostics.Debug.WriteLine("in the if condition");
                     NextNode = conv;
                     if (NextNode.Status == BaggageStatus.Free)
                     {
                         NextNode.PassBaggage(baggage);
-                        Status = BaggageStatus.Free;
+                        System.Diagnostics.Debug.WriteLine("passed");
                         baggage = null;
-                        if (OnNodeStatusChangedToFree != null)
-                        {
-                            NextNode.OnNodeStatusChangedToFree -= () => PassWaitingBaggage(conv);
-                        }
+                        Status = BaggageStatus.Free;
+                        NextNode.OnNodeStatusChangedToFree -= ProcessBaggage;
                         break;
                     }
                     else
                     {
-                        baggagesToWait.Add(baggage);
-                        NextNode.OnNodeStatusChangedToFree += () => PassWaitingBaggage(conv);
+                        NextNode.OnNodeStatusChangedToFree += ProcessBaggage;
+                        System.Diagnostics.Debug.WriteLine("waiting");
                         break;
                     }
                 }
@@ -79,6 +84,7 @@ namespace Procp_Form.Core
         {
             baggage = Lastbaggage;
             Status = BaggageStatus.Busy;
+            System.Diagnostics.Debug.WriteLine("MPA PassBaggage");
             ProcessBaggage();
         }
     }
