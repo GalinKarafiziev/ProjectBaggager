@@ -6,8 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Timers;
 using System.Xml.Xsl;
 
 namespace Procp_Form.Core
@@ -18,30 +17,92 @@ namespace Procp_Form.Core
         List<Flight> flights;
         DateTime endOfTransportation;
         static int destinationGate = 0;
-
+        public List<Baggage> unloadBaggages;
+        private int employeeSpeed;
+        private Timer timer;
         public int DestinationGate { get; set; }
+        
+        public int EmployeeSpeed
+        {
+            get
+            {
+                return employeeSpeed;
+            }
+            set
+            {
+                switch (employeeSpeed)
+                {
+                    case 1:
+                        timer.Interval = 500;
+                        break;
+                    case 2:
+                        timer.Interval = 800;
+                        break;
+                    case 3:
+                        timer.Interval = 1000;
+                        break;
+                    case 4:
+                        timer.Interval = 1200;
+                        break;
+                    default:
+                        timer.Interval = 700;
+                        break;
+                }
+            }
+        }
 
         public DropOff()
         {
             destinationGate++;
             flights = new List<Flight>();
             baggages = new List<Baggage>();
+            timer = new Timer();
+            unloadBaggages = new List<Baggage>();
             DestinationGate = destinationGate;
+            baggages.Capacity = 10;
+            timer.Start();
+            timer.Elapsed += (sender, args) => UnloadBaggage();
         }
 
+        public void SetNumberEmployees(int nrEmp)
+        {
+            EmployeeSpeed = nrEmp;
+        }
+
+        public void UnloadBaggage()
+        {
+            if (baggages.Count != 0)
+            {
+                unloadBaggages.Add(baggages[0]);
+                baggages.Remove(baggages[0]);
+                Status = BaggageStatus.Free;
+                
+            }
+
+        }
         public override void PassBaggage(Baggage Lastbaggage)
         {
-            Status = BaggageStatus.Busy;
-            baggages.Add(Lastbaggage);
-            System.Diagnostics.Debug.WriteLine(baggages.Count());
-            if (GetDesiredFlight() != null)
+            
+
+            if (baggages.Count >= baggages.Capacity)
             {
-                if (baggages.Count() == GetDesiredFlight().AmountOfBaggage)
-                {
-                    endOfTransportation = DateTime.Now;
-                }
+                Status = BaggageStatus.Busy;
             }
-            Status = BaggageStatus.Free;
+            else
+            {
+                Status = BaggageStatus.Busy;
+                baggages.Add(Lastbaggage);
+                System.Diagnostics.Debug.WriteLine(baggages.Count());
+                if (GetDesiredFlight() != null)
+                {
+                    if (baggages.Count() == GetDesiredFlight().AmountOfBaggage)
+                    {
+                        endOfTransportation = DateTime.Now;
+                    }
+                }
+
+                Status = BaggageStatus.Free;
+            }
         }
 
         public void SetupFlights(Flight flight)
