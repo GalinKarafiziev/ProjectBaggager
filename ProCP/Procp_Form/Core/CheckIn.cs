@@ -49,6 +49,10 @@ namespace Procp_Form.Core
             baggageInCheckIn++;
             ProcessBaggage();
         }
+        public bool HasDestinationGate()
+        {
+            return this.DestinationGate != 0 ? true : false;   
+        }
         public override string ToString()
         {
             return $"Check-In [#{Id}]";

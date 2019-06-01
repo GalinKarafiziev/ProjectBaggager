@@ -378,23 +378,33 @@ namespace Procp_Form
                 }
                 catch (FormatException)
                 {
-                    MessageBox.Show("Gnidooo pishi 4isla");
+                    MessageBox.Show("The number of baggages must be a valid positive number.");
+                    return;
                 }
-             
+
                 var selectedCheckIn = cbCheckInFlight.SelectedItem as CheckIn;
                 var selectedDropOff = cbDropOffDest.SelectedItem as DropOff;
                 int destGate = selectedDropOff.DestinationGate;
 
                 if (!(engine.AddFlight(date, flightNr, flightBaggage, destGate)))
                 {
-                    MessageBox.Show("This flight already exists or the drop-off destination is already taken.");
+                    MessageBox.Show("This flight already exists or the drop-off destination is already taken.");              
                 }
                 else
                 {
-                    RefreshFlightsList();
-                    selectedCheckIn.DestinationGate = destGate;
-                    btnDeleteFlight.Enabled = true;
-                    btnEditFlight.Enabled = true;
+                    if (selectedCheckIn.HasDestinationGate())
+                    {
+                        MessageBox.Show("This check-in is already taken by another flight.");
+                    }
+                    else
+                    {
+                        RefreshFlightsList();
+                        selectedCheckIn.DestinationGate = destGate;
+                        btnDeleteFlight.Enabled = true;
+                        btnAddCheckinToFlight.Enabled = true;
+                        btnEditFlight.Enabled = true;
+                    }
+                   
                 }
             }
             else
@@ -403,18 +413,38 @@ namespace Procp_Form
             }
         }
 
+        private void btnAddCheckinToFlight_Click(object sender, EventArgs e)
+        {
+            Flight selectedFlight = lbFlights.SelectedItem as Flight;
+            var selectedCheckIn = cbCheckInFlight.SelectedItem as CheckIn;
+            if (selectedCheckIn.HasDestinationGate())
+            {
+                MessageBox.Show("This check-in is already taken by another flight.");
+            }
+            else
+            {
+                selectedCheckIn.DestinationGate = selectedFlight.DestinationGate;
+
+            }
+        }
+
         private void btnEditFlight_Click(object sender, EventArgs e)
         {
             DateTime date = (Convert.ToDateTime(tbFlightTime.Text));
             string flightNr = tbFlightNr.Text;
             int flightBaggage = Convert.ToInt32(tbFlightBaggage.Text);
+            var selectedCheckIn = cbCheckInFlight.SelectedItem as CheckIn;
             var selectedDropOff = cbDropOffDest.SelectedItem as DropOff;
             int destGate = selectedDropOff.DestinationGate;
 
             Flight selectedFlight = lbFlights.SelectedItem as Flight;
-            if (!(engine.EditFlight(selectedFlight.FlightNumber, flightNr, flightBaggage, date, destGate)))
+            if (!(engine.AddFlight(date, flightNr, flightBaggage, destGate)))
             {
-                MessageBox.Show("The flight number already exists or drop-off destination is already taken.");
+                MessageBox.Show("This flight already exists or the drop-off destination is already taken.");
+                if (selectedCheckIn.HasDestinationGate())
+                {
+                    MessageBox.Show("This check-in is already taken by another flight.");
+                }
             }
             else
             {
@@ -535,6 +565,7 @@ namespace Procp_Form
             RefreshDropOffCombobox();
             animationBox.Invalidate();
         }
+
     }
 }
 
