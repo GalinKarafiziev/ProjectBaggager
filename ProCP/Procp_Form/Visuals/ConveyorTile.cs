@@ -14,12 +14,15 @@ namespace Procp_Form.Visuals
         public int PositionInLine;
 
         public bool isLastTile;
-        public ConveyorTile()
+        public ConveyorTile(int tileWidth, int tileHeight)
         {
             clickableColor = Brushes.SeaGreen;
             unclickableColour = Brushes.DarkSeaGreen;
 
             fillBrush = clickableColor;
+
+            imgpath = "../../Resources/conveyor.png";
+            loadImage(imgpath, tileWidth, tileHeight);
 
             isLastTile = false;
         }
@@ -28,8 +31,10 @@ namespace Procp_Form.Visuals
         {
             Graphics g = e.Graphics;
             Pen p = new Pen(Color.Red);
+            RectangleF r = new RectangleF(Column * width, Row * height, width, height);
 
-            g.FillRectangle(fillBrush, Column * width, Row * height, width, height);
+            g.FillRectangle(fillBrush, r);
+            g.DrawImage(img, r);
             g.DrawRectangle(p, Column * width, Row * height, width, height);
 
             if (nextTile != null)

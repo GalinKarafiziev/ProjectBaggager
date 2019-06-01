@@ -25,20 +25,25 @@ namespace Procp_Form.Core
 
         public override void ProcessBaggage()
         {
-            Status = BaggageStatus.Busy;
-
             if (baggage != null)
             {
                 foreach (Conveyor conv in nextNodes)
                 {
                     if (conv.DestinationGate == baggage.DestinationGate)
                     {
-                        this.NextNode = conv;
-                        NextNode.PassBaggage(baggage);
-                        Thread.Sleep(500);
-                        baggage = null;
-                        Status = BaggageStatus.Free;
-                        break;
+                        NextNode = conv;
+                        if (NextNode.Status == BaggageStatus.Free)
+                        {
+                            NextNode.PassBaggage(baggage);
+                            Status = BaggageStatus.Free;
+                            NextNode.OnNodeStatusChangedToFree -= ProcessBaggage;
+                            break;
+                        }
+                        else
+                        {
+                            NextNode.OnNodeStatusChangedToFree += ProcessBaggage;
+                            break;
+                        }
                     }
                 }
             }

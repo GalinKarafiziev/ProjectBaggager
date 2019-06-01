@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Procp_Form.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,17 +19,18 @@ namespace Procp_Form.Airport
 
         public DateTime DepartureTime { get; set; }
 
-        public Flight(DateTime time, string number, int baggage)
+        public Flight(DateTime time, string number, int baggage, int destGate)
         {
             this.FlightNumber = number;
             this.DepartureTime = time;
             this.AmountOfBaggage = baggage;
             this.BaggageDispatched = 0;
+            this.DestinationGate = destGate;
         }
 
         public override string ToString()
         {
-            return $"[#{FlightNumber}][⌚{DepartureTime.Hour}:{DepartureTime.Minute}][💼{AmountOfBaggage}]";
+            return $"[#{FlightNumber}][⌚{DepartureTime.Hour}:{DepartureTime.Minute}][💼{AmountOfBaggage}][🛬{DestinationGate}]";
         }
     }
 }

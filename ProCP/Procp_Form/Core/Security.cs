@@ -10,10 +10,11 @@ namespace Procp_Form.Core
 {
     public class Security : ProcessUnit
     {
-        public List<Baggage> bufferNotSecure;
+        public Queue<Baggage> bufferNotSecure;
+
         public Security()
         {
-            bufferNotSecure = new List<Baggage>();
+            bufferNotSecure = new Queue<Baggage>();
         }
 
         public override void ProcessBaggage()
@@ -21,17 +22,15 @@ namespace Procp_Form.Core
             Status = BaggageStatus.Busy;
             if (NextNode.Status == BaggageStatus.Free)
             {
-                if (baggage.Secure == 5 || baggage.Secure == 7)
+                if (baggage.Secure == 2 || baggage.Secure == 7)
                 {
-                    bufferNotSecure.Add(baggage);
-                    Thread.Sleep(1000);
+                    bufferNotSecure.Enqueue(baggage);
                     NextNode.OnNodeStatusChangedToFree -= ProcessBaggage;
                     Status = BaggageStatus.Free;
                 }
                 else
                 {
                     NextNode.PassBaggage(baggage);
-                    //Thread.Sleep(1000);
                     NextNode.OnNodeStatusChangedToFree -= ProcessBaggage;
                     Status = BaggageStatus.Free;
                 }
@@ -39,8 +38,18 @@ namespace Procp_Form.Core
             else
             {
                 NextNode.OnNodeStatusChangedToFree += ProcessBaggage;
+                if (bufferNotSecure.Count() != 0)
+                {
+                    NextNode.OnNodeStatusChangedToFree += ReturnFromBuffer;
+                }
             }
         }
+        
+        public void ReturnFromBuffer()
+        {
+            NextNode.PassBaggage(bufferNotSecure.Dequeue());
+        }
+
         public override void PassBaggage(Baggage Lastbaggage)
         {
             Status = BaggageStatus.Busy;

@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Procp_Form.Airport.Flight">
+    <Position X="11.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAIAAIEAAAAAAAAACAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Airport\Flight.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Procp_Form.CoreAbstraction.Node">
+    <Position X="6" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAEAAQAAAAAAAAEAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>CoreAbstraction\Node.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Procp_Form.CoreAbstraction.ProcessUnit">
+    <Position X="2.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAEAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>CoreAbstraction\ProcessUnit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Procp_Form.CoreAbstraction.TransportUnit">
+    <Position X="7.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQCACAAAKAAAAAAAAAAAAAAAAAAAAIAIAAAAAAAAAA=</HashCode>
+      <FileName>CoreAbstraction\TransportUnit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Procp_Form.Core.Baggage">
+    <Position X="10" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAIAAAAAAAAAAAAAAAAAAAAAAQAAAAAACA=</HashCode>
+      <FileName>Core\Baggage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Procp_Form.Core.CheckIn">
+    <Position X="0.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAQAAAIAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Core\CheckIn.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Procp_Form.Core.CheckInDispatcher">
+    <Position X="9.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAICAICaAABAAgAAAAAQAQAAAAACAIAAAEAAAAAA=</HashCode>
+      <FileName>Core\CheckInDispatcher.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Procp_Form.Core.Conveyor">
+    <Position X="7.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Core\Conveyor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Procp_Form.Core.DropOff">
+    <Position X="11.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQIAAAACAAAAAAgAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>Core\DropOff.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Procp_Form.Core.MPA">
+    <Position X="2.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAgAAAAAQAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Core\MPA.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Procp_Form.Core.Security">
+    <Position X="5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAQAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Core\Security.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Procp_Form.Statistics.StatisticsManager">
+    <Position X="13.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAIACJAAAAAACAIAQgAAAAAAAAAIAAAABAA=</HashCode>
+      <FileName>Statistics\StatisticsManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Procp_Form.Engine">
+    <Position X="15.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAIwAEAAgEACABAAECEoBIIAAEAAQAEAJACAIAgEAII=</HashCode>
+      <FileName>Engine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="Procp_Form.CoreAbstraction.BaggageStatus">
+    <Position X="8" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>CoreAbstraction\Node.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
