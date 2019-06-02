@@ -20,6 +20,22 @@ namespace Procp_Form.Core
         public List<Baggage> unloadBaggages;
         private int employeeSpeed;
         private Timer timer;
+        public List<DateTime> baggageEnteredDropOff;
+
+        public DropOff()
+        {
+            destinationGate++;
+            flights = new List<Flight>();
+            baggages = new List<Baggage>();
+            timer = new Timer();
+            unloadBaggages = new List<Baggage>();
+            baggageEnteredDropOff = new List<DateTime>();
+            DestinationGate = destinationGate;
+            baggages.Capacity = 10;
+            timer.Start();
+            timer.Elapsed += (sender, args) => UnloadBaggage();
+        }
+
         public int DestinationGate { get; set; }
         
         public int EmployeeSpeed
@@ -51,19 +67,6 @@ namespace Procp_Form.Core
             }
         }
 
-        public DropOff()
-        {
-            destinationGate++;
-            flights = new List<Flight>();
-            baggages = new List<Baggage>();
-            timer = new Timer();
-            unloadBaggages = new List<Baggage>();
-            DestinationGate = destinationGate;
-            baggages.Capacity = 10;
-            timer.Start();
-            timer.Elapsed += (sender, args) => UnloadBaggage();
-        }
-
         public void SetNumberEmployees(int nrEmp)
         {
             EmployeeSpeed = nrEmp;
@@ -82,7 +85,7 @@ namespace Procp_Form.Core
         }
         public override void PassBaggage(Baggage Lastbaggage)
         {
-            
+            DateTime time = DateTime.Now;
 
             if (baggages.Count >= baggages.Capacity)
             {
@@ -92,14 +95,8 @@ namespace Procp_Form.Core
             {
                 Status = BaggageStatus.Busy;
                 baggages.Add(Lastbaggage);
+                baggageEnteredDropOff.Add(time);
                 System.Diagnostics.Debug.WriteLine(baggages.Count());
-                if (GetDesiredFlight() != null)
-                {
-                    if (baggages.Count() == GetDesiredFlight().AmountOfBaggage)
-                    {
-                        endOfTransportation = DateTime.Now;
-                    }
-                }
 
                 Status = BaggageStatus.Free;
             }
@@ -108,13 +105,6 @@ namespace Procp_Form.Core
         public void SetupFlights(Flight flight)
         {
             flights.Add(flight);
-        }
-
-        public Flight GetDesiredFlight()
-        {
-            var flight = flights.FirstOrDefault(x => x.DestinationGate == this.DestinationGate);
-
-            return flight;
         }
 
         public List<Baggage> GetBaggages()

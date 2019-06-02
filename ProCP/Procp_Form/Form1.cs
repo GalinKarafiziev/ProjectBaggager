@@ -29,7 +29,8 @@ namespace Procp_Form
         GridTile selectedTile;
         List<ConveyorTile> conveyorBuilding;
         Engine engine = new Engine();
-        int checkinCounter = 0;
+        //int checkinCounter = 0;
+        int dropOffCounter = 0;
 
         System.Timers.Timer aTimer;
 
@@ -495,13 +496,25 @@ namespace Procp_Form
 
         private void buttonLoadChartBaggageThroughCheckin_Click(object sender, EventArgs e)
         {
+            //SeriesCollection series = new SeriesCollection();
+            //checkinCounter = 0;
+            //foreach (var number in engine.GetCheckInStats())
+            //{
+            //    checkinCounter++;
+            //    series.Add(new ColumnSeries() { Title = $"Checkin {checkinCounter.ToString()}", Values = new ChartValues<int> { number } });
+            //}
+            //cartesianChartBaggageProcessedByCheckin.Series = series;
+
             SeriesCollection series = new SeriesCollection();
-            checkinCounter = 0;
-            foreach (var number in engine.GetCheckInStats())
+            dropOffCounter = 0;
+
+            engine.GetLastBaggageTime().ForEach(x =>
             {
-                checkinCounter++;
-                series.Add(new ColumnSeries() { Title = $"Checkin {checkinCounter.ToString()}", Values = new ChartValues<int> { number } });
-            }
+                dropOffCounter++;
+                //TO DO  - FIX REPRESENTATION
+                series.Add(new ColumnSeries() { Title = $"Drop-off {dropOffCounter.ToString()}", Values = new ChartValues<int> { x.Second } });
+            });
+
             cartesianChartBaggageProcessedByCheckin.Series = series;
         }
 
