@@ -11,22 +11,42 @@ namespace Procp_Form.Visuals
 {
     class GridTile
     {
-        private int column;
-        private int row;
+        protected int column;
+        protected int row;
+        protected int width;
+        protected int height;
 
         public Node nodeInGrid;
 
-        private bool unclickable = false;
         public bool selected = false;
         public GridTile nextTile;
+
         public Brush fillBrush;
         public Brush clickableColor;
+
+        private bool unclickable = false;
         public Brush unclickableColour;
 
         protected Image img;
         protected string imgpath;
 
-        protected void loadImage(string path, int width, int height)
+        public GridTile(int column, int row, int tileWidth, int tileHeight)
+        {
+            this.column = column;
+            this.row = row;
+            width = tileWidth;
+            height = tileHeight;
+        }
+
+        public int Column
+        {
+            get { return column; }
+        }
+        public int Row
+        {
+            get { return row; }
+        }
+        protected void loadImage(string path)
         {
             using (var srce = new Bitmap(path))
             {
@@ -39,40 +59,29 @@ namespace Procp_Form.Visuals
                 img = dest;
             }
         }
-
-        public int Column
-        {
-            get { return column; }
-            set { column = value; }
-        }
-        public int Row
-        {
-            get { return row; }
-            set { row = value; }
-        }
         public bool Unselectable
         {
             get { return unclickable; }
             set { unclickable = value; }
         }
-        public virtual void DrawTile(PaintEventArgs e, float width, float height)
+        public virtual void DrawTile(PaintEventArgs e)
         {
             Graphics g = e.Graphics;
             Pen p = new Pen(Color.Red);
-            RectangleF r = new RectangleF(Column * width, Row * height, width, height);
+            RectangleF r = new RectangleF(column * width, row * height, width, height);
 
             g.FillRectangle(fillBrush, r);
             g.DrawImage(img, r);
-            g.DrawRectangle(p, Column * width, Row * height, width, height);
+            g.DrawRectangle(p, column * width, row * height, width, height);
 
             if (selected)
             {
                 p = new Pen(Color.Yellow);
-                g.DrawRectangle(p, Column * width, Row * height, width, height);
+                g.DrawRectangle(p, column * width, row * height, width, height);
             }
 
-            DrawArrowNext(p, g, width, height);
-            DrawBaggage(g, width, height);
+            DrawArrowNext(p, g);
+            DrawBaggage(g);
         }
         public virtual void SetTileUncklicableColor()
         {
@@ -91,34 +100,34 @@ namespace Procp_Form.Visuals
 
         }
 
-        protected virtual void DrawArrowNext(Pen p, Graphics g, float width, float height)
+        protected virtual void DrawArrowNext(Pen p, Graphics g)
         {
             if (nextTile != null)
             {
-                if (nextTile.Column < this.Column)
+                if (nextTile.column < this.column)
                 {
                     p = new Pen(Color.Red);
-                    g.DrawLine(p, (Column * width + width / 2), (Row * height + height / 2), Column * width, Row * height + height / 2);
+                    g.DrawLine(p, (column * width + width / 2), (row * height + height / 2), column * width, row * height + height / 2);
                 }
-                else if (nextTile.Column > this.Column)
+                else if (nextTile.column > this.column)
                 {
                     p = new Pen(Color.Red);
-                    g.DrawLine(p, (Column * width + width / 2), (Row * height + height / 2), Column * width + width, Row * height + height / 2);
+                    g.DrawLine(p, (column * width + width / 2), (row * height + height / 2), column * width + width, row * height + height / 2);
                 }
-                else if (nextTile.Row < this.Row)
+                else if (nextTile.row < this.row)
                 {
                     p = new Pen(Color.Red);
-                    g.DrawLine(p, (Column * width + width / 2), (Row * height + height / 2), Column * width + width / 2, Row * height);
+                    g.DrawLine(p, (column * width + width / 2), (row * height + height / 2), column * width + width / 2, row * height);
                 }
-                else if (nextTile.Row > this.Row)
+                else if (nextTile.row > this.row)
                 {
                     p = new Pen(Color.Red);
-                    g.DrawLine(p, (Column * width + width / 2), (Row * height + height / 2), Column * width + width / 2, Row * height + height);
+                    g.DrawLine(p, (column * width + width / 2), (row * height + height / 2), column * width + width / 2, row * height + height);
                 }
             }
         }
 
-        protected virtual void DrawBaggage(Graphics g, float width, float height)
+        protected virtual void DrawBaggage(Graphics g)
         {
             if (nodeInGrid != null)
             {

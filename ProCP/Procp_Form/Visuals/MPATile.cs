@@ -11,8 +11,13 @@ namespace Procp_Form.Visuals
     {
         public List<ConveyorTile> nextNodes;
 
-        public MPATile()
+        public MPATile(int column, int row, int tileWidth, int tileHeight) : base(column, row, tileWidth, tileHeight)
         {
+            this.column = column;
+            this.row = row;
+            width = tileWidth;
+            height = tileHeight;
+
             clickableColor = Brushes.Purple;
             unclickableColour = Brushes.MediumPurple;
 

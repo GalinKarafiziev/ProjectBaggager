@@ -69,14 +69,12 @@ namespace Procp_Form.Visuals
 
             foreach (GridTile n in gridTiles)
             {
-                n.DrawTile(e, tileWidth, tileHeight);
+                n.DrawTile(e);
             }
         }
         public ConveyorTile AddConveyorLineAtCoordinates(GridTile toReplace)
         {
-            ConveyorTile newLineTile = new ConveyorTile((int)tileWidth, (int)tileHeight);
-            newLineTile.Column = toReplace.Column;
-            newLineTile.Row = toReplace.Row;
+            ConveyorTile newLineTile = new ConveyorTile(toReplace.Column, toReplace.Row, (int)tileWidth, (int)tileHeight);
             gridTiles.Remove(toReplace);
             gridTiles.Add(newLineTile);
             return newLineTile;
@@ -112,9 +110,7 @@ namespace Procp_Form.Visuals
                 {
                     for (int y = firstTile.Row; y < firstTile.Row + rRange; y++)
                     {
-                        MPATile mpaTile = new MPATile();
-                        mpaTile.Column = i;
-                        mpaTile.Row = y;
+                        MPATile mpaTile = new MPATile(i, y, (int)tileWidth, (int)tileHeight);
                         GridTile temp = FindTileInRowColumnCoordinates(i, y);
                         gridTiles.Remove(temp);
                         gridTiles.Add(mpaTile);
@@ -126,9 +122,7 @@ namespace Procp_Form.Visuals
 
         public GridTile AddCheckInAtCoordinates(GridTile toReplace, Node nodeToPlace)
         {
-            CheckInTile newCheckInTile = new CheckInTile((int)tileWidth, (int)tileHeight);
-            newCheckInTile.Column = toReplace.Column;
-            newCheckInTile.Row = toReplace.Row;
+            CheckInTile newCheckInTile = new CheckInTile(toReplace.Column, toReplace.Row, (int)tileWidth, (int)tileHeight);
             gridTiles.Remove(toReplace);
             gridTiles.Add(newCheckInTile);
             newCheckInTile.nodeInGrid = nodeToPlace;
@@ -137,9 +131,7 @@ namespace Procp_Form.Visuals
 
         public GridTile AddSecurityAtCoordinates(GridTile toReplace, Node nodeToPlace)
         {
-            SecurityTile newSecurityTile = new SecurityTile();
-            newSecurityTile.Column = toReplace.Column;
-            newSecurityTile.Row = toReplace.Row;
+            SecurityTile newSecurityTile = new SecurityTile(toReplace.Column, toReplace.Row, (int)tileWidth, (int)tileHeight);
             gridTiles.Remove(toReplace);
             gridTiles.Add(newSecurityTile);
             newSecurityTile.nodeInGrid = nodeToPlace;
@@ -148,9 +140,7 @@ namespace Procp_Form.Visuals
 
         public GridTile AddDropOffAtCoordinates(GridTile toReplace, Node nodeToPlace)
         {
-            DropOffTile newDropOffTile = new DropOffTile();
-            newDropOffTile.Column = toReplace.Column;
-            newDropOffTile.Row = toReplace.Row;
+            DropOffTile newDropOffTile = new DropOffTile(toReplace.Column, toReplace.Row, (int)tileWidth, (int)tileHeight);
             gridTiles.Remove(toReplace);
             gridTiles.Add(newDropOffTile);
             newDropOffTile.nodeInGrid = nodeToPlace;
@@ -158,7 +148,7 @@ namespace Procp_Form.Visuals
         }
         public GridTile FindTileInPixelCoordinates(float targetX, float targetY)
         {
-            GridTile foundTile = new EmptyTile();
+            GridTile foundTile = new EmptyTile(-1, -1, (int)tileWidth, (int)tileHeight);
             foreach (GridTile n in gridTiles)
             {
                 if ((n.Column * tileWidth) <= targetX && (n.Column * tileWidth) + tileWidth >= targetX && (n.Row * tileHeight) <= targetY && (n.Row * tileHeight) + tileHeight >= targetY)
@@ -170,9 +160,9 @@ namespace Procp_Form.Visuals
             }
             return foundTile;
         }
-        public GridTile FindTileInRowColumnCoordinates(float  targetColumn, float targetRow)
+        public GridTile FindTileInRowColumnCoordinates(int targetColumn, int targetRow)
         {
-            GridTile foundTile = new EmptyTile();
+            GridTile foundTile = new EmptyTile(targetColumn, targetRow, (int)tileWidth, (int)tileHeight);
             foreach (GridTile n in gridTiles)
             {
                 if (n.Column == targetColumn && n.Row == targetRow)
@@ -280,16 +270,15 @@ namespace Procp_Form.Visuals
                 }
             }
             int index = gridTiles.IndexOf(toRemove, 0);
-            EmptyTile empty = new EmptyTile();
-            empty.Column = toRemove.Column;
-            empty.Row = toRemove.Row;
+            EmptyTile empty = new EmptyTile(toRemove.Column, toRemove.Row, (int)tileWidth, (int)tileHeight);
+
             gridTiles.Remove(toRemove);
             gridTiles.Insert(index, empty);
         }
 
         public void RemoveConveyorLine(GridTile toRemove)
         {
-            ConveyorTile first = new ConveyorTile(1,1);
+            ConveyorTile first = new ConveyorTile(1,1, (int)tileWidth, (int)tileHeight);
             foreach(GridTile t in gridTiles.ToList())
             {
                 if(toRemove.nodeInGrid == t.nodeInGrid)
@@ -300,9 +289,7 @@ namespace Procp_Form.Visuals
                         first = temp;
                     }
                     int index = gridTiles.IndexOf(t, 0);
-                    EmptyTile empty = new EmptyTile();
-                    empty.Column = t.Column;
-                    empty.Row = t.Row;
+                    EmptyTile empty = new EmptyTile(t.Column, t.Row, (int)tileWidth, (int)tileHeight);
                     gridTiles.Remove(t);
                     gridTiles.Insert(index, empty);
                 }
@@ -324,9 +311,7 @@ namespace Procp_Form.Visuals
                 if(t.nodeInGrid == toRemove.nodeInGrid)
                 {
                     int index = gridTiles.IndexOf(t, 0);
-                    EmptyTile empty = new EmptyTile();
-                    empty.Column = t.Column;
-                    empty.Row = t.Row;
+                    EmptyTile empty = new EmptyTile(t.Column, t.Row, (int)tileWidth, (int)tileHeight);
                     gridTiles.Remove(t);
                     gridTiles.Insert(index, empty);
                 }

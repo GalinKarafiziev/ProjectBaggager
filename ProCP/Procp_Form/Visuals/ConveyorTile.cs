@@ -14,20 +14,25 @@ namespace Procp_Form.Visuals
         public int PositionInLine;
 
         public bool isLastTile;
-        public ConveyorTile(int tileWidth, int tileHeight)
+        public ConveyorTile(int column, int row, int tileWidth, int tileHeight) : base(column, row, tileWidth, tileHeight)
         {
+            this.column = column;
+            this.row = row;
+            width = tileWidth;
+            height = tileHeight;
+
             clickableColor = Brushes.SeaGreen;
             unclickableColour = Brushes.DarkSeaGreen;
 
             fillBrush = clickableColor;
 
             imgpath = "../../Resources/conveyor.png";
-            loadImage(imgpath, tileWidth, tileHeight);
+            loadImage(imgpath);
 
             isLastTile = false;
         }
-
-        public override void DrawTile(PaintEventArgs e, float width, float height)
+        
+        public override void DrawTile(PaintEventArgs e)
         {
             Graphics g = e.Graphics;
             Pen p = new Pen(Color.Red);

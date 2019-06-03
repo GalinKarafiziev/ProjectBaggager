@@ -9,8 +9,13 @@ namespace Procp_Form.Visuals
 {
     class SecurityTile : GridTile
     {
-        public SecurityTile()
+        public SecurityTile(int column, int row, int tileWidth, int tileHeight) : base(column, row, tileWidth, tileHeight)
         {
+            this.column = column;
+            this.row = row;
+            width = tileWidth;
+            height = tileHeight;
+
             clickableColor = Brushes.Yellow;
             unclickableColour = Brushes.Yellow;
 
