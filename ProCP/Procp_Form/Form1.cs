@@ -59,6 +59,9 @@ namespace Procp_Form
                 lblTest.Text = buildModeActive ? "[On]" : "[Off]";
                 gbBuildType.Visible = true;
                 chbDeleteMode.Visible = true;
+                rbCheckIn.Checked = true;
+                buildModeType = "CheckIn";
+
                 thisGrid.HideArea(buildModeType);
 
             }
@@ -117,6 +120,8 @@ namespace Procp_Form
                         SelectTile(thisGrid.AddConveyorLineAtCoordinates(t));
                         conveyorBuilding.Add((ConveyorTile)selectedTile);
 
+                      
+
                         isBuildingConveyor = true;
                     }
                     else if (buildModeType == "CheckIn")
@@ -125,12 +130,30 @@ namespace Procp_Form
                         SelectTile(thisGrid.AddCheckInAtCoordinates(t, checkin));
                         engine.AddCheckIn(checkin);
                         RefreshCheckInCombobox();
+
+                        GridTile temp = thisGrid.AutoConnectNext(selectedTile);
+                        if(temp != null)
+                        {
+                            engine.LinkTwoNodes(selectedTile.nodeInGrid, temp.nodeInGrid);
+                        }
                     }
                     else if (buildModeType == "Security Scanner")
                     {
                         Security security = new Security();
                         SelectTile(thisGrid.AddSecurityAtCoordinates(t, security));
                         engine.AddSecurity(security);
+
+                        GridTile temp = thisGrid.AutoConnectToPrevious(selectedTile);
+                        if (temp != null)
+                        {
+                            engine.LinkTwoNodes(temp.nodeInGrid, selectedTile.nodeInGrid);
+                        }
+
+                        temp = thisGrid.AutoConnectNext(selectedTile);
+                        if (temp != null)
+                        {
+                            engine.LinkTwoNodes(selectedTile.nodeInGrid, temp.nodeInGrid);
+                        }
                     }
                     else if (buildModeType == "DropOff")
                     {
@@ -141,6 +164,12 @@ namespace Procp_Form
                         if (btnAddFlight.Enabled != true)
                         {
                             btnAddFlight.Enabled = true;
+                        }
+
+                        GridTile temp = thisGrid.AutoConnectToPrevious(selectedTile);
+                        if (temp != null)
+                        {
+                            engine.LinkTwoNodes(temp.nodeInGrid, selectedTile.nodeInGrid);
                         }
                     }
                     else if (buildModeType == "MPA")
@@ -277,11 +306,26 @@ namespace Procp_Form
                 int i = 0;
                 foreach (ConveyorTile t in conveyorBuilding)
                 {
+                   
                     t.nodeInGrid = conveyor;
+                    if (t.PositionInLine == 0)
+                    {
+                        GridTile igiveuponthisshittycodefuckthisyesiknowiwroteitbutthebackendisalsogarbagethiswholeprojectis = thisGrid.AutoConnectToPrevious(t);
+                        if (igiveuponthisshittycodefuckthisyesiknowiwroteitbutthebackendisalsogarbagethiswholeprojectis != null)
+                        {
+                            engine.LinkTwoNodes(igiveuponthisshittycodefuckthisyesiknowiwroteitbutthebackendisalsogarbagethiswholeprojectis.nodeInGrid, t.nodeInGrid);
+                        }
+                    }
                     t.PositionInLine = i;
                     i++;
                 }
                 conveyorBuilding.Last().isLastTile = true;
+
+                GridTile temp = thisGrid.AutoConnectNext(selectedTile);
+                if (temp != null)
+                {
+                    engine.LinkTwoNodes(selectedTile.nodeInGrid, temp.nodeInGrid);
+                }
             }
 
             isBuildingConveyor = false;
@@ -321,22 +365,41 @@ namespace Procp_Form
 
         private void btnAddFlight_Click(object sender, EventArgs e)
         {
-            DateTime date = (Convert.ToDateTime(tbFlightTime.Text));
-            string flightNr = tbFlightNr.Text;
-            int flightBaggage = Convert.ToInt32(tbFlightBaggage.Text);
-            var selectedCheckIn = cbCheckInFlight.SelectedItem as CheckIn;
-            var selectedDropOff = cbDropOffDest.SelectedItem as DropOff;
-            int destGate = selectedDropOff.DestinationGate;
-            if (!(engine.AddFlight(date, flightNr, flightBaggage, destGate)))
+            int flightBaggage = 0;
+
+            if (tbFlightNr.Text != "" && tbFlightBaggage.Text != "")
             {
-                MessageBox.Show("This flight already exists or the drop-off destination is already taken.");
+                DateTime date = (Convert.ToDateTime(tbFlightTime.Text));
+                string flightNr = tbFlightNr.Text;
+
+                try
+                {
+                    flightBaggage = Convert.ToInt32(tbFlightBaggage.Text);
+                }
+                catch (FormatException)
+                {
+                    MessageBox.Show("Gnidooo pishi 4isla");
+                }
+             
+                var selectedCheckIn = cbCheckInFlight.SelectedItem as CheckIn;
+                var selectedDropOff = cbDropOffDest.SelectedItem as DropOff;
+                int destGate = selectedDropOff.DestinationGate;
+
+                if (!(engine.AddFlight(date, flightNr, flightBaggage, destGate)))
+                {
+                    MessageBox.Show("This flight already exists or the drop-off destination is already taken.");
+                }
+                else
+                {
+                    RefreshFlightsList();
+                    selectedCheckIn.DestinationGate = destGate;
+                    btnDeleteFlight.Enabled = true;
+                    btnEditFlight.Enabled = true;
+                }
             }
             else
             {
-                RefreshFlightsList();
-                selectedCheckIn.DestinationGate = destGate;
-                btnDeleteFlight.Enabled = true;
-                btnEditFlight.Enabled = true;
+                MessageBox.Show("Please fill-in all required fields correctly");
             }
         }
 
@@ -432,13 +495,25 @@ namespace Procp_Form
 
         private void buttonLoadChartBaggageThroughCheckin_Click(object sender, EventArgs e)
         {
+            //SeriesCollection series = new SeriesCollection();
+            //checkinCounter = 0;
+            //foreach (var number in engine.GetCheckInStats())
+            //{
+            //    checkinCounter++;
+            //    series.Add(new ColumnSeries() { Title = $"Checkin {checkinCounter.ToString()}", Values = new ChartValues<int> { number } });
+            //}
+            //cartesianChartBaggageProcessedByCheckin.Series = series;
+
             SeriesCollection series = new SeriesCollection();
-            checkinCounter = 0;
-            foreach (var number in engine.GetCheckInStats())
+            dropOffCounter = 0;
+
+            engine.GetLastBaggageTime().ForEach(x =>
             {
-                checkinCounter++;
-                series.Add(new ColumnSeries() { Title = $"Checkin {checkinCounter.ToString()}", Values = new ChartValues<int> { number } });
-            }
+                dropOffCounter++;
+                //TO DO  - FIX REPRESENTATION
+                series.Add(new ColumnSeries() { Title = $"Drop-off {dropOffCounter.ToString()}", Values = new ChartValues<int> { x.Second } });
+            });
+
             cartesianChartBaggageProcessedByCheckin.Series = series;
         }
 
@@ -465,10 +540,7 @@ namespace Procp_Form
             pieChartPercentageAllFailedBaggage.Series = series;
         }
 
-        private void buttonSaveToFile_Click(object sender, EventArgs e)
-        {
-            engine.WriteToFile();
-        }
+        
     }
 }
 

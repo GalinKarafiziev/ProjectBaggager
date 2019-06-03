@@ -17,10 +17,12 @@ namespace Procp_Form.Statistics
         List<TimeSpan> transferTimes;
         public List<int> failedToPassSecurity;
         public double allBaggage = 0;
+        private List<DropOff> dropOffs;
 
-        public StatisticsManager(List<CheckIn> checkIns)
+        public StatisticsManager(List<CheckIn> checkIns, List<DropOff> dropOffs)
         {
             this.checkIns = checkIns;
+            this.dropOffs = dropOffs;
             baggageInCheckIn = new List<int>();
             failedToPassSecurity = new List<int>();
             transferTimes = new List<TimeSpan>();
@@ -73,14 +75,15 @@ namespace Procp_Form.Statistics
             return sum;
         }
 
-        public void GetBaggageTransferTime()
-        {
-            
-        }
-
         public double CalculateSuccessedBaggage()
         {
             return allBaggage - CalculateFailedBaggage();
+        }
+
+        public List<DateTime> GetLastBaggageTimes()
+        {
+            var mostRecentTimes = this.dropOffs.Select(x => x.baggageEnteredDropOff.OrderBy(c => c).First()).ToList();
+            return mostRecentTimes;
         }
     }
 }

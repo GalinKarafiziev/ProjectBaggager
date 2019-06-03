@@ -77,6 +77,7 @@
             this.cartesianChartFailedToPassBaggage = new LiveCharts.WinForms.CartesianChart();
             this.buttonLoadChartBaggageThroughCheckin = new System.Windows.Forms.Button();
             this.cartesianChartBaggageProcessedByCheckin = new LiveCharts.WinForms.CartesianChart();
+            this.btnClearGrid = new System.Windows.Forms.Button();
             this.buttonSaveToFile = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.animationBox)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -407,6 +408,7 @@
             // 
             this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panel1.Controls.Add(this.buttonSaveToFile);
+            this.panel1.Controls.Add(this.btnClearGrid);
             this.panel1.Controls.Add(this.gbBuildType);
             this.panel1.Controls.Add(this.btnStop);
             this.panel1.Controls.Add(this.btnPause);
@@ -662,6 +664,16 @@
             this.buttonSaveToFile.UseVisualStyleBackColor = true;
             this.buttonSaveToFile.Click += new System.EventHandler(this.buttonSaveToFile_Click);
             // 
+            // btnClearGrid
+            // 
+            this.btnClearGrid.Location = new System.Drawing.Point(333, 857);
+            this.btnClearGrid.Name = "btnClearGrid";
+            this.btnClearGrid.Size = new System.Drawing.Size(75, 23);
+            this.btnClearGrid.TabIndex = 32;
+            this.btnClearGrid.Text = "Clear";
+            this.btnClearGrid.UseVisualStyleBackColor = true;
+            this.btnClearGrid.Click += new System.EventHandler(this.BtnClearGrid_Click);
+            // 
             // Baggager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -742,6 +754,7 @@
         private System.Windows.Forms.RadioButton rbMPA;
         private System.Windows.Forms.RadioButton rbSecurity;
         private System.Windows.Forms.Button buttonSaveToFile;
+        private System.Windows.Forms.Button btnClearGrid;
     }
 }
 

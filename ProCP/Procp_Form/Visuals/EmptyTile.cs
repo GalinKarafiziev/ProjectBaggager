@@ -18,15 +18,21 @@ namespace Procp_Form.Visuals
             clickableColor = Brushes.Cyan;
             unclickableColour = Brushes.DarkCyan;
 
+            imgpath = "../../Resources/mpa.png";
+            img = Image.FromFile(imgpath);
+
             fillBrush = clickableColor;
         }
-        public EmptyTile(int column, int row)
+        public EmptyTile(int column, int row, int tileWidth, int tileHeight)
         {
             this.Column = column;
             this.Row = row;
 
             clickableColor = Brushes.Cyan;
             unclickableColour = Brushes.DarkCyan;
+
+            imgpath = "../../Resources/mpa.png";
+            loadImage(imgpath, tileWidth, tileHeight);
 
             fillBrush = clickableColor;
         }

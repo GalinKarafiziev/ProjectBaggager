@@ -11,10 +11,13 @@ namespace Procp_Form.Visuals
     [Serializable]
     public class CheckInTile : GridTile
     {
-        public CheckInTile()
+        public CheckInTile(int tileWidth, int tileHeight)
         {
             clickableColor = Brushes.PaleVioletRed;
             unclickableColour = Brushes.MediumVioletRed;
+
+            imgpath = "../../Resources/checkin.png";
+            loadImage(imgpath, tileWidth, tileHeight);
 
             fillBrush = Brushes.PaleVioletRed;
         }

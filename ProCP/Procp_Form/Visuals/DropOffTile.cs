@@ -16,6 +16,9 @@ namespace Procp_Form.Visuals
             clickableColor = Brushes.SlateGray;
             unclickableColour = Brushes.DarkSlateGray;
 
+            imgpath = "../../Resources/dropoff.png";
+            img = Image.FromFile(imgpath);
+
             fillBrush = clickableColor;
         }
     }

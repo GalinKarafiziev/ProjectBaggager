@@ -37,7 +37,7 @@ namespace Procp_Form
             checkIns = new List<CheckIn>();
             dropOffs = new List<DropOff>();
             flights = new List<Flight>();
-            statistics = new StatisticsManager(checkIns);
+            statistics = new StatisticsManager(checkIns, dropOffs);
             stopwatch = statistics.stopwatch;
         }
 
@@ -255,6 +255,11 @@ namespace Procp_Form
             catch (IOException)
             {
             }
+        }
+
+        public List<DateTime> GetLastBaggageTime()
+        {
+            return statistics.GetLastBaggageTimes();
         }
     }
 }

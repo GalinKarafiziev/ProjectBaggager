@@ -29,6 +29,24 @@ namespace Procp_Form.Visuals
         [NonSerialized]
         Pen p;
 
+
+        protected Image img;
+        protected string imgpath;
+
+        protected void loadImage(string path, int width, int height)
+        {
+            using (var srce = new Bitmap(path))
+            {
+                var dest = new Bitmap(width,height, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+                using (var gr = Graphics.FromImage(dest))
+                {
+                    gr.DrawImage(srce, new Rectangle(Point.Empty, dest.Size));
+                }
+                if (img != null) img.Dispose();
+                img = dest;
+            }
+        }
+
         public int Column
         {
             get { return column; }
@@ -47,9 +65,11 @@ namespace Procp_Form.Visuals
         public virtual void DrawTile(PaintEventArgs e, float width, float height)
         {
             Graphics g = e.Graphics;
-            p = new Pen(Color.Red);
+            Pen p = new Pen(Color.Red);
+            RectangleF r = new RectangleF(Column * width, Row * height, width, height);
 
-            g.FillRectangle(fillBrush, Column * width, Row * height, width, height);
+            g.FillRectangle(fillBrush, r);
+            g.DrawImage(img, r);
             g.DrawRectangle(p, Column * width, Row * height, width, height);
 
             if(nextTile != null)

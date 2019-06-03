@@ -12,45 +12,37 @@ namespace UnitTest
         [TestMethod]
         public void ProcessBaggage_If_Statement()
         { 
-            
             CheckIn checkIn = new CheckIn();
             Conveyor conveyor = new Conveyor(2,5);
-            DropOff dropOff = new DropOff();
-            
-            checkIn.NextNode = conveyor;
-            conveyor.NextNode = dropOff;
-            checkIn.Status = BaggageStatus.Busy;
-            checkIn.ProcessBaggage();
-
-            Assert.AreEqual(BaggageStatus.Free, checkIn.Status);
-        }
-        [TestMethod]
-        public void ProcessBaggage_Else_Statement()
-        {
-            List<Baggage> baggages = new List<Baggage>()
-            {
-                new Baggage(),
-                new Baggage()
-            };
-
-            CheckIn checkIn = new CheckIn();
-            checkIn.queue = baggages;
-            Conveyor conveyor = new Conveyor(2,5);
-            
             DropOff dropOff = new DropOff();
             int var = 0;
             checkIn.NextNode = conveyor;
             conveyor.NextNode = dropOff;
-            
-            checkIn.NextNode.Status = BaggageStatus.Busy;
+            checkIn.Status = BaggageStatus.Busy;
             checkIn.ProcessBaggage();
-            
-
             if (checkIn.NextNode.OnNodeStatusChangedToFree != null)
             {
                 var = checkIn.NextNode.OnNodeStatusChangedToFree.GetInvocationList().Length;
             }
-
+            Assert.AreEqual(BaggageStatus.Free, checkIn.Status);
+            Assert.AreEqual(checkIn.baggageInCheckIn, 0);
+            Assert.AreEqual(var, 0);
+        }
+        [TestMethod]
+        public void ProcessBaggage_Else_Statement()
+        {
+            CheckIn checkIn = new CheckIn();
+            Conveyor conveyor = new Conveyor(2,5);
+            DropOff dropOff = new DropOff();
+            int var = 0;
+            checkIn.NextNode = conveyor;
+            conveyor.NextNode = dropOff;
+            checkIn.NextNode.Status = BaggageStatus.Busy;
+            checkIn.ProcessBaggage();
+            if (checkIn.NextNode.OnNodeStatusChangedToFree != null)
+            {
+                var = checkIn.NextNode.OnNodeStatusChangedToFree.GetInvocationList().Length;
+            }
             Assert.AreEqual(1, var);
         }
         [TestMethod]
@@ -67,6 +59,7 @@ namespace UnitTest
             checkIn.PassBaggage(baggage);
 
             Assert.AreEqual(BaggageStatus.Free, checkIn.Status);
+            Assert.AreEqual(checkIn.baggageInCheckIn, 1);
         }
     }
 }
