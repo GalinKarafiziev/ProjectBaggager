@@ -543,15 +543,15 @@ namespace Procp_Form
 
         private void buttonSaveToFile_Click(object sender, EventArgs e)
         {
-            thisGrid.ClearGrid();
-            RefreshCheckInCombobox();
-            RefreshDropOffCombobox();
-            animationBox.Invalidate();
+            engine.WriteToFile();
         }
 
         private void btnClearGrid_Click(object sender, EventArgs e)
         {
-            engine.WriteToFile();
+            thisGrid.ClearGrid();
+            RefreshCheckInCombobox();
+            RefreshDropOffCombobox();
+            animationBox.Invalidate();
         }
     }
 }
