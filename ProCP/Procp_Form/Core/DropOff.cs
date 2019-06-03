@@ -16,7 +16,6 @@ namespace Procp_Form.Core
     {
         public List<Baggage> baggages;
         List<Flight> flights;
-        DateTime endOfTransportation;
         static int destinationGate = 0;
         public List<Baggage> unloadBaggages;
         private int employeeSpeed;

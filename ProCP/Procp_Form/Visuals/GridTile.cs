@@ -26,8 +26,6 @@ namespace Procp_Form.Visuals
         public Brush clickableColor;
         [NonSerialized]
         public Brush unclickableColour;
-        [NonSerialized]
-        Pen p;
 
 
         protected Image img;

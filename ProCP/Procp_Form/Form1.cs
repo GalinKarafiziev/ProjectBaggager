@@ -30,6 +30,7 @@ namespace Procp_Form
         List<ConveyorTile> conveyorBuilding;
         Engine engine;
         int checkinCounter = 0;
+        int dropOffCounter = 0;
 
         System.Timers.Timer aTimer;
 
@@ -540,7 +541,18 @@ namespace Procp_Form
             pieChartPercentageAllFailedBaggage.Series = series;
         }
 
-        
+        private void buttonSaveToFile_Click(object sender, EventArgs e)
+        {
+            thisGrid.ClearGrid();
+            RefreshCheckInCombobox();
+            RefreshDropOffCombobox();
+            animationBox.Invalidate();
+        }
+
+        private void btnClearGrid_Click(object sender, EventArgs e)
+        {
+            engine.WriteToFile();
+        }
     }
 }
 
