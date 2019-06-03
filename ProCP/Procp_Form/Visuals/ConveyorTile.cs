@@ -31,52 +31,15 @@ namespace Procp_Form.Visuals
 
             isLastTile = false;
         }
-        
-        public override void DrawTile(PaintEventArgs e)
+
+        protected override void DrawBaggage(Graphics g)
         {
-            Graphics g = e.Graphics;
-            Pen p = new Pen(Color.Red);
-            RectangleF r = new RectangleF(Column * width, Row * height, width, height);
-
-            g.FillRectangle(fillBrush, r);
-            g.DrawImage(img, r);
-            g.DrawRectangle(p, Column * width, Row * height, width, height);
-
-            if (nextTile != null)
-            {
-                if (nextTile.Column < this.Column)
-                {
-                    p = new Pen(Color.Red);
-                    g.DrawLine(p, (Column * width + width/2), (Row * height + height/2), Column * width, Row * height + height / 2);
-                }
-                else if (nextTile.Column > this.Column)
-                {
-                    p = new Pen(Color.Red);
-                    g.DrawLine(p, (Column * width + width / 2), (Row * height + height / 2), Column * width + width, Row * height + height / 2);
-                }
-                else if (nextTile.Row < this.Row)
-                {
-                    p = new Pen(Color.Red);
-                    g.DrawLine(p, (Column * width + width / 2), (Row * height + height / 2), Column * width + width / 2, Row * height);
-                }
-                else if (nextTile.Row > this.Row)
-                {
-                    p = new Pen(Color.Red);
-                    g.DrawLine(p, (Column * width + width / 2), (Row * height + height / 2), Column * width + width / 2, Row * height + height);
-                }
-            }
-
-            if (selected)
-            {
-                p = new Pen(Color.Yellow);
-                g.DrawRectangle(p, Column * width, Row * height, width, height);
-            }
-
             if (nodeInGrid != null)
             {
                 Conveyor conv = (Conveyor)nodeInGrid;
                 int count = conv.conveyorBelt.Length;
-                for (int i = 0; i < count; i++) {
+                for (int i = 0; i < count; i++)
+                {
                     if (i == PositionInLine)
                     {
                         if (conv.conveyorBelt[i] != null)

@@ -10,6 +10,7 @@ namespace Procp_Form.Visuals
 {
     class CheckInTile : GridTile
     {
+        public int checkInId;
         public CheckInTile(int column, int row, int tileWidth, int tileHeight) : base(column, row, tileWidth, tileHeight)
         {
             this.column = column;

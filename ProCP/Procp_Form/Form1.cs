@@ -325,13 +325,13 @@ namespace Procp_Form
                 }
             }
 
-            isBuildingConveyor = false;
             isConnectingTiles = false;
-            if (selectedTile != null)
+            if (selectedTile != null && isBuildingConveyor)
             {
                 selectedTile.selected = false;
                 selectedTile = null;
             }
+            isBuildingConveyor = false;
             conveyorBuilding.Clear();
         }
 

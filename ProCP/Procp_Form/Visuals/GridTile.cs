@@ -19,12 +19,11 @@ namespace Procp_Form.Visuals
         public Node nodeInGrid;
 
         public bool selected = false;
-        public GridTile nextTile;
-
-        public Brush fillBrush;
-        public Brush clickableColor;
+        protected GridTile nextTile;
 
         private bool unclickable = false;
+        public Brush fillBrush;
+        public Brush clickableColor;
         public Brush unclickableColour;
 
         protected Image img;
@@ -126,7 +125,8 @@ namespace Procp_Form.Visuals
                 }
             }
         }
-
+        // Baggage moves in different ways through the nodes
+        // Therefore checking wether to draw also happens in different ways
         protected virtual void DrawBaggage(Graphics g)
         {
             if (nodeInGrid != null)
@@ -136,6 +136,19 @@ namespace Procp_Form.Visuals
                     g.FillRectangle(Brushes.DarkGoldenrod, column * width + 10, row * height + 10, width - 20, height - 20);
                 }
             }
+        }
+        //there was a point in the project where 3 methods where nesessary
+        public virtual void SetNextTile(GridTile t)
+        {
+            nextTile = t;
+        }
+        public GridTile NextTile
+        {
+            get { return nextTile; }
+        }
+        public virtual void ClearNextTile()
+        {
+            nextTile = null;
         }
     }
 }

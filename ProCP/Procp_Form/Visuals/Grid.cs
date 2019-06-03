@@ -62,6 +62,16 @@ namespace Procp_Form.Visuals
                 }
             }
         }
+
+        private void LoadGrid(List<GridTile> load)
+        {
+            gridTiles.Clear();
+            foreach(GridTile c in load)
+            {
+                gridTiles.Add(c);
+            }
+        }
+
         public void DrawGrid(PaintEventArgs e)
         {
             Graphics g = e.Graphics;
@@ -263,9 +273,9 @@ namespace Procp_Form.Visuals
         {
             foreach(GridTile t in gridTiles)
             {
-                if(t.nextTile == toRemove)
+                if(t.NextTile == toRemove)
                 {
-                    t.nextTile = null;
+                    t.ClearNextTile();
                     break;
                 }
             }
@@ -296,9 +306,9 @@ namespace Procp_Form.Visuals
             }
             foreach(GridTile t in gridTiles.ToList())
             {
-                if(t.nextTile == first)
+                if(t.NextTile == first)
                 {
-                    t.nextTile = null;
+                    t.ClearNextTile();
                     break;
                 }
             }
@@ -326,7 +336,7 @@ namespace Procp_Form.Visuals
 
         public void ConnectTiles(GridTile sender, GridTile receiver)
         {
-            sender.nextTile = receiver;
+            sender.SetNextTile(receiver);
         }
 
         public List<GridTile> GetTilesIn4Directions(GridTile c)
@@ -350,7 +360,7 @@ namespace Procp_Form.Visuals
         {
             if (temp.PositionInLine == 0)
             {
-                c.nextTile = temp;
+                c.SetNextTile(temp);
                 return temp;
             }
             return null;
@@ -446,6 +456,17 @@ namespace Procp_Form.Visuals
                 {
                     ConnectTiles(c, t);
                     return t;
+                }
+            }
+            return null;
+        }
+        public List<GridTile> AutoConnectMPAToPrevs(GridTile c)
+        {
+            foreach (GridTile t in gridTiles)
+            {
+                if (t.nodeInGrid == c.nodeInGrid)
+                {
+                    
                 }
             }
             return null;
