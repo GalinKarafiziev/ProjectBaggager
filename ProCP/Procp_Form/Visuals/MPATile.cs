@@ -9,6 +9,8 @@ namespace Procp_Form.Visuals
 {
     class MPATile : GridTile
     {
+        public List<ConveyorTile> nextNodes;
+
         public MPATile()
         {
             clickableColor = Brushes.Purple;

@@ -178,7 +178,7 @@ namespace Procp_Form.Visuals
                 if (n.Column == targetColumn && n.Row == targetRow)
                 {
                     foundTile = n;
-                    break;
+                    return foundTile;
                 }
             }
             return foundTile;
@@ -215,7 +215,6 @@ namespace Procp_Form.Visuals
                 HideAreNotForConveyorAndSecurityAndMPA();
             }
         }
-
         private void HideAreNotForConveyorAndSecurityAndMPA()
         {
             foreach (GridTile t in gridTiles)
@@ -232,7 +231,6 @@ namespace Procp_Form.Visuals
                 }
             }
         }
-
         private void HideAreaNotForCheckIn()
         {
             foreach (GridTile t in gridTiles)
@@ -249,7 +247,6 @@ namespace Procp_Form.Visuals
                 }
             }
         }
-
         private void HideAreaNotForDropOff()
         {
             foreach (GridTile t in gridTiles)
@@ -336,71 +333,34 @@ namespace Procp_Form.Visuals
             }
         }
 
-        public GridTile AutoConnectNext(GridTile c)
+        public void ClearGrid()
         {
-            GridTile temp = FindTileInRowColumnCoordinates(c.Column, c.Row - 1);
-            if (temp is ConveyorTile)
-            {
-                temp = ConnectToConveyorBeginning(c, (ConveyorTile)temp);
-                if(temp != null)
-                {
-                    return temp;
-                }
-            }
-            else if(!(temp is EmptyTile) && !(temp is CheckInTile))
-            {
-                c.nextTile = temp;
-                return temp;
-            }
-
-            temp = FindTileInRowColumnCoordinates(c.Column, c.Row + 1);
-            if (temp is ConveyorTile)
-            {
-                temp = ConnectToConveyorBeginning(c, (ConveyorTile)temp);
-                if (temp != null)
-                {
-                    return temp;
-                }
-            }
-            else if (!(temp is EmptyTile) && !(temp is CheckInTile))
-            {
-                c.nextTile = temp;
-                return temp;
-            }
-
-            temp = FindTileInRowColumnCoordinates(c.Column + 1, c.Row);
-            if (temp is ConveyorTile)
-            {
-                temp = ConnectToConveyorBeginning(c, (ConveyorTile)temp);
-                if (temp != null)
-                {
-                    return temp;
-                }
-            }
-            else if (!(temp is EmptyTile) && !(temp is CheckInTile))
-            {
-                c.nextTile = temp;
-                return temp;
-            }
-
-            temp = FindTileInRowColumnCoordinates(c.Column - 1, c.Row);
-            if(temp is ConveyorTile)
-            {
-                temp = ConnectToConveyorBeginning(c, (ConveyorTile)temp);
-                if (temp != null)
-                {
-                    return temp;
-                }
-            }
-            else if (!(temp is EmptyTile) && !(temp is CheckInTile))
-            {
-                c.nextTile = temp;
-                return temp;
-            }
-
-            return null;
+            gridTiles.Clear();
+            CreateGrid();
         }
 
+        public void ConnectTiles(GridTile sender, GridTile receiver)
+        {
+            sender.nextTile = receiver;
+        }
+
+        public List<GridTile> GetTilesIn4Directions(GridTile c)
+        {
+            List<GridTile> tempTiles = new List<GridTile>();
+            tempTiles.Add(FindTileInRowColumnCoordinates(c.Column, c.Row - 1));
+            tempTiles.Add(FindTileInRowColumnCoordinates(c.Column, c.Row + 1));
+            tempTiles.Add(FindTileInRowColumnCoordinates(c.Column + 1, c.Row));
+            tempTiles.Add(FindTileInRowColumnCoordinates(c.Column - 1, c.Row));
+
+            foreach(GridTile t in tempTiles.ToList())
+            {
+                if(t == null)
+                {
+                    tempTiles.Remove(t);
+                }
+            }
+            return tempTiles;
+        }
         private GridTile ConnectToConveyorBeginning(GridTile c, ConveyorTile temp)
         {
             if (temp.PositionInLine == 0)
@@ -408,115 +368,102 @@ namespace Procp_Form.Visuals
                 c.nextTile = temp;
                 return temp;
             }
-            return null;            
+            return null;
         }
-
         private GridTile ConnectToConveyorPrevious(GridTile c, ConveyorTile temp)
         {
             if (temp.isLastTile)
             {
-                temp.nextTile = c;
+                ConnectTiles(temp, c);
                 return temp;
             }
             return null;
         }
-        
-        public GridTile AutoConnectToPrevious(GridTile c)
+        public GridTile AutoConnectDropOff(GridTile c)
         {
             GridTile temp = FindTileInRowColumnCoordinates(c.Column, c.Row - 1);
-            if (temp is ConveyorTile)
+            if(temp is ConveyorTile)
             {
-                temp = ConnectToConveyorPrevious(c, (ConveyorTile)temp);
-                if (temp != null)
-                {
+                if (ConnectToConveyorPrevious(c, temp as ConveyorTile) != null)
                     return temp;
-                }
             }
-            else if (!(temp is EmptyTile))
-            {
-                temp.nextTile = c;
-                return temp;
-            }
-
-            temp = FindTileInRowColumnCoordinates(c.Column, c.Row + 1);
-            if (temp is ConveyorTile)
-            {
-                temp = ConnectToConveyorPrevious(c, (ConveyorTile)temp);
-                if (temp != null)
-                {
-                    return temp;
-                }
-            }
-            else if (!(temp is EmptyTile))
-            {
-                temp.nextTile = c;
-                return temp;
-            }
-
-            temp = FindTileInRowColumnCoordinates(c.Column + 1, c.Row);
-            if (temp is ConveyorTile)
-            {
-                temp = ConnectToConveyorPrevious(c, (ConveyorTile)temp);
-                if (temp != null)
-                {
-                    return temp;
-                }
-            }
-            else if (!(temp is EmptyTile))
-            {
-                temp.nextTile = c;
-                return temp;
-            }
-
-            temp = FindTileInRowColumnCoordinates(c.Column - 1, c.Row);
-            if (temp is ConveyorTile)
-            {
-                temp = ConnectToConveyorPrevious(c, (ConveyorTile)temp);
-                if (temp != null)
-                {
-                    return temp;
-                }
-            }
-            else if (!(temp is EmptyTile))
-            {
-                temp.nextTile = c;
-                return temp;
-            }
-
             return null;
         }
-
-        public void AutoConnectFromConveyor(GridTile c)
+        public GridTile AutoConnectCheckIn(GridTile c)
         {
-            GridTile temp = FindTileInRowColumnCoordinates(c.Column, c.Row - 1);
-            if (!(temp is EmptyTile) && !(temp is ConveyorTile))
+            GridTile temp = FindTileInRowColumnCoordinates(c.Column, c.Row + 1);
+            if (temp is ConveyorTile)
             {
-                c.nextTile = temp;
+                if (ConnectToConveyorBeginning(c, temp as ConveyorTile) != null)
+                    return temp;
             }
-
-            temp = FindTileInRowColumnCoordinates(c.Column, c.Row + 1);
-            if (!(temp is EmptyTile) && !(temp is ConveyorTile))
-            {
-                c.nextTile = temp;
-            }
-
-            temp = FindTileInRowColumnCoordinates(c.Column + 1, c.Row);
-            if (!(temp is EmptyTile) && !(temp is ConveyorTile))
-            {
-                c.nextTile = temp;
-            }
-
-            temp = FindTileInRowColumnCoordinates(c.Column - 1, c.Row);
-            if (!(temp is EmptyTile) && !(temp is ConveyorTile))
-            {
-                c.nextTile = temp;
-            }
+            return null;
         }
-
-        public void ClearGrid()
+        public GridTile AutoConnectSecurityToPrev(GridTile c)
         {
-            gridTiles.Clear();
-            CreateGrid();
+            List<GridTile> tempList = GetTilesIn4Directions(c);
+
+            foreach (GridTile t in tempList)
+            {
+                if (t is ConveyorTile)
+                {
+                    if(ConnectToConveyorPrevious(c, t as ConveyorTile) != null)
+                    {
+                        return t;
+                    }
+                }
+            }
+            return null;
+        }
+        public GridTile AutoConnectSecurityToNext(GridTile c)
+        {
+            List<GridTile> tempList = GetTilesIn4Directions(c);
+
+            foreach (GridTile t in tempList)
+            {
+                if (t is ConveyorTile)
+                {
+                    if (ConnectToConveyorBeginning(c, t as ConveyorTile) != null)
+                        return t;
+                }
+            }
+            return null;
+        }
+        public GridTile AutoConnectConveyorToPrevious(GridTile c)
+        {
+            List<GridTile> tempList = GetTilesIn4Directions(c);
+            foreach(GridTile t in tempList)
+            {
+                if(t is ConveyorTile)
+                {
+                    if (ConnectToConveyorPrevious(c, t as ConveyorTile) != null)
+                        return t;
+                }
+                else if(!(t is EmptyTile) && !(t is DropOffTile))
+                {
+                    ConnectTiles(t, c);
+                    return t;
+                }
+            }
+            return null;
+        }
+        public GridTile AutoConnectConveyorToNext(GridTile c)
+        {
+            List<GridTile> tempList = GetTilesIn4Directions(c);
+            foreach (GridTile t in tempList)
+            {
+                if (t is ConveyorTile)
+                {
+                    if (ConnectToConveyorBeginning(c, t as ConveyorTile) != null)
+                        return t;
+                }
+                else if (!(t is EmptyTile))
+                {
+                    ConnectTiles(c, t);
+                    return t;
+                }
+            }
+            return null;
         }
     }
 }

@@ -65,7 +65,35 @@ namespace Procp_Form.Visuals
             g.DrawImage(img, r);
             g.DrawRectangle(p, Column * width, Row * height, width, height);
 
-            if(nextTile != null)
+            if (selected)
+            {
+                p = new Pen(Color.Yellow);
+                g.DrawRectangle(p, Column * width, Row * height, width, height);
+            }
+
+            DrawArrowNext(p, g, width, height);
+            DrawBaggage(g, width, height);
+        }
+        public virtual void SetTileUncklicableColor()
+        {
+            if (Unselectable)
+            {
+                fillBrush = unclickableColour;
+            }
+            else
+            {
+                fillBrush = clickableColor;
+            }
+        }
+
+        protected virtual void DrawBackground()
+        {
+
+        }
+
+        protected virtual void DrawArrowNext(Pen p, Graphics g, float width, float height)
+        {
+            if (nextTile != null)
             {
                 if (nextTile.Column < this.Column)
                 {
@@ -88,12 +116,10 @@ namespace Procp_Form.Visuals
                     g.DrawLine(p, (Column * width + width / 2), (Row * height + height / 2), Column * width + width / 2, Row * height + height);
                 }
             }
+        }
 
-            if (selected)
-            {
-                p = new Pen(Color.Yellow);
-                g.DrawRectangle(p, Column * width, Row * height, width, height);
-            }
+        protected virtual void DrawBaggage(Graphics g, float width, float height)
+        {
             if (nodeInGrid != null)
             {
                 if (nodeInGrid.Status == BaggageStatus.Busy)
@@ -101,22 +127,6 @@ namespace Procp_Form.Visuals
                     g.FillRectangle(Brushes.DarkGoldenrod, column * width + 10, row * height + 10, width - 20, height - 20);
                 }
             }
-        }
-        public virtual void SetTileUncklicableColor()
-        {
-            if (Unselectable)
-            {
-                fillBrush = unclickableColour;
-            }
-            else
-            {
-                fillBrush = clickableColor;
-            }
-        }
-
-        public void ConnectNext(GridTile t)
-        {
-            nextTile = t;
         }
     }
 }
