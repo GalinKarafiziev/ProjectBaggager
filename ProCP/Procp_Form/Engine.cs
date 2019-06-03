@@ -2,19 +2,24 @@
 using Procp_Form.Core;
 using Procp_Form.CoreAbstraction;
 using Procp_Form.Statistics;
+using Procp_Form.Visuals;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Procp_Form
 {
     public class Engine
     {
+        public Grid tiles;
         public StatisticsManager statistics;
-        private MPA mainProcessArea;
+        public MPA mainProcessArea;
         public CheckInDispatcher dispatcher;
         public List<CheckIn> checkIns;
         public List<DropOff> dropOffs;
@@ -24,8 +29,9 @@ namespace Procp_Form
         private Flight flight;
         public Stopwatch stopwatch;
 
-        public Engine()
+        public Engine(Grid grid)
         {
+            tiles = grid;
             securities = new List<Security>();
             conveyors = new List<Conveyor>();
             checkIns = new List<CheckIn>();
@@ -223,6 +229,32 @@ namespace Procp_Form
         public double GetCalculateSuccessedBaggage()
         {
             return statistics.CalculateSuccessedBaggage();
+        }
+
+        public void WriteToFile()
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.DefaultExt = "bin";
+            try
+            {
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    using (Stream stream = File.Open(sfd.FileName, FileMode.Create))
+                    {
+                        BinaryFormatter bin = new BinaryFormatter();
+                        bin.Serialize(stream, flights);
+                        bin.Serialize(stream, checkIns);
+                        bin.Serialize(stream, securities);
+                        bin.Serialize(stream, dropOffs);
+                        bin.Serialize(stream, conveyors);
+                        bin.Serialize(stream, mainProcessArea);
+                        bin.Serialize(stream, tiles.gridTiles);
+                    }
+                }
+            }
+            catch (IOException)
+            {
+            }
         }
     }
 }

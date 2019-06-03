@@ -28,7 +28,7 @@ namespace Procp_Form
         bool isConnectingTiles;
         GridTile selectedTile;
         List<ConveyorTile> conveyorBuilding;
-        Engine engine = new Engine();
+        Engine engine;
         int checkinCounter = 0;
 
         System.Timers.Timer aTimer;
@@ -37,7 +37,7 @@ namespace Procp_Form
         {
             InitializeComponent();
             thisGrid = new Grid(animationBox.Width, animationBox.Height);
-
+            engine = new Engine(thisGrid);
             chbDeleteMode.Visible = false;
             buildModeActive = false;
             deleteMode = false;
@@ -465,7 +465,10 @@ namespace Procp_Form
             pieChartPercentageAllFailedBaggage.Series = series;
         }
 
-        
+        private void buttonSaveToFile_Click(object sender, EventArgs e)
+        {
+            engine.WriteToFile();
+        }
     }
 }
 

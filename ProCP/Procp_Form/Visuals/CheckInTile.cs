@@ -8,7 +8,8 @@ using System.Windows.Forms;
 
 namespace Procp_Form.Visuals
 {
-    class CheckInTile : GridTile
+    [Serializable]
+    public class CheckInTile : GridTile
     {
         public CheckInTile()
         {

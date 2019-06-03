@@ -7,10 +7,12 @@ using System.Timers;
 
 namespace Procp_Form.CoreAbstraction
 {
+    [Serializable]
     public abstract class TransportUnit : Node
     {
         public Baggage[] conveyorBelt;
         public Baggage lastBaggage;
+        [NonSerialized]
         public Timer timer;
 
         public TransportUnit()

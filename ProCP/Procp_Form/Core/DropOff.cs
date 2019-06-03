@@ -12,6 +12,7 @@ using System.Xml.Xsl;
 
 namespace Procp_Form.Core
 {
+    [Serializable]
     public class DropOff : Node
     {
         public List<Baggage> baggages;

@@ -9,7 +9,8 @@ using System.Drawing;
 
 namespace Procp_Form.Visuals
 {
-    class GridTile
+    [Serializable]
+    public class GridTile
     {
         private int column;
         private int row;
@@ -19,10 +20,15 @@ namespace Procp_Form.Visuals
         private bool unclickable = false;
         public bool selected = false;
         public GridTile nextTile;
+        [NonSerialized]
         public Brush fillBrush;
+        [NonSerialized]
         public Brush clickableColor;
+        [NonSerialized]
         public Brush unclickableColour;
-        
+        [NonSerialized]
+        Pen p;
+
         public int Column
         {
             get { return column; }
@@ -41,7 +47,7 @@ namespace Procp_Form.Visuals
         public virtual void DrawTile(PaintEventArgs e, float width, float height)
         {
             Graphics g = e.Graphics;
-            Pen p = new Pen(Color.Red);
+            p = new Pen(Color.Red);
 
             g.FillRectangle(fillBrush, Column * width, Row * height, width, height);
             g.DrawRectangle(p, Column * width, Row * height, width, height);

@@ -9,8 +9,11 @@ using System.Timers;
 
 namespace Procp_Form.Core
 {
+    [Serializable]
     public class CheckInDispatcher : Node
     {
+        [NonSerialized]
+        Timer timer;
         public List<Queue<Baggage>> checkinQueues;
         public List<Timer> timers;
         public List<CheckIn> checkins;
@@ -103,7 +106,6 @@ namespace Procp_Form.Core
         public void SetupTimers(List<Flight> flights)
         {
             timers = new List<Timer>();
-            Timer timer;
 
             foreach (Flight f in flights)
             {
