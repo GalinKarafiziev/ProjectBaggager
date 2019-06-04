@@ -103,6 +103,34 @@ namespace Procp_Form
             thisGrid.HideArea(buildModeType);
             animationBox.Invalidate();
         }
+        private void ConveyorSpeed_CheckedChanged(object sender, EventArgs e)
+        {
+            int speed = 0;
+
+            if (rbConvSpeed1.Checked)
+            {
+                speed = 1;
+            }
+            else if (rbConvSpeed2.Checked)
+            {
+                speed = 1;
+            }
+            else if (rbConvSpeed3.Checked)
+            {
+                speed = 3;
+            }
+            else if (rbDropOff.Checked)
+            {
+                speed = 4;
+            }
+            foreach (var conveyor in engine.conveyors)
+            {
+                conveyor.ConveyorSpeed = speed;
+            }
+            
+            thisGrid.HideArea(buildModeType);
+            animationBox.Invalidate();
+        }
 
         private void AnimationBox_MouseDown(object sender, MouseEventArgs e)
         {
