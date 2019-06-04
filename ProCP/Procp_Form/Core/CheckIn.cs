@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Procp_Form.Core
 {
+    [Serializable]
     public class CheckIn : ProcessUnit
     {
         public static int id;

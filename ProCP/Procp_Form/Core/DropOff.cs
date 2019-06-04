@@ -11,11 +11,11 @@ using System.Xml.Xsl;
 
 namespace Procp_Form.Core
 {
+    [Serializable]
     public class DropOff : Node
     {
         public List<Baggage> baggages;
         List<Flight> flights;
-        DateTime endOfTransportation;
         static int destinationGate = 0;
         public List<Baggage> unloadBaggages;
         private int employeeSpeed;

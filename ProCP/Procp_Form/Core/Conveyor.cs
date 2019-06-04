@@ -8,6 +8,7 @@ using System.Windows.Forms;
 
 namespace Procp_Form.Core
 {
+    [Serializable]
     public class Conveyor : TransportUnit
     {
         public int DestinationGate { get; set; }

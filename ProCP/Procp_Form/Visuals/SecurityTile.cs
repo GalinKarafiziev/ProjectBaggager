@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace Procp_Form.Visuals
 {
-    class SecurityTile : GridTile
+    [Serializable]
+    public class SecurityTile : GridTile
     {
         public SecurityTile()
         {
