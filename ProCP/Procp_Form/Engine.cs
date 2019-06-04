@@ -230,6 +230,7 @@ namespace Procp_Form
         }
 
         public List<TimeSpan> GetTransferTime() => statistics.CalculateBaggageTransportationTime();
+
         public void WriteToFile()
         {
             SaveFileDialog sfd = new SaveFileDialog();
@@ -254,11 +255,6 @@ namespace Procp_Form
             catch (IOException)
             {
             }
-        }
-
-        public List<DateTime> GetLastBaggageTime()
-        {
-            return statistics.GetLastBaggageTimes();
         }
     }
 }
