@@ -44,6 +44,7 @@
             this.tbFlightNr = new System.Windows.Forms.TextBox();
             this.lblFlightNr = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnAddCheckinToFlight = new System.Windows.Forms.Button();
             this.cbCheckInFlight = new System.Windows.Forms.ComboBox();
             this.lblCheckIn = new System.Windows.Forms.Label();
             this.cbDropOffDest = new System.Windows.Forms.ComboBox();
@@ -58,6 +59,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.btnRun = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnClearGrid = new System.Windows.Forms.Button();
             this.gbBuildType = new System.Windows.Forms.GroupBox();
             this.rbDropOff = new System.Windows.Forms.RadioButton();
             this.rbMPA = new System.Windows.Forms.RadioButton();
@@ -77,7 +79,11 @@
             this.cartesianChartFailedToPassBaggage = new LiveCharts.WinForms.CartesianChart();
             this.buttonLoadChartBaggageThroughCheckin = new System.Windows.Forms.Button();
             this.cartesianChartBaggageProcessedByCheckin = new LiveCharts.WinForms.CartesianChart();
-            this.btnClearGrid = new System.Windows.Forms.Button();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.rbConvSpeed1 = new System.Windows.Forms.RadioButton();
+            this.rbConvSpeed2 = new System.Windows.Forms.RadioButton();
+            this.rbConvSpeed3 = new System.Windows.Forms.RadioButton();
+            this.rbConvSpeed4 = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.animationBox)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -86,6 +92,7 @@
             this.tabControl1.SuspendLayout();
             this.tabPageSimVisuals.SuspendLayout();
             this.tabPageStats.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // animationBox
@@ -94,7 +101,7 @@
             this.animationBox.Location = new System.Drawing.Point(4, 4);
             this.animationBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.animationBox.Name = "animationBox";
-            this.animationBox.Size = new System.Drawing.Size(2289, 1142);
+            this.animationBox.Size = new System.Drawing.Size(1317, 849);
             this.animationBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.animationBox.TabIndex = 0;
             this.animationBox.TabStop = false;
@@ -251,6 +258,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.btnAddCheckinToFlight);
             this.groupBox2.Controls.Add(this.cbCheckInFlight);
             this.groupBox2.Controls.Add(this.lblCheckIn);
             this.groupBox2.Controls.Add(this.cbDropOffDest);
@@ -265,7 +273,7 @@
             this.groupBox2.Controls.Add(this.lblFlightNr);
             this.groupBox2.Controls.Add(this.lbFlights);
             this.groupBox2.Controls.Add(this.tbFlightNr);
-            this.groupBox2.Location = new System.Drawing.Point(13, 294);
+            this.groupBox2.Location = new System.Drawing.Point(5, 342);
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -273,6 +281,18 @@
             this.groupBox2.TabIndex = 14;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Flights Info";
+            // 
+            // btnAddCheckinToFlight
+            // 
+            this.btnAddCheckinToFlight.Enabled = false;
+            this.btnAddCheckinToFlight.Location = new System.Drawing.Point(212, 181);
+            this.btnAddCheckinToFlight.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnAddCheckinToFlight.Name = "btnAddCheckinToFlight";
+            this.btnAddCheckinToFlight.Size = new System.Drawing.Size(177, 30);
+            this.btnAddCheckinToFlight.TabIndex = 32;
+            this.btnAddCheckinToFlight.Text = "Add Check-in to flight";
+            this.btnAddCheckinToFlight.UseVisualStyleBackColor = true;
+            this.btnAddCheckinToFlight.Click += new System.EventHandler(this.btnAddCheckinToFlight_Click);
             // 
             // cbCheckInFlight
             // 
@@ -406,6 +426,7 @@
             // panel1
             // 
             this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panel1.Controls.Add(this.groupBox3);
             this.panel1.Controls.Add(this.btnClearGrid);
             this.panel1.Controls.Add(this.gbBuildType);
             this.panel1.Controls.Add(this.btnStop);
@@ -422,8 +443,19 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(411, 892);
+            this.panel1.Size = new System.Drawing.Size(411, 894);
             this.panel1.TabIndex = 16;
+            // 
+            // btnClearGrid
+            // 
+            this.btnClearGrid.Location = new System.Drawing.Point(9, 75);
+            this.btnClearGrid.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnClearGrid.Name = "btnClearGrid";
+            this.btnClearGrid.Size = new System.Drawing.Size(127, 23);
+            this.btnClearGrid.TabIndex = 32;
+            this.btnClearGrid.Text = "Clear Grid";
+            this.btnClearGrid.UseVisualStyleBackColor = true;
+            this.btnClearGrid.Click += new System.EventHandler(this.BtnClearGrid_Click);
             // 
             // gbBuildType
             // 
@@ -560,7 +592,7 @@
             this.tabControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(2305, 1179);
+            this.tabControl1.Size = new System.Drawing.Size(1333, 886);
             this.tabControl1.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight;
             this.tabControl1.TabIndex = 17;
             // 
@@ -571,7 +603,7 @@
             this.tabPageSimVisuals.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tabPageSimVisuals.Name = "tabPageSimVisuals";
             this.tabPageSimVisuals.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.tabPageSimVisuals.Size = new System.Drawing.Size(2297, 1150);
+            this.tabPageSimVisuals.Size = new System.Drawing.Size(1325, 857);
             this.tabPageSimVisuals.TabIndex = 1;
             this.tabPageSimVisuals.Text = "Simulation Visualisation";
             this.tabPageSimVisuals.UseVisualStyleBackColor = true;
@@ -587,7 +619,7 @@
             this.tabPageStats.Location = new System.Drawing.Point(4, 25);
             this.tabPageStats.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tabPageStats.Name = "tabPageStats";
-            this.tabPageStats.Size = new System.Drawing.Size(2297, 1150);
+            this.tabPageStats.Size = new System.Drawing.Size(1325, 857);
             this.tabPageStats.TabIndex = 2;
             this.tabPageStats.Text = "Statistics";
             this.tabPageStats.UseVisualStyleBackColor = true;
@@ -625,10 +657,10 @@
             // 
             // cartesianChartFailedToPassBaggage
             // 
-            this.cartesianChartFailedToPassBaggage.Location = new System.Drawing.Point(785, 4);
+            this.cartesianChartFailedToPassBaggage.Location = new System.Drawing.Point(667, 7);
             this.cartesianChartFailedToPassBaggage.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.cartesianChartFailedToPassBaggage.Name = "cartesianChartFailedToPassBaggage";
-            this.cartesianChartFailedToPassBaggage.Size = new System.Drawing.Size(763, 427);
+            this.cartesianChartFailedToPassBaggage.Size = new System.Drawing.Size(629, 427);
             this.cartesianChartFailedToPassBaggage.TabIndex = 26;
             this.cartesianChartFailedToPassBaggage.Text = "FailedToPassBaggageThroughSecurity";
             // 
@@ -648,32 +680,82 @@
             this.cartesianChartBaggageProcessedByCheckin.Location = new System.Drawing.Point(4, 4);
             this.cartesianChartBaggageProcessedByCheckin.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.cartesianChartBaggageProcessedByCheckin.Name = "cartesianChartBaggageProcessedByCheckin";
-            this.cartesianChartBaggageProcessedByCheckin.Size = new System.Drawing.Size(763, 427);
+            this.cartesianChartBaggageProcessedByCheckin.Size = new System.Drawing.Size(655, 427);
             this.cartesianChartBaggageProcessedByCheckin.TabIndex = 0;
             this.cartesianChartBaggageProcessedByCheckin.Text = "BaggageProcessedByCheckin";
             // 
-            // btnClearGrid
+            // groupBox3
             // 
-            this.btnClearGrid.Location = new System.Drawing.Point(333, 857);
-            this.btnClearGrid.Name = "btnClearGrid";
-            this.btnClearGrid.Size = new System.Drawing.Size(75, 23);
-            this.btnClearGrid.TabIndex = 32;
-            this.btnClearGrid.Text = "Clear";
-            this.btnClearGrid.UseVisualStyleBackColor = true;
-            this.btnClearGrid.Click += new System.EventHandler(this.BtnClearGrid_Click);
+            this.groupBox3.Controls.Add(this.rbConvSpeed4);
+            this.groupBox3.Controls.Add(this.rbConvSpeed3);
+            this.groupBox3.Controls.Add(this.rbConvSpeed2);
+            this.groupBox3.Controls.Add(this.rbConvSpeed1);
+            this.groupBox3.Location = new System.Drawing.Point(5, 279);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(189, 56);
+            this.groupBox3.TabIndex = 33;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Conveyor Speed";
+            // 
+            // rbConvSpeed1
+            // 
+            this.rbConvSpeed1.AutoSize = true;
+            this.rbConvSpeed1.Location = new System.Drawing.Point(11, 24);
+            this.rbConvSpeed1.Name = "rbConvSpeed1";
+            this.rbConvSpeed1.Size = new System.Drawing.Size(37, 21);
+            this.rbConvSpeed1.TabIndex = 0;
+            this.rbConvSpeed1.TabStop = true;
+            this.rbConvSpeed1.Text = "1";
+            this.rbConvSpeed1.UseVisualStyleBackColor = true;
+            this.rbConvSpeed1.CheckedChanged += new System.EventHandler(this.ConveyorSpeed_CheckedChanged);
+            // 
+            // rbConvSpeed2
+            // 
+            this.rbConvSpeed2.AutoSize = true;
+            this.rbConvSpeed2.Location = new System.Drawing.Point(54, 24);
+            this.rbConvSpeed2.Name = "rbConvSpeed2";
+            this.rbConvSpeed2.Size = new System.Drawing.Size(37, 21);
+            this.rbConvSpeed2.TabIndex = 1;
+            this.rbConvSpeed2.TabStop = true;
+            this.rbConvSpeed2.Text = "2";
+            this.rbConvSpeed2.UseVisualStyleBackColor = true;
+            this.rbConvSpeed2.CheckedChanged += new System.EventHandler(this.ConveyorSpeed_CheckedChanged);
+            // 
+            // rbConvSpeed3
+            // 
+            this.rbConvSpeed3.AutoSize = true;
+            this.rbConvSpeed3.Location = new System.Drawing.Point(101, 24);
+            this.rbConvSpeed3.Name = "rbConvSpeed3";
+            this.rbConvSpeed3.Size = new System.Drawing.Size(37, 21);
+            this.rbConvSpeed3.TabIndex = 2;
+            this.rbConvSpeed3.TabStop = true;
+            this.rbConvSpeed3.Text = "3";
+            this.rbConvSpeed3.UseVisualStyleBackColor = true;
+            this.rbConvSpeed3.CheckedChanged += new System.EventHandler(this.ConveyorSpeed_CheckedChanged);
+            // 
+            // rbConvSpeed4
+            // 
+            this.rbConvSpeed4.AutoSize = true;
+            this.rbConvSpeed4.Location = new System.Drawing.Point(144, 24);
+            this.rbConvSpeed4.Name = "rbConvSpeed4";
+            this.rbConvSpeed4.Size = new System.Drawing.Size(37, 21);
+            this.rbConvSpeed4.TabIndex = 3;
+            this.rbConvSpeed4.TabStop = true;
+            this.rbConvSpeed4.Text = "4";
+            this.rbConvSpeed4.UseVisualStyleBackColor = true;
+            this.rbConvSpeed4.CheckedChanged += new System.EventHandler(this.ConveyorSpeed_CheckedChanged);
             // 
             // Baggager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(1827, 892);
+            this.ClientSize = new System.Drawing.Size(1752, 894);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.panel1);
             this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "Baggager";
             this.Text = "Baggager";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             ((System.ComponentModel.ISupportInitialize)(this.animationBox)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -686,6 +768,8 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPageSimVisuals.ResumeLayout(false);
             this.tabPageStats.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -742,6 +826,12 @@
         private System.Windows.Forms.RadioButton rbMPA;
         private System.Windows.Forms.RadioButton rbSecurity;
         private System.Windows.Forms.Button btnClearGrid;
+        private System.Windows.Forms.Button btnAddCheckinToFlight;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.RadioButton rbConvSpeed4;
+        private System.Windows.Forms.RadioButton rbConvSpeed3;
+        private System.Windows.Forms.RadioButton rbConvSpeed2;
+        private System.Windows.Forms.RadioButton rbConvSpeed1;
     }
 }
 
