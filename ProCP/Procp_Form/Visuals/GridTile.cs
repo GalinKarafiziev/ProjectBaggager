@@ -63,7 +63,7 @@ namespace Procp_Form.Visuals
         public virtual void DrawTile(PaintEventArgs e, float width, float height)
         {
             Graphics g = e.Graphics;
-            Pen p = new Pen(Color.Red);
+            Pen p = new Pen(Color.LightSteelBlue);
             RectangleF r = new RectangleF(Column * width, Row * height, width, height);
 
             g.FillRectangle(fillBrush, r);

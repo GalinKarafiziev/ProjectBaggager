@@ -12,13 +12,13 @@ namespace Procp_Form.Visuals
     {
         public SecurityTile()
         {
-            clickableColor = Brushes.Yellow;
-            unclickableColour = Brushes.Yellow;
+            clickableColor = Brushes.White;
+            unclickableColour = Brushes.LightGray;
 
-            imgpath = "../../Resources/security2.png";
+            imgpath = "../../Resources/security.png";
             img = Image.FromFile(imgpath);
 
-            fillBrush = Brushes.Yellow;
+            fillBrush = clickableColor;
         }
     }
 }

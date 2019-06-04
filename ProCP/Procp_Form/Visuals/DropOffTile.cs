@@ -13,8 +13,8 @@ namespace Procp_Form.Visuals
     {
         public DropOffTile()
         {
-            clickableColor = Brushes.SlateGray;
-            unclickableColour = Brushes.DarkSlateGray;
+            clickableColor = Brushes.White;
+            unclickableColour = Brushes.LightGray;
 
             imgpath = "../../Resources/dropoff.png";
             img = Image.FromFile(imgpath);

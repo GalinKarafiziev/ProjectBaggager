@@ -8,15 +8,14 @@ using System.Windows.Forms;
 
 namespace Procp_Form.Visuals
 {
-    //clickable color - cyan
-    //unclickable color - dark cyan
+
     [Serializable]
     public class EmptyTile : GridTile
     {
         public EmptyTile()
         {
-            clickableColor = Brushes.Cyan;
-            unclickableColour = Brushes.DarkCyan;
+            clickableColor = Brushes.White;
+            unclickableColour = Brushes.LightGray;
 
             imgpath = "../../Resources/mpa.png";
             img = Image.FromFile(imgpath);
@@ -28,10 +27,10 @@ namespace Procp_Form.Visuals
             this.Column = column;
             this.Row = row;
 
-            clickableColor = Brushes.Cyan;
-            unclickableColour = Brushes.DarkCyan;
+            clickableColor = Brushes.White;
+            unclickableColour = Brushes.LightGray;
 
-            imgpath = "../../Resources/mpa.png";
+            imgpath = "../../Resources/empty.png";
             loadImage(imgpath, tileWidth, tileHeight);
 
             fillBrush = clickableColor;

@@ -13,13 +13,13 @@ namespace Procp_Form.Visuals
     {
         public CheckInTile(int tileWidth, int tileHeight)
         {
-            clickableColor = Brushes.PaleVioletRed;
-            unclickableColour = Brushes.MediumVioletRed;
+            clickableColor = Brushes.White;
+            unclickableColour = Brushes.LightGray;
 
             imgpath = "../../Resources/checkin.png";
             loadImage(imgpath, tileWidth, tileHeight);
 
-            fillBrush = Brushes.PaleVioletRed;
+            fillBrush = clickableColor;
         }
     }
 }

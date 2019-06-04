@@ -17,8 +17,8 @@ namespace Procp_Form.Visuals
         public bool isLastTile;
         public ConveyorTile(int tileWidth, int tileHeight)
         {
-            clickableColor = Brushes.SeaGreen;
-            unclickableColour = Brushes.DarkSeaGreen;
+            clickableColor = Brushes.White;
+            unclickableColour = Brushes.LightGray;
 
             fillBrush = clickableColor;
 
@@ -31,7 +31,7 @@ namespace Procp_Form.Visuals
         public override void DrawTile(PaintEventArgs e, float width, float height)
         {
             Graphics g = e.Graphics;
-            Pen p = new Pen(Color.Red);
+            Pen p = new Pen(Color.DarkSlateGray);
             RectangleF r = new RectangleF(Column * width, Row * height, width, height);
 
             g.FillRectangle(fillBrush, r);

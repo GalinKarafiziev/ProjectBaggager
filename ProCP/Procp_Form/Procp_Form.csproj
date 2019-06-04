@@ -137,9 +137,6 @@
     <None Include="Resources\security.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\empty.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\checkin.png" />
   </ItemGroup>
   <ItemGroup>
@@ -147,6 +144,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\security2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\empty.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

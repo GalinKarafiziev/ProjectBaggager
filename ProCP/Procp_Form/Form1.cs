@@ -37,6 +37,7 @@ namespace Procp_Form
         public Baggager()
         {
             InitializeComponent();
+            this.WindowState = FormWindowState.Maximized;
             thisGrid = new Grid(animationBox.Width, animationBox.Height);
             engine = new Engine(thisGrid);
             chbDeleteMode.Visible = false;
