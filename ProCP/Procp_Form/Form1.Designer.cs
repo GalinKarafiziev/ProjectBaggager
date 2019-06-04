@@ -85,6 +85,7 @@
             this.rbConvSpeed3 = new System.Windows.Forms.RadioButton();
             this.rbConvSpeed2 = new System.Windows.Forms.RadioButton();
             this.rbConvSpeed1 = new System.Windows.Forms.RadioButton();
+            this.buttonLoad = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.animationBox)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -427,6 +428,7 @@
             // panel1
             // 
             this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panel1.Controls.Add(this.buttonLoad);
             this.panel1.Controls.Add(this.buttonSaveToFile);
             this.panel1.Controls.Add(this.btnClearGrid);
             this.panel1.Controls.Add(this.gbBuildType);
@@ -756,6 +758,16 @@
             this.rbConvSpeed1.UseVisualStyleBackColor = true;
             this.rbConvSpeed1.CheckedChanged += new System.EventHandler(this.ConveyorSpeed_CheckedChanged);
             // 
+            // buttonLoad
+            // 
+            this.buttonLoad.Location = new System.Drawing.Point(300, 691);
+            this.buttonLoad.Name = "buttonLoad";
+            this.buttonLoad.Size = new System.Drawing.Size(94, 30);
+            this.buttonLoad.TabIndex = 33;
+            this.buttonLoad.Text = "Load";
+            this.buttonLoad.UseVisualStyleBackColor = true;
+            this.buttonLoad.Click += new System.EventHandler(this.buttonLoad_Click);
+            // 
             // Baggager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -845,6 +857,7 @@
         private System.Windows.Forms.RadioButton rbConvSpeed3;
         private System.Windows.Forms.RadioButton rbConvSpeed2;
         private System.Windows.Forms.RadioButton rbConvSpeed1;
+        private System.Windows.Forms.Button buttonLoad;
     }
 }
 

@@ -38,7 +38,7 @@ namespace Procp_Form
         {
             InitializeComponent();
             thisGrid = new Grid(animationBox.Width, animationBox.Height);
-            engine = new Engine(thisGrid);
+            engine = new Engine();
             chbDeleteMode.Visible = false;
             buildModeActive = false;
             deleteMode = false;
@@ -602,6 +602,11 @@ namespace Procp_Form
             animationBox.Invalidate();
         }
 
+        private void buttonLoad_Click(object sender, EventArgs e)
+        {
+            engine.GetGridTiles(thisGrid);
+            engine.LoadFromFile();
+        }
     }
 }
 

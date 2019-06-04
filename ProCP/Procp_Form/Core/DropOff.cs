@@ -19,6 +19,7 @@ namespace Procp_Form.Core
         static int destinationGate = 0;
         public List<Baggage> unloadBaggages;
         private int employeeSpeed;
+        [NonSerialized]
         private Timer timer;
         public List<DateTime> baggageEnteredDropOff;
 
