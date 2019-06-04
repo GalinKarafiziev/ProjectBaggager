@@ -18,31 +18,26 @@ namespace Procp_Form.Statistics
         public List<int> failedToPassSecurity;
         public double allBaggage = 0;
         private List<DropOff> dropOffs;
+        private List<Flight> flights;
 
-        public StatisticsManager(List<CheckIn> checkIns, List<DropOff> dropOffs)
+        public StatisticsManager(List<CheckIn> checkIns, List<DropOff> dropOffs, List<Flight> flights)
         {
             this.checkIns = checkIns;
             this.dropOffs = dropOffs;
+            this.flights = flights;
             baggageInCheckIn = new List<int>();
             failedToPassSecurity = new List<int>();
             transferTimes = new List<TimeSpan>();
+
             stopwatch = new Stopwatch();            
         }
-
 
         public List<int> GetCheckInBaggageCount()
         {
             baggageInCheckIn.Clear();
             return baggageInCheckIn;
         }
-
-        public List<TimeSpan> CalculateAverageTimeNeededToTransferBaggage()
-        {
-            TimeSpan transferTime = stopwatch.Elapsed;
-            transferTimes.Add(transferTime);
-            return transferTimes;
-        }
-
+        
         public List<int> GetFailedToPassBaggageThroughSecurity(List<Security> securities)
         {
             failedToPassSecurity.Clear();
@@ -80,10 +75,23 @@ namespace Procp_Form.Statistics
             return allBaggage - CalculateFailedBaggage();
         }
 
-        public List<DateTime> GetLastBaggageTimes()
+        public List<DateTime> GetLastBaggageTime()
         {
-            var mostRecentTimes = this.dropOffs.Select(x => x.baggageEnteredDropOff.OrderBy(c => c).First()).ToList();
+            var mostRecentTimes = this.dropOffs.Select(x => x.baggageEnteredDropOff.OrderByDescending(c => c).First()).ToList();
             return mostRecentTimes;
+        }
+
+        public List<TimeSpan> CalculateBaggageTransportationTime()
+        {
+            List<DateTime> checkInTimes = new List<DateTime>();
+            List<DateTime> dropOffTimes = new List<DateTime>();
+
+            checkIns.ForEach(c => checkInTimes.Add(c.startOfBaggageTransfer));
+            dropOffTimes = this.GetLastBaggageTime();
+
+            var transferTimes = dropOffTimes.Select(x => x.Subtract(checkInTimes.FirstOrDefault())).ToList();
+
+            return transferTimes;
         }
     }
 }
