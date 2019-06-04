@@ -9,7 +9,8 @@ using System.Windows.Forms;
 
 namespace Procp_Form.Visuals
 {
-    class ConveyorTile : GridTile
+    [Serializable]
+    public class ConveyorTile : GridTile
     {
         public int PositionInLine;
 

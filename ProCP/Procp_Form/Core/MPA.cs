@@ -7,6 +7,7 @@ using System.Timers;
 
 namespace Procp_Form.Core
 {
+    [Serializable]
     public class MPA : ProcessUnit
     {
         public List<Conveyor> nextNodes;

@@ -13,6 +13,7 @@ namespace Procp_Form.CoreAbstraction
         Busy
     }
 
+    [Serializable()]
     public abstract class Node
     {
         private BaggageStatus status;

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Procp_Form.Airport
 {
+    [Serializable()]
     public class Flight
     {
         public string FlightNumber { get; set; }

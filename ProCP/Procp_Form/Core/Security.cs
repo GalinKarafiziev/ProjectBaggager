@@ -11,6 +11,7 @@ namespace Procp_Form.Core
     /// At this moment security unit excludes the unsecure baggage and doens't return it due to security measures. 
     /// In later stage i will try to add the possibility to return it after certain time.
     /// </summary>
+    [Serializable]
     public class Security : ProcessUnit
     {
         public Queue<Baggage> baggageAgainstSecurityPolicy;
