@@ -45,7 +45,7 @@ namespace UnitTest
           Assert.AreEqual(1, flight.BaggageDispatched);
         }
         //SAME RULES APPLY HERE AS WELL!!
-        //[TestMethod]
+        [TestMethod]
         public void SetupTimersElseStatement_Test()
         {
             DateTime date = new DateTime(2019, 5, 19, 20, 50, 0);
