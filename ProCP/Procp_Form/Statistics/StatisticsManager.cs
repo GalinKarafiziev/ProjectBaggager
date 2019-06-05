@@ -75,7 +75,7 @@ namespace Procp_Form.Statistics
             return allBaggage - CalculateFailedBaggage();
         }
 
-        public List<DateTime> GetLastBaggageTime()
+        public List<DateTime> GetBaggageTimes()
         {
             var mostRecentTimes = this.dropOffs.Select(x => x.baggageEnteredDropOff.OrderByDescending(c => c).First()).ToList();
             return mostRecentTimes;
@@ -87,11 +87,17 @@ namespace Procp_Form.Statistics
             List<DateTime> dropOffTimes = new List<DateTime>();
 
             checkIns.ForEach(c => checkInTimes.Add(c.startOfBaggageTransfer));
-            dropOffTimes = this.GetLastBaggageTime();
+            dropOffTimes = this.GetBaggageTimes();
 
             var transferTimes = dropOffTimes.Select(x => x.Subtract(checkInTimes.FirstOrDefault())).ToList();
 
             return transferTimes;
+        }
+
+        public List<DateTime> GetFlightDepTimes()
+        {
+            var flightExpectedTimes = this.flights.Select(f => f.DepartureTime).ToList();
+            return flightExpectedTimes;
         }
     }
 }

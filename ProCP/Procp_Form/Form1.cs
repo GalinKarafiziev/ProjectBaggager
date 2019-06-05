@@ -543,6 +543,22 @@ namespace Procp_Form
             RefreshDropOffCombobox();
             animationBox.Invalidate();
         }
+
+        private void BtnCompare_Click(object sender, EventArgs e)
+        {
+            SeriesCollection series = new SeriesCollection();
+
+            engine.GetFlightDepartureTimes().ForEach(x =>
+            {
+                engine.GetLastBaggageTimes().ForEach(b => 
+                {
+                    series.Add(new LineSeries() { Title = $"Flight time", Values = new ChartValues<string> { x.ToString() } });
+                    series.Add(new LineSeries() { Title = $"Baggage time", Values = new ChartValues<string> { b.ToString() } });
+                });                
+            });
+
+            cartesianChartTimes.Series = series;
+        }
     }
 }
 
