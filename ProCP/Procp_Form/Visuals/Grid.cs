@@ -505,7 +505,7 @@ namespace Procp_Form.Visuals
                         return t;
                     }
                 }
-                else if (!(t is EmptyTile) && !(t is DropOffTile))
+                else if (!(t is EmptyTile) && !(t is DropOffTile) && !(c is MPATile))
                 {
                     ConnectTiles(t, c);
                     return t;
@@ -526,13 +526,51 @@ namespace Procp_Form.Visuals
                         return t;
                     }
                 }
-                else if (!(t is EmptyTile) && !(t is CheckInTile))
+                else if (!(t is EmptyTile) && !(t is CheckInTile) && !(c is MPATile))
                 {
                     ConnectTiles(c, t);
                     return t;
                 }
             }
             return null;
+        }
+
+        public GridTile AutcoConnectMPA(GridTile c)
+        {
+            List<GridTile> tempList = GetTilesIn4Directions(c);
+            foreach (GridTile t in tempList)
+            {
+                if (t is ConveyorTile)
+                {
+                    if (ConnectToConveyorPrevious(c, t as ConveyorTile) != null)
+                    {
+                        return t;
+                    }
+                    if(ConnectToConveyorBeginning(c, t as ConveyorTile) != null)
+                    {
+                        return t;
+                    }
+                }
+                else if(!(t is MPATile))
+                {
+                    ConnectTiles(t, c);
+                    return t;
+                }
+            }
+            return null;
+        }
+
+        public List<GridTile> GetMPA(GridTile c)
+        {
+            List<GridTile> tempList = new List<GridTile>();
+            foreach(GridTile t in gridTiles)
+            {
+                if(t.nodeInGrid == c.nodeInGrid)
+                {
+                    tempList.Add(t);
+                }
+            }
+            return tempList;
         }
     }
 }
