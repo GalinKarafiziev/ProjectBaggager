@@ -74,16 +74,7 @@ namespace Procp_Form.Visuals
             Pen p = new Pen(Color.Red);
             RectangleF r = new RectangleF(column * width, row * height, width, height);
 
-            g.FillRectangle(fillBrush, r);
-            g.DrawImage(img, r);
-            g.DrawRectangle(p, column * width, row * height, width, height);
-
-            if (selected)
-            {
-                p = new Pen(Color.Yellow);
-                g.DrawRectangle(p, column * width, row * height, width, height);
-            }
-
+            DrawBackground(p, g, r);
             DrawArrowNext(p, g);
             DrawBaggage(g);
             DrawTileInfo(g, r);
@@ -100,9 +91,17 @@ namespace Procp_Form.Visuals
             }
         }
 
-        protected virtual void DrawBackground()
+        protected virtual void DrawBackground(Pen p, Graphics g, RectangleF r)
         {
+            g.FillRectangle(fillBrush, r);
+            g.DrawImage(img, r);
+            g.DrawRectangle(p, column * width, row * height, width, height);
 
+            if (selected)
+            {
+                p = new Pen(Color.Yellow);
+                g.DrawRectangle(p, column * width, row * height, width, height);
+            }
         }
 
         protected virtual void DrawArrowNext(Pen p, Graphics g)
