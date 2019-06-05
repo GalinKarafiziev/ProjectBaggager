@@ -9,8 +9,6 @@ namespace Procp_Form.Visuals
 {
     class MPATile : GridTile
     {
-        public List<ConveyorTile> nextNodes;
-
         public MPATile(int column, int row, int tileWidth, int tileHeight) : base(column, row, tileWidth, tileHeight)
         {
             this.column = column;

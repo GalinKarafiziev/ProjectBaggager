@@ -19,6 +19,7 @@ namespace Procp_Form.Visuals
         public Node nodeInGrid;
 
         public bool selected = false;
+
         protected GridTile nextTile;
 
         private bool unclickable = false;
@@ -81,6 +82,7 @@ namespace Procp_Form.Visuals
 
             DrawArrowNext(p, g);
             DrawBaggage(g);
+            DrawTileInfo(g, r);
         }
         public virtual void SetTileUncklicableColor()
         {
@@ -137,6 +139,11 @@ namespace Procp_Form.Visuals
                 }
             }
         }
+        protected virtual void DrawTileInfo(Graphics g, RectangleF r)
+        {
+
+        }
+
         //there was a point in the project where 3 methods where nesessary
         public virtual void SetNextTile(GridTile t)
         {

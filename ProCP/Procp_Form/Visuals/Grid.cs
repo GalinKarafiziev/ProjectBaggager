@@ -442,6 +442,8 @@ namespace Procp_Form.Visuals
             }
             return null;
         }
+
+
         public GridTile AutoConnectConveyorToNext(GridTile c)
         {
             List<GridTile> tempList = GetTilesIn4Directions(c);
@@ -467,6 +469,67 @@ namespace Procp_Form.Visuals
                 if (t.nodeInGrid == c.nodeInGrid)
                 {
                     
+                }
+            }
+            return null;
+        }
+
+        public delegate List<GridTile> GetNeighboursHandler(GridTile c);
+
+        public List<GridTile> GetTopNeighbour(GridTile c)
+        {
+            GridTile temp = FindTileInRowColumnCoordinates(c.Column, c.Row - 1);
+            List<GridTile> tempList = new List<GridTile>();
+            tempList.Add(temp);
+            return tempList;
+        }
+
+
+        public List<GridTile> GetBottomNeighbour(GridTile c)
+        {
+            GridTile temp = FindTileInRowColumnCoordinates(c.Column, c.Row + 1);
+            List<GridTile> tempList = new List<GridTile>();
+            tempList.Add(temp);
+            return tempList;
+        }
+
+        public GridTile AutoConnectToPrev(GridTile c, GetNeighboursHandler del)
+        {
+            List<GridTile> tempList = del(c);
+            foreach (GridTile t in tempList)
+            {
+                if (t is ConveyorTile)
+                {
+                    if (ConnectToConveyorPrevious(c, t as ConveyorTile) != null)
+                    {
+                        return t;
+                    }
+                }
+                else if (!(t is EmptyTile) && !(t is DropOffTile))
+                {
+                    ConnectTiles(t, c);
+                    return t;
+                }
+            }
+            return null;
+        }
+
+        public GridTile AutoConnectToNext(GridTile c, GetNeighboursHandler del)
+        {
+            List<GridTile> tempList = del(c);
+            foreach (GridTile t in tempList)
+            {
+                if (t is ConveyorTile)
+                {
+                    if (ConnectToConveyorBeginning(c, t as ConveyorTile) != null)
+                    {
+                        return t;
+                    }
+                }
+                else if (!(t is EmptyTile) && !(t is CheckInTile))
+                {
+                    ConnectTiles(c, t);
+                    return t;
                 }
             }
             return null;

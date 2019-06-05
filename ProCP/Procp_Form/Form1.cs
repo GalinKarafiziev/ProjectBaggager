@@ -121,6 +121,7 @@ namespace Procp_Form
                         conveyorBuilding.Add((ConveyorTile)selectedTile);
 
                         isBuildingConveyor = true;
+                        thisGrid.AutoConnectToPrev(selectedTile, thisGrid.GetTilesIn4Directions);
                     }
                     else if (buildModeType == "CheckIn")
                     {
@@ -129,11 +130,13 @@ namespace Procp_Form
                         engine.AddCheckIn(checkin);
                         RefreshCheckInCombobox();
 
-                        GridTile temp = thisGrid.AutoConnectCheckIn(selectedTile);
-                        if(temp != null)
-                        {
-                            engine.LinkTwoNodes(selectedTile.nodeInGrid, temp.nodeInGrid);
-                        }
+                        thisGrid.AutoConnectToNext(selectedTile, thisGrid.GetBottomNeighbour);  
+
+                        //GridTile temp = thisGrid.AutoConnectCheckIn(selectedTile);
+                        //if(temp != null)
+                        //{
+                        //    engine.LinkTwoNodes(selectedTile.nodeInGrid, temp.nodeInGrid);
+                        //}
                     }
                     else if (buildModeType == "Security Scanner")
                     {
@@ -141,17 +144,20 @@ namespace Procp_Form
                         SelectTile(thisGrid.AddSecurityAtCoordinates(t, security));
                         engine.AddSecurity(security);
 
-                        GridTile temp = thisGrid.AutoConnectSecurityToPrev(selectedTile);
-                        if (temp != null)
-                        {
-                            engine.LinkTwoNodes(temp.nodeInGrid, selectedTile.nodeInGrid);
-                        }
+                        thisGrid.AutoConnectToPrev(selectedTile, thisGrid.GetTilesIn4Directions);
 
-                        temp = thisGrid.AutoConnectSecurityToNext(selectedTile);
-                        if (temp != null)
-                        {
-                            engine.LinkTwoNodes(selectedTile.nodeInGrid, temp.nodeInGrid);
-                        }
+                        thisGrid.AutoConnectToNext(selectedTile, thisGrid.GetTilesIn4Directions);
+                        //GridTile temp = thisGrid.AutoConnectSecurityToPrev(selectedTile);
+                        //if (temp != null)
+                        //{
+                        //    engine.LinkTwoNodes(temp.nodeInGrid, selectedTile.nodeInGrid);
+                        //}
+
+                        //temp = thisGrid.AutoConnectSecurityToNext(selectedTile);
+                        //if (temp != null)
+                        //{
+                        //    engine.LinkTwoNodes(selectedTile.nodeInGrid, temp.nodeInGrid);
+                        //}
                     }
                     else if (buildModeType == "DropOff")
                     {
@@ -163,12 +169,12 @@ namespace Procp_Form
                         {
                             btnAddFlight.Enabled = true;
                         }
-
-                        GridTile temp = thisGrid.AutoConnectDropOff(selectedTile);
-                        if (temp != null)
-                        {
-                            engine.LinkTwoNodes(temp.nodeInGrid, selectedTile.nodeInGrid);
-                        }
+                        thisGrid.AutoConnectToPrev(selectedTile, thisGrid.GetTopNeighbour);
+                        //GridTile temp = thisGrid.AutoConnectDropOff(selectedTile);
+                        //if (temp != null)
+                        //{
+                        //    engine.LinkTwoNodes(temp.nodeInGrid, selectedTile.nodeInGrid);
+                        //}
                     }
                     else if (buildModeType == "MPA")
                     {
