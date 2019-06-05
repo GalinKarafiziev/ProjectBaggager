@@ -319,6 +319,10 @@ namespace Procp_Form.Visuals
         {
             foreach(GridTile t in gridTiles.ToList())
             {
+                if(t.NextTile != null && t.NextTile.nodeInGrid == toRemove.nodeInGrid)
+                {
+                    t.ClearNextTile();
+                }
                 if(t.nodeInGrid == toRemove.nodeInGrid)
                 {
                     int index = gridTiles.IndexOf(t, 0);

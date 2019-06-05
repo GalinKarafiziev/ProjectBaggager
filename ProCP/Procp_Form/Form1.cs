@@ -150,7 +150,6 @@ namespace Procp_Form
                         conveyorBuilding.Add((ConveyorTile)selectedTile);
 
                         isBuildingConveyor = true;
-                        thisGrid.AutoConnectToPrev(selectedTile, thisGrid.GetTilesIn4Directions);
                     }
                     else if (buildModeType == "CheckIn")
                     {
@@ -200,6 +199,12 @@ namespace Procp_Form
                         if (temp != null)
                         {
                             engine.LinkTwoNodes(temp.nodeInGrid, selectedTile.nodeInGrid);
+                            if(temp is ConveyorTile)
+                            {
+                                Conveyor selectedConveyor = temp.nodeInGrid as Conveyor;
+                                DropOff selectedDropOff = selectedTile.nodeInGrid as DropOff;
+                                selectedConveyor.DestinationGate = selectedDropOff.DestinationGate;
+                            }
                         }
                     }
                     //fucking kill me
@@ -359,7 +364,12 @@ namespace Procp_Form
                     if (t.PositionInLine == 0)
                     {
                         GridTile tt = thisGrid.AutoConnectToPrev(t, thisGrid.GetTilesIn4Directions);
-                        if (tt != null)
+                        if (tt != null && tt is MPATile)
+                        {
+                            MPA tempMPA = tt.nodeInGrid as MPA;
+                            tempMPA.AddNextNode(t.nodeInGrid as Conveyor);
+                        }
+                        else if (tt != null )
                         {
                             engine.LinkTwoNodes(tt.nodeInGrid, t.nodeInGrid);
                         }
