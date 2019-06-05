@@ -17,7 +17,7 @@ namespace Procp_Form
 {
     public class Engine
     {
-        public Grid tiles;
+        public List<GridTile> tiles;
         public StatisticsManager statistics;
         public MPA mainProcessArea;
         public CheckInDispatcher dispatcher;
@@ -29,9 +29,9 @@ namespace Procp_Form
         private Flight flight;
         public Stopwatch stopwatch;
 
-        public Engine(Grid grid)
+        public Engine()
         {
-            tiles = grid;
+            tiles = new List<GridTile>();
             securities = new List<Security>();
             conveyors = new List<Conveyor>();
             checkIns = new List<CheckIn>();
@@ -60,7 +60,7 @@ namespace Procp_Form
             {
                 foreach (var f in flights)
                 {
-                    if ((this.flight.FlightNumber == f.FlightNumber && this.flight.DestinationGate == f.DestinationGate) || (this.flight.FlightNumber != f.FlightNumber && this.flight.DestinationGate == f.DestinationGate))
+                    if (this.flight.FlightNumber == f.FlightNumber || this.flight.DestinationGate == f.DestinationGate)
                     {
                         return false;
                     }
@@ -235,8 +235,23 @@ namespace Procp_Form
 
         public List<DateTime> GetFlightDepartureTimes() => statistics.GetFlightDepTimes();
 
+        public void GetGridTiles(Grid grid)
+        {
+            tiles = grid.gridTiles;
+        }
+
         public void WriteToFile()
         {
+            List<Object> objectsToSerialize = new List<Object>();
+            objectsToSerialize.Add(checkIns);
+            objectsToSerialize.Add(securities);
+            objectsToSerialize.Add(conveyors);
+            objectsToSerialize.Add(mainProcessArea);
+            objectsToSerialize.Add(dropOffs);
+            objectsToSerialize.Add(tiles);
+            objectsToSerialize.Add(flights);
+
+
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.DefaultExt = "bin";
             try
@@ -246,18 +261,42 @@ namespace Procp_Form
                     using (Stream stream = File.Open(sfd.FileName, FileMode.Create))
                     {
                         BinaryFormatter bin = new BinaryFormatter();
-                        bin.Serialize(stream, flights);
-                        bin.Serialize(stream, checkIns);
-                        bin.Serialize(stream, securities);
-                        bin.Serialize(stream, dropOffs);
-                        bin.Serialize(stream, conveyors);
-                        bin.Serialize(stream, mainProcessArea);
-                        bin.Serialize(stream, tiles.gridTiles);
+                        bin.Serialize(stream, objectsToSerialize);
                     }
                 }
             }
             catch (IOException)
             {
+            }
+        }
+
+        public void LoadFromFile()
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+
+            try
+            {
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    using (Stream stream = File.Open(ofd.FileName, FileMode.Open))
+                    {
+                        BinaryFormatter bin = new BinaryFormatter();
+                        object serializedObject = bin.Deserialize(stream);
+                        List<Object> objectsToDeserialize = serializedObject as List<Object>;
+
+                        checkIns = (List<CheckIn>)objectsToDeserialize[0];
+                        securities = (List<Security>)objectsToDeserialize[1];
+                        conveyors = (List<Conveyor>)objectsToDeserialize[2];
+                        mainProcessArea = (MPA)objectsToDeserialize[3];
+                        dropOffs = (List<DropOff>)objectsToDeserialize[4];
+                        tiles = (List<GridTile>)objectsToDeserialize[5];
+                        flights = (List<Flight>)objectsToDeserialize[6];
+                    }
+                }
+            }
+            catch (IOException)
+            {
+                throw;
             }
         }
     }
