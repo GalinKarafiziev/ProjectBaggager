@@ -36,6 +36,7 @@ namespace Procp_Form.Core
         {
             foreach (var conv in nextNodes.ToList())
             {
+
                 if (conv.DestinationGate == baggage.DestinationGate)
                 {
                     NextNode = conv;

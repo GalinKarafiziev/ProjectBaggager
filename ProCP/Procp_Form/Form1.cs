@@ -222,7 +222,6 @@ namespace Procp_Form
                             if (temp != null && temp.nodeInGrid is Conveyor)
                             {
                                 mpa.AddNextNode(temp.nodeInGrid as Conveyor);
-
                             }
                         }
 
@@ -373,6 +372,12 @@ namespace Procp_Form
                 if (temp != null)
                 {
                     engine.LinkTwoNodes(selectedTile.nodeInGrid, temp.nodeInGrid);
+                    if(temp is DropOffTile)
+                    {
+                        Conveyor selectedConveyor = selectedTile.nodeInGrid as Conveyor;
+                        DropOff selectedDropOff = temp.nodeInGrid as DropOff;
+                        selectedConveyor.DestinationGate = selectedDropOff.DestinationGate;
+                    }
                 }
             }
 
