@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Procp_Form.Core
 {
+    [Serializable]
     public class CheckIn : ProcessUnit
     {
         public static int id;
@@ -45,9 +46,13 @@ namespace Procp_Form.Core
         public override void PassBaggage(Baggage Lastbaggage)
         {
             Status = BaggageStatus.Busy;
-            baggageInCheckIn++;
             baggage = Lastbaggage;
+            baggageInCheckIn++;
             ProcessBaggage();
+        }
+        public bool HasDestinationGate()
+        {
+            return this.DestinationGate != 0 ? true : false;   
         }
         public override string ToString()
         {

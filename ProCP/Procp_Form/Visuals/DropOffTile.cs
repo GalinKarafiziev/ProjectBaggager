@@ -9,7 +9,8 @@ using System.Windows.Forms;
 
 namespace Procp_Form.Visuals
 {
-    class DropOffTile : GridTile
+    [Serializable]
+    public class DropOffTile : GridTile
     {
         public DropOffTile(int column, int row, int tileWidth, int tileHeight) : base(column, row, tileWidth, tileHeight)
         {

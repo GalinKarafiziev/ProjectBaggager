@@ -20,7 +20,7 @@ namespace UnitTest
             MPA mpa = new MPA();
             DateTime date = new DateTime(2019, 5, 19, 14, 10, 0);
             Conveyor conveyor = new Conveyor(5,1000){DestinationGate = 1, Status = BaggageStatus.Free};
-            Flight flight = new Flight(date, "BBB", 5){DestinationGate = 1};
+            Flight flight = new Flight(date, "BBB", 5,1);
             CheckInDispatcher checkInDispatcher = new CheckInDispatcher();
             engine.AddDispatcher();
             engine.AddCheckIn(checkIn);

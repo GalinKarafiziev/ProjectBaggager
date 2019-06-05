@@ -10,8 +10,8 @@ namespace Procp_Form.Visuals
 {
     //clickable color - cyan
     //unclickable color - dark cyan
-    
-    class EmptyTile : GridTile
+    [Serializable]
+    public class EmptyTile : GridTile
     {
         public EmptyTile(int column, int row, int tileWidth, int tileHeight) : base(column, row, tileWidth, tileHeight)
         {

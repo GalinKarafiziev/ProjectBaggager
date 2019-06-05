@@ -2,19 +2,24 @@
 using Procp_Form.Core;
 using Procp_Form.CoreAbstraction;
 using Procp_Form.Statistics;
+using Procp_Form.Visuals;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Procp_Form
 {
     public class Engine
     {
+        public List<GridTile> tiles;
         public StatisticsManager statistics;
-        private MPA mainProcessArea;
+        public MPA mainProcessArea;
         public CheckInDispatcher dispatcher;
         public List<CheckIn> checkIns;
         public List<DropOff> dropOffs;
@@ -26,12 +31,13 @@ namespace Procp_Form
 
         public Engine()
         {
+            tiles = new List<GridTile>();
             securities = new List<Security>();
             conveyors = new List<Conveyor>();
             checkIns = new List<CheckIn>();
             dropOffs = new List<DropOff>();
             flights = new List<Flight>();
-            statistics = new StatisticsManager(checkIns);
+            statistics = new StatisticsManager(checkIns, dropOffs, flights);
             stopwatch = statistics.stopwatch;
         }
 
@@ -54,7 +60,7 @@ namespace Procp_Form
             {
                 foreach (var f in flights)
                 {
-                    if ((this.flight.FlightNumber == f.FlightNumber && this.flight.DestinationGate == f.DestinationGate) || (this.flight.FlightNumber != f.FlightNumber && this.flight.DestinationGate == f.DestinationGate))
+                    if (this.flight.FlightNumber == f.FlightNumber || this.flight.DestinationGate == f.DestinationGate)
                     {
                         return false;
                     }
@@ -140,6 +146,8 @@ namespace Procp_Form
 
         public void Stop()
         {
+
+            flights.Clear();
             foreach (var conveyor in conveyors)
             {
                 conveyor.Stop();
@@ -164,9 +172,11 @@ namespace Procp_Form
                 checkin.baggage = null;
                 checkin.Status = BaggageStatus.Free;
             }
-
-            mainProcessArea.baggage = null;
-            mainProcessArea.Status = BaggageStatus.Free;
+            if (mainProcessArea != null)
+            {
+                mainProcessArea.baggage = null;
+                mainProcessArea.Status = BaggageStatus.Free;
+            }
 
             if (dispatcher == null)
             {
@@ -199,8 +209,6 @@ namespace Procp_Form
 
         public List<int> GetCheckInStats() => statistics.GetCheckInBaggageCount();
 
-        public List<TimeSpan> GetTransferTime() => statistics.CalculateAverageTimeNeededToTransferBaggage();
-
         public List<int> GetSecurityStats()
         {
             return statistics.GetFailedToPassBaggageThroughSecurity(securities);
@@ -219,6 +227,73 @@ namespace Procp_Form
         public double GetCalculateSuccessedBaggage()
         {
             return statistics.CalculateSuccessedBaggage();
+        }
+
+        public List<TimeSpan> GetTransferTime() => statistics.CalculateBaggageTransportationTime();
+
+        public void GetGridTiles(Grid grid)
+        {
+            tiles = grid.gridTiles;
+        }
+
+        public void WriteToFile()
+        {
+            List<Object> objectsToSerialize = new List<Object>();
+            objectsToSerialize.Add(checkIns);
+            objectsToSerialize.Add(securities);
+            objectsToSerialize.Add(conveyors);
+            objectsToSerialize.Add(mainProcessArea);
+            objectsToSerialize.Add(dropOffs);
+            objectsToSerialize.Add(tiles);
+            objectsToSerialize.Add(flights);
+
+
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.DefaultExt = "bin";
+            try
+            {
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    using (Stream stream = File.Open(sfd.FileName, FileMode.Create))
+                    {
+                        BinaryFormatter bin = new BinaryFormatter();
+                        bin.Serialize(stream, objectsToSerialize);
+                    }
+                }
+            }
+            catch (IOException)
+            {
+            }
+        }
+
+        public void LoadFromFile()
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+
+            try
+            {
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    using (Stream stream = File.Open(ofd.FileName, FileMode.Open))
+                    {
+                        BinaryFormatter bin = new BinaryFormatter();
+                        object serializedObject = bin.Deserialize(stream);
+                        List<Object> objectsToDeserialize = serializedObject as List<Object>;
+
+                        checkIns = (List<CheckIn>)objectsToDeserialize[0];
+                        securities = (List<Security>)objectsToDeserialize[1];
+                        conveyors = (List<Conveyor>)objectsToDeserialize[2];
+                        mainProcessArea = (MPA)objectsToDeserialize[3];
+                        dropOffs = (List<DropOff>)objectsToDeserialize[4];
+                        tiles = (List<GridTile>)objectsToDeserialize[5];
+                        flights = (List<Flight>)objectsToDeserialize[6];
+                    }
+                }
+            }
+            catch (IOException)
+            {
+                throw;
+            }
         }
     }
 }

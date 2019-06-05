@@ -8,13 +8,45 @@ using System.Windows.Forms;
 
 namespace Procp_Form.Core
 {
+    [Serializable]
     public class Conveyor : TransportUnit
     {
         public int DestinationGate { get; set; }
 
+        public int conveyorSpeed;
+
+        public int ConveyorSpeed
+        {
+            get
+            {
+                return conveyorSpeed;
+            }
+            set
+            {
+                switch (conveyorSpeed)
+                {
+                    case 1:
+                        timer.Interval = 500;
+                        break;
+                    case 2:
+                        timer.Interval = 800;
+                        break;
+                    case 3:
+                        timer.Interval = 1000;
+                        break;
+                    case 4:
+                        timer.Interval = 1200;
+                        break;
+                    default:
+                        timer.Interval = 700;
+                        break;
+                }
+            }
+        }
+
         public Conveyor(int capacity, int timerSpeed) : base()
         {
-            timer.Interval = timerSpeed;
+            ConveyorSpeed = timerSpeed;
             conveyorBelt = new Baggage[capacity];
         }
 
@@ -23,11 +55,15 @@ namespace Procp_Form.Core
             this.Stop();
             if (CanMove())
             {
-                if (lastBaggage != null)
+                if (lastBaggage != null && NextNode.Status == BaggageStatus.Free)
                 {
                     NextNode.PassBaggage(lastBaggage);
+                    if (NextNode.OnNodeStatusChangedToFree != null)
+                    {
+                        NextNode.OnNodeStatusChangedToFree -= Move;
+                    }
                 }
-                else
+                if (lastBaggage != null && NextNode.Status == BaggageStatus.Busy)
                 {
                     NextNode.OnNodeStatusChangedToFree += Move;
                 }

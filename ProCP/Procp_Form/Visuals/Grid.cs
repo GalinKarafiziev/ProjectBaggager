@@ -11,7 +11,8 @@ using Procp_Form.Visuals;
 
 namespace Procp_Form.Visuals
 {
-    class Grid
+    [Serializable()]
+    public class Grid
     {
         float tileWidth;
         float tileHeight;
@@ -20,7 +21,7 @@ namespace Procp_Form.Visuals
         float animBoxWidth;
         float animBoxHeigth;
 
-        List<GridTile> gridTiles;
+        public List<GridTile> gridTiles;
 
         int hideAreaNotCheckInRows = 0;
         int hideAreaNotConveyorRowsTop;

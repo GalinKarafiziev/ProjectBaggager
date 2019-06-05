@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace Procp_Form.Visuals
 {
-    class MPATile : GridTile
+    [Serializable]
+    public class MPATile : GridTile
     {
         public MPATile(int column, int row, int tileWidth, int tileHeight) : base(column, row, tileWidth, tileHeight)
         {

@@ -9,7 +9,8 @@ using System.Drawing;
 
 namespace Procp_Form.Visuals
 {
-    class GridTile
+    [Serializable]
+    public class GridTile
     {
         protected int column;
         protected int row;
@@ -20,12 +21,15 @@ namespace Procp_Form.Visuals
 
         public bool selected = false;
 
-        protected GridTile nextTile;
-
         private bool unclickable = false;
+        protected GridTile nextTile;
+        [NonSerialized]
         public Brush fillBrush;
+        [NonSerialized]
         public Brush clickableColor;
+        [NonSerialized]
         public Brush unclickableColour;
+
 
         protected Image img;
         protected string imgpath;

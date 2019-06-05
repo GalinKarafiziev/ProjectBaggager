@@ -28,8 +28,9 @@ namespace Procp_Form
         bool isConnectingTiles;
         GridTile selectedTile;
         List<ConveyorTile> conveyorBuilding;
-        Engine engine = new Engine();
+        Engine engine;
         int checkinCounter = 0;
+        int dropOffCounter = 0;
 
         System.Timers.Timer aTimer;
 
@@ -37,7 +38,7 @@ namespace Procp_Form
         {
             InitializeComponent();
             thisGrid = new Grid(animationBox.Width, animationBox.Height);
-
+            engine = new Engine();
             chbDeleteMode.Visible = false;
             buildModeActive = false;
             deleteMode = false;
@@ -100,6 +101,34 @@ namespace Procp_Form
             {
                 buildModeType = "MPA";
             }
+            thisGrid.HideArea(buildModeType);
+            animationBox.Invalidate();
+        }
+        private void ConveyorSpeed_CheckedChanged(object sender, EventArgs e)
+        {
+            int speed = 0;
+
+            if (rbConvSpeed1.Checked)
+            {
+                speed = 1;
+            }
+            else if (rbConvSpeed2.Checked)
+            {
+                speed = 1;
+            }
+            else if (rbConvSpeed3.Checked)
+            {
+                speed = 3;
+            }
+            else if (rbDropOff.Checked)
+            {
+                speed = 4;
+            }
+            foreach (var conveyor in engine.conveyors)
+            {
+                conveyor.ConveyorSpeed = speed;
+            }
+            
             thisGrid.HideArea(buildModeType);
             animationBox.Invalidate();
         }
@@ -384,22 +413,66 @@ namespace Procp_Form
 
         private void btnAddFlight_Click(object sender, EventArgs e)
         {
-            DateTime date = (Convert.ToDateTime(tbFlightTime.Text));
-            string flightNr = tbFlightNr.Text;
-            int flightBaggage = Convert.ToInt32(tbFlightBaggage.Text);
-            var selectedCheckIn = cbCheckInFlight.SelectedItem as CheckIn;
-            var selectedDropOff = cbDropOffDest.SelectedItem as DropOff;
-            int destGate = selectedDropOff.DestinationGate;
-            if (!(engine.AddFlight(date, flightNr, flightBaggage, destGate)))
+            int flightBaggage = 0;
+
+            if (tbFlightNr.Text != "" && tbFlightBaggage.Text != "")
             {
-                MessageBox.Show("This flight already exists or the drop-off destination is already taken.");
+                DateTime date = (Convert.ToDateTime(tbFlightTime.Text));
+                string flightNr = tbFlightNr.Text;
+
+                try
+                {
+                    flightBaggage = Convert.ToInt32(tbFlightBaggage.Text);
+                }
+                catch (FormatException)
+                {
+                    MessageBox.Show("The number of baggages must be a valid positive number.");
+                    return;
+                }
+
+                var selectedCheckIn = cbCheckInFlight.SelectedItem as CheckIn;
+                var selectedDropOff = cbDropOffDest.SelectedItem as DropOff;
+                int destGate = selectedDropOff.DestinationGate;
+
+                if (!(engine.AddFlight(date, flightNr, flightBaggage, destGate)))
+                {
+                    MessageBox.Show("This flight already exists or the drop-off destination is already taken.");              
+                }
+                else
+                {
+                    if (selectedCheckIn.HasDestinationGate())
+                    {
+                        MessageBox.Show("This check-in is already taken by another flight.");
+                    }
+                    else
+                    {
+                        RefreshFlightsList();
+                        selectedCheckIn.DestinationGate = destGate;
+                        btnDeleteFlight.Enabled = true;
+                        btnAddCheckinToFlight.Enabled = true;
+                        btnEditFlight.Enabled = true;
+                    }
+                   
+                }
             }
             else
             {
-                RefreshFlightsList();
-                selectedCheckIn.DestinationGate = destGate;
-                btnDeleteFlight.Enabled = true;
-                btnEditFlight.Enabled = true;
+                MessageBox.Show("Please fill-in all required fields correctly");
+            }
+        }
+
+        private void btnAddCheckinToFlight_Click(object sender, EventArgs e)
+        {
+            Flight selectedFlight = lbFlights.SelectedItem as Flight;
+            var selectedCheckIn = cbCheckInFlight.SelectedItem as CheckIn;
+            if (selectedCheckIn.HasDestinationGate())
+            {
+                MessageBox.Show("This check-in is already taken by another flight.");
+            }
+            else
+            {
+                selectedCheckIn.DestinationGate = selectedFlight.DestinationGate;
+
             }
         }
 
@@ -408,13 +481,18 @@ namespace Procp_Form
             DateTime date = (Convert.ToDateTime(tbFlightTime.Text));
             string flightNr = tbFlightNr.Text;
             int flightBaggage = Convert.ToInt32(tbFlightBaggage.Text);
+            var selectedCheckIn = cbCheckInFlight.SelectedItem as CheckIn;
             var selectedDropOff = cbDropOffDest.SelectedItem as DropOff;
             int destGate = selectedDropOff.DestinationGate;
 
             Flight selectedFlight = lbFlights.SelectedItem as Flight;
-            if (!(engine.EditFlight(selectedFlight.FlightNumber, flightNr, flightBaggage, date, destGate)))
+            if (!(engine.AddFlight(date, flightNr, flightBaggage, destGate)))
             {
-                MessageBox.Show("The flight number already exists or drop-off destination is already taken.");
+                MessageBox.Show("This flight already exists or the drop-off destination is already taken.");
+                if (selectedCheckIn.HasDestinationGate())
+                {
+                    MessageBox.Show("This check-in is already taken by another flight.");
+                }
             }
             else
             {
@@ -496,12 +574,14 @@ namespace Procp_Form
         private void buttonLoadChartBaggageThroughCheckin_Click(object sender, EventArgs e)
         {
             SeriesCollection series = new SeriesCollection();
-            checkinCounter = 0;
-            foreach (var number in engine.GetCheckInStats())
+            int dropOffCounter = 0;
+
+            engine.GetTransferTime().ForEach(x =>
             {
-                checkinCounter++;
-                series.Add(new ColumnSeries() { Title = $"Checkin {checkinCounter.ToString()}", Values = new ChartValues<int> { number } });
-            }
+                dropOffCounter++;
+                series.Add(new ColumnSeries() { Title = $"Flight {dropOffCounter.ToString()}", Values = new ChartValues<double> { x.TotalSeconds } });
+            });
+
             cartesianChartBaggageProcessedByCheckin.Series = series;
         }
 
@@ -528,12 +608,23 @@ namespace Procp_Form
             pieChartPercentageAllFailedBaggage.Series = series;
         }
 
-        private void BtnClearGrid_Click(object sender, EventArgs e)
+        private void buttonSaveToFile_Click(object sender, EventArgs e)
+        {
+            engine.WriteToFile();
+        }
+
+        private void btnClearGrid_Click(object sender, EventArgs e)
         {
             thisGrid.ClearGrid();
             RefreshCheckInCombobox();
             RefreshDropOffCombobox();
             animationBox.Invalidate();
+        }
+
+        private void buttonLoad_Click(object sender, EventArgs e)
+        {
+            engine.GetGridTiles(thisGrid);
+            engine.LoadFromFile();
         }
     }
 }

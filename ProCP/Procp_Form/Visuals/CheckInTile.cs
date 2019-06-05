@@ -10,7 +10,8 @@ using System.Windows.Forms;
 
 namespace Procp_Form.Visuals
 {
-    class CheckInTile : GridTile
+    [Serializable]
+    public class CheckInTile : GridTile
     {
         public CheckInTile(int column, int row, int tileWidth, int tileHeight) : base(column, row, tileWidth, tileHeight)
         {
