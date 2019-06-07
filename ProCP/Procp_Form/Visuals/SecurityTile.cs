@@ -17,7 +17,7 @@ namespace Procp_Form.Visuals
             width = tileWidth;
             height = tileHeight;
 
-            clickableColor = Brushes.White;
+            clickableColor = Brushes.SlateGray;
             unclickableColour = Brushes.LightGray;
 
             imgpath = "../../Resources/security.png";

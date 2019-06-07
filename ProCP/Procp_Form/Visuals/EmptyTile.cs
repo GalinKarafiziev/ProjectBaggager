@@ -19,10 +19,10 @@ namespace Procp_Form.Visuals
             width = tileWidth;
             height = tileHeight;
 
-            clickableColor = Brushes.Cyan;
-            unclickableColour = Brushes.DarkCyan;
+            clickableColor = Brushes.White;
+            unclickableColour = Brushes.LightGray;
 
-            imgpath = "../../Resources/mpa.png";
+            imgpath = "../../Resources/empty.png";
             loadImage(imgpath);
 
             fillBrush = clickableColor;
