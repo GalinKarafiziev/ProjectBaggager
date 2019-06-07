@@ -19,6 +19,7 @@ namespace Procp_Form.Core
         static int destinationGate = 0;
         public List<Baggage> unloadBaggages;
         private int employeeSpeed;
+        [NonSerialized]
         private Timer timer;
         public List<DateTime> baggageEnteredDropOff;
 
@@ -74,9 +75,11 @@ namespace Procp_Form.Core
 
         public void UnloadBaggage()
         {
+            DateTime time = DateTime.Now;
             if (baggages.Count != 0)
             {
                 unloadBaggages.Add(baggages[0]);
+                baggageEnteredDropOff.Add(time);
                 baggages.Remove(baggages[0]);
                 Status = BaggageStatus.Free;
                 
@@ -85,7 +88,6 @@ namespace Procp_Form.Core
         }
         public override void PassBaggage(Baggage Lastbaggage)
         {
-            DateTime time = DateTime.Now;
 
             if (baggages.Count >= baggages.Capacity)
             {
@@ -95,9 +97,6 @@ namespace Procp_Form.Core
             {
                 Status = BaggageStatus.Busy;
                 baggages.Add(Lastbaggage);
-                baggageEnteredDropOff.Add(time);
-                System.Diagnostics.Debug.WriteLine(baggages.Count());
-
                 Status = BaggageStatus.Free;
             }
         }

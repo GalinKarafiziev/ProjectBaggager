@@ -11,6 +11,6 @@ namespace Procp_Form.CoreAbstraction
     public abstract class ProcessUnit : Node
     {
         public Baggage baggage { get; set; }
-        public abstract void ProcessBaggage();
+        public  abstract void ProcessBaggage();
     }
 }
