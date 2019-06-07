@@ -149,8 +149,6 @@ namespace Procp_Form
                         SelectTile(thisGrid.AddConveyorLineAtCoordinates(t));
                         conveyorBuilding.Add((ConveyorTile)selectedTile);
 
-                      
-
                         isBuildingConveyor = true;
                     }
                     else if (buildModeType == "CheckIn")
@@ -160,8 +158,10 @@ namespace Procp_Form
                         engine.AddCheckIn(checkin);
                         RefreshCheckInCombobox();
 
-                        GridTile temp = thisGrid.AutoConnectNext(selectedTile);
-                        if(temp != null)
+
+
+                        GridTile temp = thisGrid.AutoConnectToNext(selectedTile, thisGrid.GetBottomNeighbour);
+                        if (temp != null)
                         {
                             engine.LinkTwoNodes(selectedTile.nodeInGrid, temp.nodeInGrid);
                         }
@@ -172,13 +172,13 @@ namespace Procp_Form
                         SelectTile(thisGrid.AddSecurityAtCoordinates(t, security));
                         engine.AddSecurity(security);
 
-                        GridTile temp = thisGrid.AutoConnectToPrevious(selectedTile);
+                        GridTile temp = thisGrid.AutoConnectToPrev(selectedTile, thisGrid.GetTilesIn4Directions);
                         if (temp != null)
                         {
                             engine.LinkTwoNodes(temp.nodeInGrid, selectedTile.nodeInGrid);
                         }
 
-                        temp = thisGrid.AutoConnectNext(selectedTile);
+                        temp = thisGrid.AutoConnectToNext(selectedTile, thisGrid.GetTilesIn4Directions);
                         if (temp != null)
                         {
                             engine.LinkTwoNodes(selectedTile.nodeInGrid, temp.nodeInGrid);
@@ -195,17 +195,41 @@ namespace Procp_Form
                             btnAddFlight.Enabled = true;
                         }
 
-                        GridTile temp = thisGrid.AutoConnectToPrevious(selectedTile);
+                        GridTile temp = thisGrid.AutoConnectToPrev(selectedTile, thisGrid.GetTopNeighbour);
                         if (temp != null)
                         {
                             engine.LinkTwoNodes(temp.nodeInGrid, selectedTile.nodeInGrid);
+                            if(temp is ConveyorTile)
+                            {
+                                Conveyor selectedConveyor = temp.nodeInGrid as Conveyor;
+                                DropOff selectedDropOff = selectedTile.nodeInGrid as DropOff;
+                                selectedConveyor.DestinationGate = selectedDropOff.DestinationGate;
+                            }
                         }
                     }
+                    //fucking kill me
                     else if (buildModeType == "MPA")
                     {
                         MPA mpa = new MPA();
                         thisGrid.AddMPA(t, mpa);
                         engine.AddMPA(mpa);
+
+                        SelectTile(thisGrid.FindTileInRowColumnCoordinates(t.Column, t.Row));
+                        List<GridTile> tempMPA = thisGrid.GetMPA(selectedTile);
+                        foreach(GridTile m in tempMPA)
+                        {
+                            GridTile temp = thisGrid.AutoConnectToPrev(m, thisGrid.GetTilesIn4Directions);
+                            if(temp != null)
+                            {
+                                engine.LinkTwoNodes(temp.nodeInGrid, m.nodeInGrid);
+                            }
+                            temp = thisGrid.AutoConnectToNext(m, thisGrid.GetTilesIn4Directions);
+                            if (temp != null && temp.nodeInGrid is Conveyor)
+                            {
+                                mpa.AddNextNode(temp.nodeInGrid as Conveyor);
+                            }
+                        }
+
                     }
                 }
                 else if (!(t is EmptyTile) && deleteMode == false)
@@ -271,8 +295,7 @@ namespace Procp_Form
                         //Engine.AddConveyorPart(conveyor);
                         conveyorBuilding.Add((ConveyorTile)created);
 
-                        selectedTile.ConnectNext(created);
-
+                        thisGrid.ConnectTiles(selectedTile, t);
                         // Engine.LinkTwoNodes(selectedTile.nodeInGrid, created.nodeInGrid);
                         SelectTile(created);
 
@@ -289,7 +312,7 @@ namespace Procp_Form
                         if (temp.isLastTile)
                         {
                             engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
-                            selectedTile.ConnectNext(t);
+                            thisGrid.ConnectTiles(selectedTile, t);
                             if (t is DropOffTile)
                             {
                                 var selectedConveyor = selectedTile.nodeInGrid as Conveyor;
@@ -301,24 +324,24 @@ namespace Procp_Form
                     else if (selectedTile is ConveyorTile && t is SecurityTile)
                     {
                         engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
-                        selectedTile.ConnectNext(t);
+                        thisGrid.ConnectTiles(selectedTile, t);
                     }
                     else if (selectedTile is CheckInTile && t is ConveyorTile)
                     {
                         engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
-                        selectedTile.ConnectNext(t);
+                        thisGrid.ConnectTiles(selectedTile, t);
                     }
                     else if (selectedTile is SecurityTile && t is ConveyorTile)
                     {
                         engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
-                        selectedTile.ConnectNext(t);
+                        thisGrid.ConnectTiles(selectedTile, t);
                     }
                     else if (selectedTile is MPATile && t is ConveyorTile)
                     {
                         var selectedMPA = selectedTile.nodeInGrid as MPA;
                         selectedMPA.AddNextNode(t.nodeInGrid as Conveyor);
-                        //engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
-                        selectedTile.ConnectNext(t);
+                        engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
+                        thisGrid.ConnectTiles(selectedTile, t);
                     }
                 }
             }
@@ -330,40 +353,51 @@ namespace Procp_Form
         {
             if (buildModeActive && isBuildingConveyor)
             {
-                Conveyor conveyor = new Conveyor(conveyorBuilding.Count, 1);
-                engine.AddConveyorPart(conveyor);
+                Conveyor conveyor = new Conveyor(conveyorBuilding.Count, 1500);
+                engine.AddConveyorPart(conveyor);   
+                System.Diagnostics.Debug.WriteLine("uppress");
                 int i = 0;
                 foreach (ConveyorTile t in conveyorBuilding)
                 {
-                   
                     t.nodeInGrid = conveyor;
+                    t.PositionInLine = i;
                     if (t.PositionInLine == 0)
                     {
-                        GridTile igiveuponthisshittycodefuckthisyesiknowiwroteitbutthebackendisalsogarbagethiswholeprojectis = thisGrid.AutoConnectToPrevious(t);
-                        if (igiveuponthisshittycodefuckthisyesiknowiwroteitbutthebackendisalsogarbagethiswholeprojectis != null)
+                        GridTile tt = thisGrid.AutoConnectToPrev(t, thisGrid.GetTilesIn4Directions);
+                        if (tt != null && tt is MPATile)
                         {
-                            engine.LinkTwoNodes(igiveuponthisshittycodefuckthisyesiknowiwroteitbutthebackendisalsogarbagethiswholeprojectis.nodeInGrid, t.nodeInGrid);
+                            MPA tempMPA = tt.nodeInGrid as MPA;
+                            tempMPA.AddNextNode(t.nodeInGrid as Conveyor);
+                        }
+                        else if (tt != null )
+                        {
+                            engine.LinkTwoNodes(tt.nodeInGrid, t.nodeInGrid);
                         }
                     }
-                    t.PositionInLine = i;
                     i++;
                 }
                 conveyorBuilding.Last().isLastTile = true;
 
-                GridTile temp = thisGrid.AutoConnectNext(selectedTile);
+                GridTile temp = thisGrid.AutoConnectToNext(selectedTile, thisGrid.GetTilesIn4Directions);
                 if (temp != null)
                 {
                     engine.LinkTwoNodes(selectedTile.nodeInGrid, temp.nodeInGrid);
+                    if(temp is DropOffTile)
+                    {
+                        Conveyor selectedConveyor = selectedTile.nodeInGrid as Conveyor;
+                        DropOff selectedDropOff = temp.nodeInGrid as DropOff;
+                        selectedConveyor.DestinationGate = selectedDropOff.DestinationGate;
+                    }
                 }
             }
 
-            isBuildingConveyor = false;
             isConnectingTiles = false;
             if (selectedTile != null)
             {
                 selectedTile.selected = false;
                 selectedTile = null;
             }
+            isBuildingConveyor = false;
             conveyorBuilding.Clear();
         }
 

@@ -13,26 +13,18 @@ namespace Procp_Form.Visuals
     [Serializable]
     public class EmptyTile : GridTile
     {
-        public EmptyTile()
+        public EmptyTile(int column, int row, int tileWidth, int tileHeight) : base(column, row, tileWidth, tileHeight)
         {
-            clickableColor = Brushes.Cyan;
-            unclickableColour = Brushes.DarkCyan;
-
-            imgpath = "../../Resources/mpa.png";
-            img = Image.FromFile(imgpath);
-
-            fillBrush = clickableColor;
-        }
-        public EmptyTile(int column, int row, int tileWidth, int tileHeight)
-        {
-            this.Column = column;
-            this.Row = row;
+            this.column = column;
+            this.row = row;
+            width = tileWidth;
+            height = tileHeight;
 
             clickableColor = Brushes.Cyan;
             unclickableColour = Brushes.DarkCyan;
 
             imgpath = "../../Resources/mpa.png";
-            loadImage(imgpath, tileWidth, tileHeight);
+            loadImage(imgpath);
 
             fillBrush = clickableColor;
         }

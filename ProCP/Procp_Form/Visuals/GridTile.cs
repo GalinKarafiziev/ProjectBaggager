@@ -12,14 +12,17 @@ namespace Procp_Form.Visuals
     [Serializable]
     public class GridTile
     {
-        private int column;
-        private int row;
+        protected int column;
+        protected int row;
+        protected int width;
+        protected int height;
 
         public Node nodeInGrid;
 
-        private bool unclickable = false;
         public bool selected = false;
-        public GridTile nextTile;
+
+        private bool unclickable = false;
+        protected GridTile nextTile;
         [NonSerialized]
         public Brush fillBrush;
         [NonSerialized]
@@ -31,7 +34,23 @@ namespace Procp_Form.Visuals
         protected Image img;
         protected string imgpath;
 
-        protected void loadImage(string path, int width, int height)
+        public GridTile(int column, int row, int tileWidth, int tileHeight)
+        {
+            this.column = column;
+            this.row = row;
+            width = tileWidth;
+            height = tileHeight;
+        }
+
+        public int Column
+        {
+            get { return column; }
+        }
+        public int Row
+        {
+            get { return row; }
+        }
+        protected void loadImage(string path)
         {
             using (var srce = new Bitmap(path))
             {
@@ -44,68 +63,21 @@ namespace Procp_Form.Visuals
                 img = dest;
             }
         }
-
-        public int Column
-        {
-            get { return column; }
-            set { column = value; }
-        }
-        public int Row
-        {
-            get { return row; }
-            set { row = value; }
-        }
         public bool Unselectable
         {
             get { return unclickable; }
             set { unclickable = value; }
         }
-        public virtual void DrawTile(PaintEventArgs e, float width, float height)
+        public virtual void DrawTile(PaintEventArgs e)
         {
             Graphics g = e.Graphics;
             Pen p = new Pen(Color.Red);
-            RectangleF r = new RectangleF(Column * width, Row * height, width, height);
+            RectangleF r = new RectangleF(column * width, row * height, width, height);
 
-            g.FillRectangle(fillBrush, r);
-            g.DrawImage(img, r);
-            g.DrawRectangle(p, Column * width, Row * height, width, height);
-
-            if(nextTile != null)
-            {
-                if (nextTile.Column < this.Column)
-                {
-                    p = new Pen(Color.Red);
-                    g.DrawLine(p, (Column * width + width / 2), (Row * height + height / 2), Column * width, Row * height + height / 2);
-                }
-                else if (nextTile.Column > this.Column)
-                {
-                    p = new Pen(Color.Red);
-                    g.DrawLine(p, (Column * width + width / 2), (Row * height + height / 2), Column * width + width, Row * height + height / 2);
-                }
-                else if (nextTile.Row < this.Row)
-                {
-                    p = new Pen(Color.Red);
-                    g.DrawLine(p, (Column * width + width / 2), (Row * height + height / 2), Column * width + width / 2, Row * height);
-                }
-                else if (nextTile.Row > this.Row)
-                {
-                    p = new Pen(Color.Red);
-                    g.DrawLine(p, (Column * width + width / 2), (Row * height + height / 2), Column * width + width / 2, Row * height + height);
-                }
-            }
-
-            if (selected)
-            {
-                p = new Pen(Color.Yellow);
-                g.DrawRectangle(p, Column * width, Row * height, width, height);
-            }
-            if (nodeInGrid != null)
-            {
-                if (nodeInGrid.Status == BaggageStatus.Busy)
-                {
-                    g.FillRectangle(Brushes.DarkGoldenrod, column * width + 10, row * height + 10, width - 20, height - 20);
-                }
-            }
+            DrawBackground(p, g, r);
+            DrawArrowNext(p, g);
+            DrawBaggage(g);
+            DrawTileInfo(g, r);
         }
         public virtual void SetTileUncklicableColor()
         {
@@ -119,9 +91,74 @@ namespace Procp_Form.Visuals
             }
         }
 
-        public void ConnectNext(GridTile t)
+        protected virtual void DrawBackground(Pen p, Graphics g, RectangleF r)
+        {
+            g.FillRectangle(fillBrush, r);
+            g.DrawImage(img, r);
+            g.DrawRectangle(p, column * width, row * height, width, height);
+
+            if (selected)
+            {
+                p = new Pen(Color.Yellow);
+                g.DrawRectangle(p, column * width, row * height, width, height);
+            }
+        }
+
+        protected virtual void DrawArrowNext(Pen p, Graphics g)
+        {
+            if (nextTile != null)
+            {
+                if (nextTile.column < this.column)
+                {
+                    p = new Pen(Color.Red);
+                    g.DrawLine(p, (column * width + width / 2), (row * height + height / 2), column * width, row * height + height / 2);
+                }
+                else if (nextTile.column > this.column)
+                {
+                    p = new Pen(Color.Red);
+                    g.DrawLine(p, (column * width + width / 2), (row * height + height / 2), column * width + width, row * height + height / 2);
+                }
+                else if (nextTile.row < this.row)
+                {
+                    p = new Pen(Color.Red);
+                    g.DrawLine(p, (column * width + width / 2), (row * height + height / 2), column * width + width / 2, row * height);
+                }
+                else if (nextTile.row > this.row)
+                {
+                    p = new Pen(Color.Red);
+                    g.DrawLine(p, (column * width + width / 2), (row * height + height / 2), column * width + width / 2, row * height + height);
+                }
+            }
+        }
+        // Baggage moves in different ways through the nodes
+        // Therefore checking wether to draw also happens in different ways
+        protected virtual void DrawBaggage(Graphics g)
+        {
+            if (nodeInGrid != null)
+            {
+                if (nodeInGrid.Status == BaggageStatus.Busy)
+                {
+                    g.FillRectangle(Brushes.DarkGoldenrod, column * width + 10, row * height + 10, width - 20, height - 20);
+                }
+            }
+        }
+        protected virtual void DrawTileInfo(Graphics g, RectangleF r)
+        {
+
+        }
+
+        //there was a point in the project where 3 methods where nesessary
+        public virtual void SetNextTile(GridTile t)
         {
             nextTile = t;
+        }
+        public GridTile NextTile
+        {
+            get { return nextTile; }
+        }
+        public virtual void ClearNextTile()
+        {
+            nextTile = null;
         }
     }
 }

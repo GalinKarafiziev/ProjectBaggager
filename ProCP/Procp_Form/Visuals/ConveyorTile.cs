@@ -15,64 +15,32 @@ namespace Procp_Form.Visuals
         public int PositionInLine;
 
         public bool isLastTile;
-        public ConveyorTile(int tileWidth, int tileHeight)
+        public ConveyorTile(int column, int row, int tileWidth, int tileHeight) : base(column, row, tileWidth, tileHeight)
         {
+            this.column = column;
+            this.row = row;
+            width = tileWidth;
+            height = tileHeight;
+
             clickableColor = Brushes.SeaGreen;
             unclickableColour = Brushes.DarkSeaGreen;
 
             fillBrush = clickableColor;
 
             imgpath = "../../Resources/conveyor.png";
-            loadImage(imgpath, tileWidth, tileHeight);
+            loadImage(imgpath);
 
             isLastTile = false;
         }
 
-        public override void DrawTile(PaintEventArgs e, float width, float height)
+        protected override void DrawBaggage(Graphics g)
         {
-            Graphics g = e.Graphics;
-            Pen p = new Pen(Color.Red);
-            RectangleF r = new RectangleF(Column * width, Row * height, width, height);
-
-            g.FillRectangle(fillBrush, r);
-            g.DrawImage(img, r);
-            g.DrawRectangle(p, Column * width, Row * height, width, height);
-
-            if (nextTile != null)
-            {
-                if (nextTile.Column < this.Column)
-                {
-                    p = new Pen(Color.Red);
-                    g.DrawLine(p, (Column * width + width/2), (Row * height + height/2), Column * width, Row * height + height / 2);
-                }
-                else if (nextTile.Column > this.Column)
-                {
-                    p = new Pen(Color.Red);
-                    g.DrawLine(p, (Column * width + width / 2), (Row * height + height / 2), Column * width + width, Row * height + height / 2);
-                }
-                else if (nextTile.Row < this.Row)
-                {
-                    p = new Pen(Color.Red);
-                    g.DrawLine(p, (Column * width + width / 2), (Row * height + height / 2), Column * width + width / 2, Row * height);
-                }
-                else if (nextTile.Row > this.Row)
-                {
-                    p = new Pen(Color.Red);
-                    g.DrawLine(p, (Column * width + width / 2), (Row * height + height / 2), Column * width + width / 2, Row * height + height);
-                }
-            }
-
-            if (selected)
-            {
-                p = new Pen(Color.Yellow);
-                g.DrawRectangle(p, Column * width, Row * height, width, height);
-            }
-
             if (nodeInGrid != null)
             {
                 Conveyor conv = (Conveyor)nodeInGrid;
                 int count = conv.conveyorBelt.Length;
-                for (int i = 0; i < count; i++) {
+                for (int i = 0; i < count; i++)
+                {
                     if (i == PositionInLine)
                     {
                         if (conv.conveyorBelt[i] != null)
