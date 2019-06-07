@@ -29,7 +29,7 @@ namespace Procp_Form.Statistics
             failedToPassSecurity = new List<int>();
             transferTimes = new List<TimeSpan>();
 
-            stopwatch = new Stopwatch();            
+            stopwatch = new Stopwatch();
         }
 
         public List<int> GetCheckInBaggageCount()
@@ -37,7 +37,7 @@ namespace Procp_Form.Statistics
             baggageInCheckIn.Clear();
             return baggageInCheckIn;
         }
-        
+
         public List<int> GetFailedToPassBaggageThroughSecurity(List<Security> securities)
         {
             failedToPassSecurity.Clear();
@@ -98,6 +98,20 @@ namespace Procp_Form.Statistics
         {
             var flightExpectedTimes = this.flights.Select(f => f.DepartureTime).ToList();
             return flightExpectedTimes;
+        }
+
+        public void CompareTransferToDepartureTime()
+        {
+            this.dropOffs.ForEach(x =>
+            {
+                this.flights.ForEach(f =>
+                {
+                    if (x.DestinationGate == f.DestinationGate)
+                    {
+                        f.DepartureTime.CompareTo(this.GetBaggageTimes().FirstOrDefault());
+                    }
+                });
+            });
         }
     }
 }
