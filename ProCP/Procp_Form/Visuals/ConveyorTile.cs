@@ -22,8 +22,8 @@ namespace Procp_Form.Visuals
             width = tileWidth;
             height = tileHeight;
 
-            clickableColor = Brushes.SeaGreen;
-            unclickableColour = Brushes.DarkSeaGreen;
+            clickableColor = Brushes.White;
+            unclickableColour = Brushes.LightGray;
 
             fillBrush = clickableColor;
 

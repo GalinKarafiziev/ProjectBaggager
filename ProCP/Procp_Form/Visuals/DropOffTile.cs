@@ -19,8 +19,8 @@ namespace Procp_Form.Visuals
             width = tileWidth;
             height = tileHeight;
 
-            clickableColor = Brushes.SlateGray;
-            unclickableColour = Brushes.DarkSlateGray;
+            clickableColor = Brushes.White;
+            unclickableColour = Brushes.LightGray;
 
             imgpath = "../../Resources/dropoff.png";
             img = Image.FromFile(imgpath);
@@ -31,9 +31,12 @@ namespace Procp_Form.Visuals
         protected override void DrawTileInfo(Graphics g, RectangleF r)
         {
             Font stringFont = new Font("Arial", height / 3, FontStyle.Bold, GraphicsUnit.Pixel);
-            DropOff d = nodeInGrid as DropOff;
-            string s = Convert.ToString(d.DestinationGate);
-            g.DrawString("Gate: " + s, stringFont, Brushes.Red, r);
+            DropOff dropOff = nodeInGrid as DropOff;
+            string gateId = Convert.ToString(dropOff.DestinationGate);
+            string baggages = Convert.ToString(dropOff.baggages.Count());
+            string capacity = Convert.ToString(dropOff.baggages.Capacity);
+            //g.DrawString($"Gate: {gateId}", stringFont, Brushes.Red, r);
+            g.DrawString($"Gate: {gateId} - {baggages} / {capacity}", stringFont, Brushes.Red, r);
         }
     }
 }

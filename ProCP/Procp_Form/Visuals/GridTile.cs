@@ -71,8 +71,8 @@ namespace Procp_Form.Visuals
         public virtual void DrawTile(PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            Pen p = new Pen(Color.Red);
-            RectangleF r = new RectangleF(column * width, row * height, width, height);
+            Pen p = new Pen(Color.LightSteelBlue);
+            RectangleF r = new RectangleF(Column * width, Row * height, width, height);
 
             DrawBackground(p, g, r);
             DrawArrowNext(p, g);

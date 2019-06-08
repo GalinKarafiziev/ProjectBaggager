@@ -33,7 +33,9 @@ namespace Procp_Form.Core
             baggageEnteredDropOff = new List<DateTime>();
             DestinationGate = destinationGate;
             baggages.Capacity = 10;
+            SetNumberEmployees(1);
             timer.Elapsed += (sender, args) => UnloadBaggage();
+            timer.Start();
         }
 
         public int DestinationGate { get; set; }
@@ -46,22 +48,23 @@ namespace Procp_Form.Core
             }
             set
             {
+                this.employeeSpeed = value;
                 switch (employeeSpeed)
                 {
                     case 1:
-                        timer.Interval = 500;
-                        break;
-                    case 2:
-                        timer.Interval = 800;
-                        break;
-                    case 3:
-                        timer.Interval = 1000;
-                        break;
-                    case 4:
                         timer.Interval = 1200;
                         break;
+                    case 2:
+                        timer.Interval = 1000;
+                        break;
+                    case 3:
+                        timer.Interval = 800;
+                        break;
+                    case 4:
+                        timer.Interval = 500;
+                        break;
                     default:
-                        timer.Interval = 2200;
+                        timer.Interval = 1200;
                         break;
                 }
             }
@@ -85,6 +88,7 @@ namespace Procp_Form.Core
                 Status = BaggageStatus.Free;
             }
             timer.Start();
+
         }
         public override void PassBaggage(Baggage Lastbaggage)
         {

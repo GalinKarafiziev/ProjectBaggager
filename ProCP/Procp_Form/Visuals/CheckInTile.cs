@@ -20,13 +20,13 @@ namespace Procp_Form.Visuals
             width = tileWidth;
             height = tileHeight;
 
-            clickableColor = Brushes.PaleVioletRed;
-            unclickableColour = Brushes.MediumVioletRed;
+            clickableColor = Brushes.White;
+            unclickableColour = Brushes.LightGray;
 
             imgpath = "../../Resources/checkin.png";
             loadImage(imgpath);
 
-            fillBrush = Brushes.PaleVioletRed;
+            fillBrush = clickableColor;
         }
 
         protected override void DrawTileInfo(Graphics g, RectangleF r)
