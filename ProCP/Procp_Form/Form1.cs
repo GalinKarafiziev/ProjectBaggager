@@ -552,16 +552,7 @@ namespace Procp_Form
 
         private void buttonLoadChartBaggageThroughCheckin_Click(object sender, EventArgs e)
         {
-            SeriesCollection series = new SeriesCollection();
-            int dropOffCounter = 0;
             
-            engine.GetTransferTime().ForEach(x =>
-            {
-                dropOffCounter++;
-                series.Add(new ColumnSeries() { Title = $"Flight {dropOffCounter.ToString()}", Values = new ChartValues<int> { x.Seconds } });
-            });
-
-            cartesianChartBaggageProcessedByCheckin.Series = series;
         }
 
         private void buttonFailedSecurityCheck_Click(object sender, EventArgs e)
@@ -633,6 +624,43 @@ namespace Procp_Form
         {
             engine.GetGridTiles(thisGrid);
             engine.LoadFromFile();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            SeriesCollection series = new SeriesCollection();
+            double failed = engine.GetCalculatePercentageFailedBaggage();
+            double successed = engine.GetCalculateSuccessedBaggage();
+            series.Add(new PieSeries() { Title = "Failed", Values = new ChartValues<double> { failed } });
+            series.Add(new PieSeries() { Title = "Successed ", Values = new ChartValues<double> { successed } });
+
+            pieChartPercentageAllFailedBaggage.Series = series;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            SeriesCollection series = new SeriesCollection();
+            int securityCounter = 0;
+            foreach (var number in engine.GetSecurityStats())
+            {
+                securityCounter++;
+                series.Add(new ColumnSeries() { Title = $"Security {securityCounter.ToString()}", Values = new ChartValues<int> { number } });
+            }
+            cartesianChartFailedToPassBaggage.Series = series;
+        }
+
+        private void buttonTransTimePerFlight_Click(object sender, EventArgs e)
+        {
+            SeriesCollection series = new SeriesCollection();
+            int dropOffCounter = 0;
+
+            engine.GetTransferTime().ForEach(x =>
+            {
+                dropOffCounter++;
+                series.Add(new ColumnSeries() { Title = $"Flight {dropOffCounter.ToString()}", Values = new ChartValues<int> { x.Seconds } });
+            });
+
+            cartesianChartBaggageProcessedByCheckin.Series = series;
         }
     }
 }
