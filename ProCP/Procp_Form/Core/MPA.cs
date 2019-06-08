@@ -34,47 +34,30 @@ namespace Procp_Form.Core
 
         public override void ProcessBaggage()
         {
-            foreach (var conv in nextNodes.ToList())
+            lock (baggage)
             {
-
-                if (conv.DestinationGate == baggage.DestinationGate)
+                foreach (var conv in nextNodes.ToList())
                 {
-                    NextNode = conv;
-                    if (NextNode.Status == BaggageStatus.Free)
+                    if (baggage != null)
                     {
-                        NextNode.PassBaggage(baggage);
-                        baggage = null;
-                        Status = BaggageStatus.Free;
-                        NextNode.OnNodeStatusChangedToFree -= ProcessBaggage;
-                        break;
+                        if (conv.DestinationGate == baggage.DestinationGate)
+                        {
+                            NextNode = conv;
+                            if (NextNode.Status == BaggageStatus.Free)
+                            {
+                                NextNode.PassBaggage(baggage);
+                                baggage = null;
+                                Status = BaggageStatus.Free;
+                                NextNode.OnNodeStatusChangedToFree -= ProcessBaggage;
+                                break;
+                            }
+                            else
+                            {
+                                NextNode.OnNodeStatusChangedToFree += ProcessBaggage;
+                                break;
+                            }
+                        }
                     }
-                    else
-                    {
-                        NextNode.OnNodeStatusChangedToFree += ProcessBaggage;
-                        break;
-                    }
-                }
-            }
-        }
-
-        public void PassWaitingBaggage(Conveyor chosen)
-        {
-            var chosenConveyor = chosen;
-            foreach (var bag in baggagesToWait)
-            {
-                if (bag != null)
-                {
-                    if (bag.DestinationGate == chosenConveyor.DestinationGate)
-                    {
-                        chosenConveyor.PassBaggage(bag);
-                        Status = BaggageStatus.Free;
-                        baggagesToWait.Remove(bag);
-                        break;
-                    }
-                }
-                else
-                {
-                    break;
                 }
             }
         }
