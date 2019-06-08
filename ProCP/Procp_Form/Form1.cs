@@ -635,6 +635,7 @@ namespace Procp_Form
 
         private void buttonSaveToFile_Click(object sender, EventArgs e)
         {
+            engine.GetGridTiles(thisGrid);
             engine.WriteToFile();
         }
 
@@ -648,8 +649,13 @@ namespace Procp_Form
 
         private void buttonLoad_Click(object sender, EventArgs e)
         {
-            engine.GetGridTiles(thisGrid);
             engine.LoadFromFile();
+            thisGrid.LoadGrid(engine.tiles);
+            RefreshCheckInCombobox();
+            RefreshDropOffCombobox();
+            RefreshFlightsList();
+
+            animationBox.Invalidate();
         }
     }
 }

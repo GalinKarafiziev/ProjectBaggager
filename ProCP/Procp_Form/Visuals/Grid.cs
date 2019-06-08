@@ -64,7 +64,7 @@ namespace Procp_Form.Visuals
             }
         }
 
-        private void LoadGrid(List<GridTile> load)
+        public void LoadGrid(List<GridTile> load)
         {
             gridTiles.Clear();
             foreach(GridTile c in load)
