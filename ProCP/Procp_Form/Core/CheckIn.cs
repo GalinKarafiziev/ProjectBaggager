@@ -1,6 +1,7 @@
 ﻿using Procp_Form.CoreAbstraction;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -8,13 +9,20 @@ using System.Threading.Tasks;
 
 namespace Procp_Form.Core
 {
+    [Serializable]
     public class CheckIn : ProcessUnit
     {
-        public List<Baggage> queue;
+        public static int id;
+        public int Id { get; private set; }
+        public int baggageInCheckIn = 0;
+        public DateTime startOfBaggageTransfer;
+
+        public int DestinationGate { get; set; }
 
         public CheckIn()
         {
-            queue = new List<Baggage>();
+            id++;
+            this.Id = id;
         }
 
         public override void ProcessBaggage()
@@ -22,11 +30,12 @@ namespace Procp_Form.Core
             if (NextNode.Status == BaggageStatus.Free)
             {
                 NextNode.PassBaggage(baggage);
-                counter--;
-                Thread.Sleep(1000);
-                baggage = null;
-                NextNode.OnNodeStatusChangedToFree -= ProcessBaggage;
                 Status = BaggageStatus.Free;
+                if (baggageInCheckIn == 1)
+                {
+                    startOfBaggageTransfer = DateTime.Now;
+                }
+                NextNode.OnNodeStatusChangedToFree -= ProcessBaggage;
             }
             else
             {
@@ -38,7 +47,16 @@ namespace Procp_Form.Core
         {
             Status = BaggageStatus.Busy;
             baggage = Lastbaggage;
+            baggageInCheckIn++;
             ProcessBaggage();
+        }
+        public bool HasDestinationGate()
+        {
+            return this.DestinationGate != 0 ? true : false;   
+        }
+        public override string ToString()
+        {
+            return $"Check-In [#{Id}]";
         }
     }
 }

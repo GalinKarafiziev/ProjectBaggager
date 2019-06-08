@@ -3,51 +3,86 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Timers;
 
 namespace Procp_Form.Core
 {
+    [Serializable]
     public class MPA : ProcessUnit
     {
-        public List<DropOff> nextNodes;
+        public List<Conveyor> nextNodes;
+        public List<Baggage> baggagesToWait;
 
         public MPA()
         {
-            nextNodes = new List<DropOff>();
+            nextNodes = new List<Conveyor>();
+            baggagesToWait = new List<Baggage>();
         }
 
-        public void AddNextNode(DropOff node)
+        public void AddNextNode(Conveyor node)
         {
             var nextNode = node;
-            nextNodes.Add(nextNode);
+            if (nextNodes.Contains(nextNode))
+            {
+                return;
+            }
+            else
+            {
+                nextNodes.Add(nextNode);
+            }
         }
 
         public override void ProcessBaggage()
         {
-            Status = BaggageStatus.Busy;
-
-            if (baggage != null)
+            foreach (var conv in nextNodes.ToList())
             {
-                foreach (DropOff drop in nextNodes)
+
+                if (conv.DestinationGate == baggage.DestinationGate)
                 {
-                    if (drop.FlightNumber == baggage.FlightNumber)
+                    NextNode = conv;
+                    if (NextNode.Status == BaggageStatus.Free)
                     {
-                        this.NextNode = drop;
                         NextNode.PassBaggage(baggage);
-                        Thread.Sleep(800);
                         baggage = null;
                         Status = BaggageStatus.Free;
+                        NextNode.OnNodeStatusChangedToFree -= ProcessBaggage;
+                        break;
+                    }
+                    else
+                    {
+                        NextNode.OnNodeStatusChangedToFree += ProcessBaggage;
                         break;
                     }
                 }
             }
         }
 
+        public void PassWaitingBaggage(Conveyor chosen)
+        {
+            var chosenConveyor = chosen;
+            foreach (var bag in baggagesToWait)
+            {
+                if (bag != null)
+                {
+                    if (bag.DestinationGate == chosenConveyor.DestinationGate)
+                    {
+                        chosenConveyor.PassBaggage(bag);
+                        Status = BaggageStatus.Free;
+                        baggagesToWait.Remove(bag);
+                        break;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+
         public override void PassBaggage(Baggage Lastbaggage)
         {
-            Status = BaggageStatus.Busy;
             baggage = Lastbaggage;
+            Status = BaggageStatus.Busy;
             ProcessBaggage();
         }
     }

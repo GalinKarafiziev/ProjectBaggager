@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Procp_Form.CoreAbstraction
 {
+    [Serializable()]
     public abstract class ProcessUnit : Node
     {
         public Baggage baggage { get; set; }
-        public int counter;
-        public abstract void ProcessBaggage();
+        public  abstract void ProcessBaggage();
     }
 }

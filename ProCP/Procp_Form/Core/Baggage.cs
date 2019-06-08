@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace Procp_Form.Core
 {
+    [Serializable]
     public class Baggage
     {
         private Random random;
+
         private int secure;
         public int Secure { get; set; }
-        public string FlightNumber { get; set; }
+        public int DestinationGate { get; set; }
 
         public Baggage()
         {

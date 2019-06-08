@@ -55,6 +55,8 @@
     <Compile Include="MPATest.cs" />
     <Compile Include="ConveyorTransportTest.cs" />
     <Compile Include="CheckInDispatcherTest.cs" />
+    <Compile Include="EngineTest.cs" />
+    <Compile Include="DropOffTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

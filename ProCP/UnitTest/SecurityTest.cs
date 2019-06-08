@@ -9,22 +9,32 @@ namespace UnitTest
     [TestClass]
     public class SecurityTest
     {
-        
         [TestMethod]
         public void ProcessBaggage_If_Statement()
         {
-            Baggage baggage = new Baggage(){ Secure = 5 };
+            
             Security security = new Security();
             CheckIn checkIn = new CheckIn();
-            Conveyor conveyor = new Conveyor();
+            Conveyor conveyor = new Conveyor(5 ,4);
             DropOff dropOff = new DropOff();
             checkIn.NextNode = conveyor;
             conveyor.NextNode = security;
             security.NextNode = dropOff;
 
-            security.PassBaggage(baggage);
+            List<Baggage> baggages = new List<Baggage>()
+            {
+                new Baggage(){Secure = 2},
+                new Baggage(){Secure = 7},
+               
+            };
+            
+            foreach(Baggage baggage in baggages)
+            {
+                security.PassBaggage(baggage);
+            }
+            
 
-            Assert.AreEqual(1, security.bufferNotSecure.Count);
+            Assert.AreEqual(2, security.baggageAgainstSecurityPolicy.Count);
         }
         [TestMethod]
         public void ProcessBaggage_If_Else_Statement()
@@ -33,7 +43,7 @@ namespace UnitTest
             
             Security security = new Security();
             CheckIn checkIn = new CheckIn();
-            Conveyor conveyor = new Conveyor();
+            Conveyor conveyor = new Conveyor(5,6);
             DropOff dropOff = new DropOff();
             checkIn.NextNode = conveyor;
             conveyor.NextNode = security;
@@ -49,7 +59,7 @@ namespace UnitTest
             Baggage baggage = new Baggage() { Secure = 6 };
             Security security = new Security();
             CheckIn checkIn = new CheckIn();
-            Conveyor conveyor = new Conveyor();
+            Conveyor conveyor = new Conveyor(5,6);
             DropOff dropOff = new DropOff();
             checkIn.NextNode = conveyor;
             conveyor.NextNode = security;
@@ -67,7 +77,5 @@ namespace UnitTest
 
 
         }
-
-        
     }
 }

@@ -9,11 +9,20 @@ using System.Timers;
 
 namespace Procp_Form.Core
 {
+    [Serializable]
     public class CheckInDispatcher : Node
     {
-        List<Queue<Baggage>> checkinQueues;
-        List<Timer> timers;
-        List<CheckIn> checkins;
+        [NonSerialized]
+        Timer timer;
+        public List<Queue<Baggage>> checkinQueues;
+        public List<Timer> timers;
+        public List<CheckIn> checkins;
+
+        public CheckInDispatcher()
+        {
+            checkins = new List<CheckIn>();
+            checkinQueues = new List<Queue<Baggage>>();
+        }
 
         public List<CheckIn> GetCheckIns()
         {
@@ -23,12 +32,6 @@ namespace Procp_Form.Core
         public List<Queue<Baggage>> GetQueuedBaggage()
         {
             return checkinQueues;
-        }
-
-        public CheckInDispatcher()
-        {
-            checkins = new List<CheckIn>();
-            checkinQueues = new List<Queue<Baggage>>();
         }
 
         public void Start()
@@ -50,21 +53,25 @@ namespace Procp_Form.Core
         public void DispatchBaggage(Flight flight)
         {
             var baggage = new Baggage();
-            int chosen = FindMostSuitableCheckin();
+            baggage.DestinationGate = flight.DestinationGate;
+            int chosen = FindMostSuitableCheckin(baggage);
             var checkIn = checkins[chosen];
             var queue = checkinQueues[chosen];
 
-            baggage.FlightNumber = flight.FlightNumber;
 
             if (checkIn.Status == BaggageStatus.Free)
             {
                 checkIn.PassBaggage(baggage);
+                if (OnNodeStatusChangedToFree != null)
+                {
+                    checkIn.OnNodeStatusChangedToFree -= () => PassQueuedBaggage(chosen);
+                }
             }
             else
             {
+                queue.Enqueue(baggage);
                 checkIn.OnNodeStatusChangedToFree += () => PassQueuedBaggage(chosen);
             }
-            queue.Enqueue(baggage);
             flight.BaggageDispatched++;
         }
 
@@ -73,7 +80,10 @@ namespace Procp_Form.Core
             var checkIn = checkins[index];
             var queue = checkinQueues[index];
 
-            checkIn.PassBaggage(queue.Dequeue());
+            if (queue.Count != 0)
+            {
+                checkIn.PassBaggage(queue.Dequeue());
+            }
         }
 
         public void SetupCheckins(List<CheckIn> checkinDesks)
@@ -96,14 +106,13 @@ namespace Procp_Form.Core
         public void SetupTimers(List<Flight> flights)
         {
             timers = new List<Timer>();
-            Timer timer;
 
             foreach (Flight f in flights)
             {
                 timer = new Timer();
                 timers.Add(timer);
-                timer.Interval = CalculateDispatchRate(f);
-                
+                timer.Interval = 800;
+
                 timer.Elapsed += (sender, args) =>
                 {
                     if (f.AmountOfBaggage > f.BaggageDispatched)
@@ -118,42 +127,23 @@ namespace Procp_Form.Core
             }
         }
 
-        public int FindMostSuitableCheckin()
+        public int FindMostSuitableCheckin(Baggage baggage)
         {
             int chosenIndex = 0;
-            var initialQueue = checkinQueues[chosenIndex];
 
             foreach (var checkIn in Enumerable.Range(0, checkins.Count))
             {
-                if (checkins.ElementAt(checkIn).Status == BaggageStatus.Free)
+                if (checkins.ElementAt(checkIn).DestinationGate == baggage.DestinationGate)
                 {
+                    if (checkins.ElementAt(checkIn).Status == BaggageStatus.Free)
+                    {
+                        chosenIndex = checkIn;
+                        return chosenIndex;
+                    }
                     chosenIndex = checkIn;
-
-                    return chosenIndex;
                 }
             }
-
-            foreach (var queue in Enumerable.Range(0, checkinQueues.Count))
-            {
-               if (checkinQueues.ElementAt(queue).Count < initialQueue.Count)
-                {
-                    chosenIndex = queue;
-                }
-            }
-
             return chosenIndex;
-        }
-
-        public double CalculateDispatchRate(Flight flight)
-        {
-            var currentTime = DateTime.Now;
-            var interval = new TimeSpan();
-            interval = flight.DepartureTime - currentTime ;
-            double dispatchRate = (interval.Minutes);
-            dispatchRate = dispatchRate * 60000;
-            dispatchRate = dispatchRate / flight.AmountOfBaggage;
-
-            return dispatchRate;
         }
 
         public override void PassBaggage(Baggage Lastbaggage)
