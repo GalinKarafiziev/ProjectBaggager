@@ -146,6 +146,7 @@ namespace UnitTest
             //test if the queued baggages are added correctly
             Assert.AreEqual(2, checkInDispatcher.GetQueuedBaggage().Count);
         }
+
         [TestMethod]
         public void FindMostSuitableCheckIn_WhenFreeCheckIn_Test()
         {
@@ -176,6 +177,7 @@ namespace UnitTest
             Assert.AreEqual(a, 1);
 
         }
+
         [TestMethod]
         public void FindMostSuitableCheckIn_WhenBusyCheckIn_Test()
         {

@@ -287,7 +287,7 @@ namespace Procp_Form.Visuals
             gridTiles.Insert(index, empty);
         }
 
-        public void RemoveConveyorLine(GridTile toRemove)
+        public ConveyorTile RemoveConveyorLine(GridTile toRemove)
         {
             ConveyorTile first = new ConveyorTile(1,1, (int)tileWidth, (int)tileHeight);
             foreach(GridTile t in gridTiles.ToList())
@@ -313,6 +313,7 @@ namespace Procp_Form.Visuals
                     break;
                 }
             }
+            return first;
         }
 
         public void RemoveMPA(GridTile toRemove)
@@ -379,105 +380,6 @@ namespace Procp_Form.Visuals
             }
             return null;
         }
-        public GridTile AutoConnectDropOff(GridTile c)
-        {
-            GridTile temp = FindTileInRowColumnCoordinates(c.Column, c.Row - 1);
-            if(temp is ConveyorTile)
-            {
-                if (ConnectToConveyorPrevious(c, temp as ConveyorTile) != null)
-                    return temp;
-            }
-            return null;
-        }
-        public GridTile AutoConnectCheckIn(GridTile c)
-        {
-            GridTile temp = FindTileInRowColumnCoordinates(c.Column, c.Row + 1);
-            if (temp is ConveyorTile)
-            {
-                if (ConnectToConveyorBeginning(c, temp as ConveyorTile) != null)
-                    return temp;
-            }
-            return null;
-        }
-        public GridTile AutoConnectSecurityToPrev(GridTile c)
-        {
-            List<GridTile> tempList = GetTilesIn4Directions(c);
-
-            foreach (GridTile t in tempList)
-            {
-                if (t is ConveyorTile)
-                {
-                    if(ConnectToConveyorPrevious(c, t as ConveyorTile) != null)
-                    {
-                        return t;
-                    }
-                }
-            }
-            return null;
-        }
-        public GridTile AutoConnectSecurityToNext(GridTile c)
-        {
-            List<GridTile> tempList = GetTilesIn4Directions(c);
-
-            foreach (GridTile t in tempList)
-            {
-                if (t is ConveyorTile)
-                {
-                    if (ConnectToConveyorBeginning(c, t as ConveyorTile) != null)
-                        return t;
-                }
-            }
-            return null;
-        }
-        public GridTile AutoConnectConveyorToPrevious(GridTile c)
-        {
-            List<GridTile> tempList = GetTilesIn4Directions(c);
-            foreach(GridTile t in tempList)
-            {
-                if(t is ConveyorTile)
-                {
-                    if (ConnectToConveyorPrevious(c, t as ConveyorTile) != null)
-                        return t;
-                }
-                else if(!(t is EmptyTile) && !(t is DropOffTile))
-                {
-                    ConnectTiles(t, c);
-                    return t;
-                }
-            }
-            return null;
-        }
-
-
-        public GridTile AutoConnectConveyorToNext(GridTile c)
-        {
-            List<GridTile> tempList = GetTilesIn4Directions(c);
-            foreach (GridTile t in tempList)
-            {
-                if (t is ConveyorTile)
-                {
-                    if (ConnectToConveyorBeginning(c, t as ConveyorTile) != null)
-                        return t;
-                }
-                else if (!(t is EmptyTile))
-                {
-                    ConnectTiles(c, t);
-                    return t;
-                }
-            }
-            return null;
-        }
-        public List<GridTile> AutoConnectMPAToPrevs(GridTile c)
-        {
-            foreach (GridTile t in gridTiles)
-            {
-                if (t.nodeInGrid == c.nodeInGrid)
-                {
-                    
-                }
-            }
-            return null;
-        }
 
         public delegate List<GridTile> GetNeighboursHandler(GridTile c);
 
@@ -488,7 +390,6 @@ namespace Procp_Form.Visuals
             tempList.Add(temp);
             return tempList;
         }
-
 
         public List<GridTile> GetBottomNeighbour(GridTile c)
         {
@@ -534,31 +435,6 @@ namespace Procp_Form.Visuals
                 else if (!(t is EmptyTile) && !(t is CheckInTile) && !(c is MPATile))
                 {
                     ConnectTiles(c, t);
-                    return t;
-                }
-            }
-            return null;
-        }
-
-        public GridTile AutcoConnectMPA(GridTile c)
-        {
-            List<GridTile> tempList = GetTilesIn4Directions(c);
-            foreach (GridTile t in tempList)
-            {
-                if (t is ConveyorTile)
-                {
-                    if (ConnectToConveyorPrevious(c, t as ConveyorTile) != null)
-                    {
-                        return t;
-                    }
-                    if(ConnectToConveyorBeginning(c, t as ConveyorTile) != null)
-                    {
-                        return t;
-                    }
-                }
-                else if(!(t is MPATile))
-                {
-                    ConnectTiles(t, c);
                     return t;
                 }
             }
