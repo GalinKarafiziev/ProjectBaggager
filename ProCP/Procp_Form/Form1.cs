@@ -157,7 +157,7 @@ namespace Procp_Form
                         engine.AddCheckIn(checkin);
                         RefreshCheckInCombobox();
 
-                        GridTile temp = thisGrid.AutoConnectNext(selectedTile);
+                        GridTile temp = thisGrid.AutoConnectToNext(selectedTile, thisGrid.GetBottomNeighbour);
                         if (temp != null)
                         {
                             engine.LinkTwoNodes(selectedTile.nodeInGrid, temp.nodeInGrid);
@@ -468,8 +468,6 @@ namespace Procp_Form
                         RefreshFlightsList();
                         selectedCheckIn.DestinationGate = destGate;
                         btnDeleteFlight.Enabled = true;
-                        btnAddCheckinToFlight.Enabled = true;
-                        btnEditFlight.Enabled = true;
                     }
 
                 }
@@ -515,6 +513,7 @@ namespace Procp_Form
             }
             else
             {
+                selectedCheckIn.DestinationGate = selectedFlight.DestinationGate;
                 RefreshFlightsList();
             }
         }
@@ -522,6 +521,7 @@ namespace Procp_Form
         private void btnDeleteFlight_Click(object sender, EventArgs e)
         {
             Flight selectedFlight = lbFlights.SelectedItem as Flight;
+            var selectedCheckIn = cbCheckInFlight.SelectedItem as CheckIn;
             if (selectedFlight != null)
             {
                 if (!(engine.RemoveFlight(selectedFlight.FlightNumber)))
@@ -530,6 +530,7 @@ namespace Procp_Form
                 }
                 else
                 {
+                    selectedCheckIn.DestinationGate = 0;
                     lbFlights.DataSource = null;
                     lbFlights.DataSource = engine.flights;
                 }
@@ -635,6 +636,7 @@ namespace Procp_Form
         private void btnClearGrid_Click(object sender, EventArgs e)
         {
             thisGrid.ClearGrid();
+            this.engine = new Engine();
             RefreshCheckInCombobox();
             RefreshDropOffCombobox();
             animationBox.Invalidate();

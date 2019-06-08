@@ -31,8 +31,11 @@ namespace Procp_Form.Visuals
         public Brush unclickableColour;
 
 
-        protected Image img;
         protected string imgpath;
+        protected Image img;
+
+        protected string baggageImgPath;
+        protected Image baggageImg;
 
         public GridTile(int column, int row, int tileWidth, int tileHeight)
         {
@@ -40,6 +43,9 @@ namespace Procp_Form.Visuals
             this.row = row;
             width = tileWidth;
             height = tileHeight;
+
+            baggageImgPath = "../../Resources/baggage.png";
+            baggageImg = loadImage(baggageImgPath, baggageImg);
         }
 
         public int Column
@@ -50,7 +56,7 @@ namespace Procp_Form.Visuals
         {
             get { return row; }
         }
-        protected void loadImage(string path)
+        protected Image loadImage(string path, Image imig)
         {
             using (var srce = new Bitmap(path))
             {
@@ -59,9 +65,10 @@ namespace Procp_Form.Visuals
                 {
                     gr.DrawImage(srce, new Rectangle(Point.Empty, dest.Size));
                 }
-                if (img != null) img.Dispose();
-                img = dest;
+                if (imig != null) img.Dispose();
+                imig = dest;
             }
+            return imig;
         }
         public bool Unselectable
         {
@@ -138,7 +145,8 @@ namespace Procp_Form.Visuals
             {
                 if (nodeInGrid.Status == BaggageStatus.Busy)
                 {
-                    g.FillRectangle(Brushes.DarkGoldenrod, column * width + 10, row * height + 10, width - 20, height - 20);
+                    RectangleF baggageRec = new RectangleF(column * width + 10, row * height + 10, width - 20, height - 20);
+                    g.DrawImage(baggageImg, baggageRec);
                 }
             }
         }
