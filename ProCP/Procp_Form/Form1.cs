@@ -550,38 +550,6 @@ namespace Procp_Form
             animationBox.Invalidate();
         }
 
-        private void buttonLoadChartBaggageThroughCheckin_Click(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void buttonFailedSecurityCheck_Click(object sender, EventArgs e)
-        {
-            SeriesCollection series = new SeriesCollection();
-            int securityCounter = 0;
-            foreach (var number in engine.GetSecurityStats())
-            {
-                securityCounter++;
-                series.Add(new ColumnSeries() { Title = $"Security {securityCounter.ToString()}", Values = new ChartValues<int> { number } });
-            }
-            cartesianChartFailedToPassBaggage.Series = series;
-        }
-
-        private void buttonRefreshPercentageFailedBags_Click(object sender, EventArgs e)
-        {
-            SeriesCollection series = new SeriesCollection();
-            double failed = engine.GetCalculatePercentageFailedBaggage();
-            double successed = engine.GetCalculateSuccessedBaggage();
-            series.Add(new PieSeries() { Title = "Failed", Values = new ChartValues<double> { failed } });
-            series.Add(new PieSeries() { Title = "Successed ", Values = new ChartValues<double> { successed } });
-
-            pieChartPercentageAllFailedBaggage.Series = series;
-        }
-
-        private void buttonSaveToFile_Click(object sender, EventArgs e)
-        {
-            engine.WriteToFile();
-        }
 
         private void btnClearGrid_Click(object sender, EventArgs e)
         {
@@ -619,11 +587,16 @@ namespace Procp_Form
                 Title = title,
             });
         }
+        private void buttonSaveToFile_Click(object sender, EventArgs e)
+        {
+            engine.WriteToFile();
+        }
 
         private void buttonLoad_Click(object sender, EventArgs e)
         {
             engine.GetGridTiles(thisGrid);
             engine.LoadFromFile();
+            animationBox.Invalidate();
         }
 
         private void button2_Click(object sender, EventArgs e)
