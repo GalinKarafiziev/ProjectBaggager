@@ -287,7 +287,7 @@ namespace Procp_Form.Visuals
             gridTiles.Insert(index, empty);
         }
 
-        public void RemoveConveyorLine(GridTile toRemove)
+        public ConveyorTile RemoveConveyorLine(GridTile toRemove)
         {
             ConveyorTile first = new ConveyorTile(1,1, (int)tileWidth, (int)tileHeight);
             foreach(GridTile t in gridTiles.ToList())
@@ -313,6 +313,7 @@ namespace Procp_Form.Visuals
                     break;
                 }
             }
+            return first;
         }
 
         public void RemoveMPA(GridTile toRemove)
