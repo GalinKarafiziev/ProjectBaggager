@@ -242,11 +242,14 @@ namespace Procp_Form
                     {
                         ConveyorTile first = thisGrid.RemoveConveyorLine(t);
                         engine.Remove(t.nodeInGrid);
-                        foreach(Conveyor c in engine.mainProcessArea.nextNodes.ToList())
+                        if (engine.mainProcessArea != null)
                         {
-                            if(c == first.nodeInGrid)
+                            foreach (Conveyor c in engine.mainProcessArea.nextNodes.ToList())
                             {
-                                engine.mainProcessArea.nextNodes.Remove(c);
+                                if (c == first.nodeInGrid)
+                                {
+                                    engine.mainProcessArea.nextNodes.Remove(c);
+                                }
                             }
                         }
                     }

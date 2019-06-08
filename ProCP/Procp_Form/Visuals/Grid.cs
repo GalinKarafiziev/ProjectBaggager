@@ -364,7 +364,7 @@ namespace Procp_Form.Visuals
         }
         private GridTile ConnectToConveyorBeginning(GridTile c, ConveyorTile temp)
         {
-            if (temp.PositionInLine == 0)
+            if (temp.PositionInLine == 0 && temp.NextTile != c)
             {
                 c.SetNextTile(temp);
                 return temp;
