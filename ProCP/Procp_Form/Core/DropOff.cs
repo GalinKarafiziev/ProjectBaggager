@@ -82,25 +82,31 @@ namespace Procp_Form.Core
             if (baggages.Count != 0)
             {
                 unloadBaggages.Add(baggages[0]);
+                System.Diagnostics.Debug.WriteLine(unloadBaggages.Count.ToString());
                 baggageEnteredDropOff.Add(time);
                 baggages.Remove(baggages[0]);
                 Status = BaggageStatus.Free;
-                
             }
             timer.Start();
 
         }
         public override void PassBaggage(Baggage Lastbaggage)
         {
+            //if (!timer.Enabled)
+            //{
+            //    timer.Start();
+            //}
 
             if (baggages.Count >= baggages.Capacity)
             {
                 Status = BaggageStatus.Busy;
+                timer.Start();
             }
             else
             {
                 Status = BaggageStatus.Busy;
                 baggages.Add(Lastbaggage);
+                timer.Start();
                 Status = BaggageStatus.Free;
             }
         }
