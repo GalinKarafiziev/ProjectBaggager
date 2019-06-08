@@ -157,7 +157,7 @@ namespace Procp_Form
                         engine.AddCheckIn(checkin);
                         RefreshCheckInCombobox();
 
-                        GridTile temp = thisGrid.AutoConnectNext(selectedTile);
+                        GridTile temp = thisGrid.AutoConnectToNext(selectedTile, thisGrid.GetBottomNeighbour);
                         if (temp != null)
                         {
                             engine.LinkTwoNodes(selectedTile.nodeInGrid, temp.nodeInGrid);
