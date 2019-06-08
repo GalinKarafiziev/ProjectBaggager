@@ -24,6 +24,7 @@ namespace Procp_Form
         bool deleteMode;
         bool isBuildingConveyor;
         bool isConnectingTiles;
+        DropOff selectedDropOffForSettings;
         GridTile selectedTile;
         List<ConveyorTile> conveyorBuilding;
         Engine engine;
@@ -103,6 +104,7 @@ namespace Procp_Form
             thisGrid.HideArea(buildModeType);
             animationBox.Invalidate();
         }
+
         private void ConveyorSpeed_CheckedChanged(object sender, EventArgs e)
         {
             int speed = 0;
@@ -204,7 +206,7 @@ namespace Procp_Form
                             }
                         }
                     }
-                    //fucking kill me
+                    
                     else if (buildModeType == "MPA")
                     {
                         MPA mpa = new MPA();
@@ -280,6 +282,19 @@ namespace Procp_Form
             }
             lblColRow.Text = t.Column + " " + t.Row;
 
+            if (selectedTile is DropOffTile)
+            {
+                selectedDropOffForSettings = selectedTile.nodeInGrid as DropOff;
+                cbCapacity.Text = Convert.ToString(selectedDropOffForSettings.baggages.Capacity);
+                cbEmployees.Text = Convert.ToString(selectedDropOffForSettings.EmployeeSpeed);
+                gbDropOffSettings.Text = $"DropOff {selectedDropOffForSettings.DestinationGate} Settings";
+                gbDropOffSettings.Visible = true;
+            }
+            else
+            {
+                gbDropOffSettings.Visible = false;
+            }
+            //gbDropOffSettings.Visible = false;
             animationBox.Invalidate();
         }
 
@@ -407,6 +422,7 @@ namespace Procp_Form
 
         private void btnRun_Click(object sender, EventArgs e)
         {
+            gbDropOffSettings.Visible = false;
             if (engine.dispatcher == null)
             {
                 engine.AddDispatcher();
@@ -635,6 +651,7 @@ namespace Procp_Form
 
         private void btnClearGrid_Click(object sender, EventArgs e)
         {
+            gbDropOffSettings.Visible = false;
             thisGrid.ClearGrid();
             this.engine = new Engine();
             RefreshCheckInCombobox();
@@ -675,6 +692,16 @@ namespace Procp_Form
         {
             engine.GetGridTiles(thisGrid);
             engine.LoadFromFile();
+        }
+
+        private void cbCapacity_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            selectedDropOffForSettings.baggages.Capacity = Convert.ToInt32(cbCapacity.Text);
+        }
+
+        private void cbEmployees_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            selectedDropOffForSettings.SetNumberEmployees(Convert.ToInt32(cbEmployees.Text));
         }
     }
 }
