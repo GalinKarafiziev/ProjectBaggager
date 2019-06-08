@@ -34,11 +34,11 @@ namespace Procp_Form.Core
 
         public override void ProcessBaggage()
         {
-            lock (baggage)
+            if (baggage != null)
             {
-                foreach (var conv in nextNodes.ToList())
+                lock (baggage)
                 {
-                    if (baggage != null)
+                    foreach (var conv in nextNodes.ToList())
                     {
                         if (conv.DestinationGate == baggage.DestinationGate)
                         {

@@ -17,6 +17,7 @@ namespace Procp_Form
 {
     public class Engine
     {
+        Settings settings = new Settings();
         public List<GridTile> tiles;
         public StatisticsManager statistics;
         public MPA mainProcessArea;
@@ -47,7 +48,13 @@ namespace Procp_Form
 
         public void AddDropOff(DropOff dropOff) => dropOffs.Add(dropOff);
 
-        public void AddConveyorPart(Conveyor conveyor) => conveyors.Add(conveyor);
+        public void AddConveyorPart(Conveyor conveyor)
+        {
+            conveyors.Add(conveyor);
+            settings.ConveyorsSpeed.Add(conveyor.ConveyorSpeed);
+            settings.ConveyorsLength.Add(conveyor.conveyorBelt.Length);
+            settings.DestGates.Add(conveyor.DestinationGate);
+        }
 
         public void AddSecurity(Security security) => this.securities.Add(security);
 
@@ -113,6 +120,10 @@ namespace Procp_Form
         public void LinkTwoNodes(Node firstNode, Node secondNode)
         {
             firstNode.NextNode = secondNode;
+            if (firstNode is Conveyor)
+            {
+                settings.nextNodes.Add(secondNode);
+            }
         }
 
         public void Run()
@@ -245,7 +256,7 @@ namespace Procp_Form
             List<Object> objectsToSerialize = new List<Object>();
             objectsToSerialize.Add(checkIns);
             objectsToSerialize.Add(securities);
-            objectsToSerialize.Add(conveyors);
+            objectsToSerialize.Add(settings);
             objectsToSerialize.Add(mainProcessArea);
             objectsToSerialize.Add(dropOffs);
             objectsToSerialize.Add(tiles);
@@ -286,17 +297,39 @@ namespace Procp_Form
 
                         checkIns = (List<CheckIn>)objectsToDeserialize[0];
                         securities = (List<Security>)objectsToDeserialize[1];
-                        conveyors = (List<Conveyor>)objectsToDeserialize[2];
+                        settings = (Settings)objectsToDeserialize[2];
                         mainProcessArea = (MPA)objectsToDeserialize[3];
                         dropOffs = (List<DropOff>)objectsToDeserialize[4];
                         tiles = (List<GridTile>)objectsToDeserialize[5];
                         flights = (List<Flight>)objectsToDeserialize[6];
+                        CreateConveyorsFromFile();
                     }
                 }
             }
             catch (IOException)
             {
                 throw;
+            }
+        }
+
+        public void CreateConveyorsFromFile()
+        {
+            foreach (var length in settings.ConveyorsLength)
+            {
+                foreach (var speed in settings.ConveyorsSpeed)
+                {
+                    foreach (var gate in settings.DestGates)
+                    {
+                        foreach (var node in settings.nextNodes)
+                        {
+                            conveyors.Clear();
+                            var conv = new Conveyor(length, speed);
+                            conv.DestinationGate = gate;
+                            conv.NextNode = node;
+                            conveyors.Add(conv);
+                        }
+                    }
+                }
             }
         }
     }

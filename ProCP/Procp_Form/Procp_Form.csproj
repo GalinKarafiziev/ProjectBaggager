@@ -81,6 +81,7 @@
     <Compile Include="Airport\Flight.cs" />
     <Compile Include="Core\MPA.cs" />
     <Compile Include="Core\Security.cs" />
+    <Compile Include="Core\Settings.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

@@ -460,6 +460,7 @@
             this.buttonLoad.Size = new System.Drawing.Size(100, 28);
             this.buttonLoad.TabIndex = 0;
             this.buttonLoad.Text = "Load";
+            this.buttonLoad.Click += new System.EventHandler(this.buttonLoad_Click);
             // 
             // gbConveyorSpeed
             // 

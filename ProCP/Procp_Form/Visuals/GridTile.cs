@@ -93,7 +93,7 @@ namespace Procp_Form.Visuals
 
         protected virtual void DrawBackground(Pen p, Graphics g, RectangleF r)
         {
-            g.FillRectangle(fillBrush, r);
+            //g.FillRectangle(fillBrush, r);
             g.DrawImage(img, r);
             g.DrawRectangle(p, column * width, row * height, width, height);
 
