@@ -1,12 +1,8 @@
 ﻿using Procp_Form.Core;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Procp_Form.CoreAbstraction;
 using Procp_Form.Visuals;
@@ -14,6 +10,8 @@ using System.Timers;
 using LiveCharts;
 using LiveCharts.Wpf;
 using Procp_Form.Airport;
+using Brushes = System.Windows.Media.Brushes;
+using Brush = System.Windows.Media.Brush;
 
 namespace Procp_Form
 {
@@ -128,7 +126,7 @@ namespace Procp_Form
             {
                 conveyor.ConveyorSpeed = speed;
             }
-            
+
             thisGrid.HideArea(buildModeType);
             animationBox.Invalidate();
         }
@@ -149,7 +147,7 @@ namespace Procp_Form
                         SelectTile(thisGrid.AddConveyorLineAtCoordinates(t));
                         conveyorBuilding.Add((ConveyorTile)selectedTile);
 
-                      
+
 
                         isBuildingConveyor = true;
                     }
@@ -161,7 +159,7 @@ namespace Procp_Form
                         RefreshCheckInCombobox();
 
                         GridTile temp = thisGrid.AutoConnectNext(selectedTile);
-                        if(temp != null)
+                        if (temp != null)
                         {
                             engine.LinkTwoNodes(selectedTile.nodeInGrid, temp.nodeInGrid);
                         }
@@ -335,7 +333,7 @@ namespace Procp_Form
                 int i = 0;
                 foreach (ConveyorTile t in conveyorBuilding)
                 {
-                   
+
                     t.nodeInGrid = conveyor;
                     if (t.PositionInLine == 0)
                     {
@@ -417,7 +415,7 @@ namespace Procp_Form
 
                 if (!(engine.AddFlight(date, flightNr, flightBaggage, destGate)))
                 {
-                    MessageBox.Show("This flight already exists or the drop-off destination is already taken.");              
+                    MessageBox.Show("This flight already exists or the drop-off destination is already taken.");
                 }
                 else
                 {
@@ -433,7 +431,7 @@ namespace Procp_Form
                         btnAddCheckinToFlight.Enabled = true;
                         btnEditFlight.Enabled = true;
                     }
-                   
+
                 }
             }
             else
@@ -541,7 +539,7 @@ namespace Procp_Form
                 //buildModeType = null;
                 gbBuildType.Visible = false;
                 thisGrid.HideArea(buildModeType);
-                
+
             }
             else
             {
@@ -556,11 +554,11 @@ namespace Procp_Form
         {
             SeriesCollection series = new SeriesCollection();
             int dropOffCounter = 0;
-
+            
             engine.GetTransferTime().ForEach(x =>
             {
                 dropOffCounter++;
-                series.Add(new ColumnSeries() { Title = $"Flight {dropOffCounter.ToString()}", Values = new ChartValues<double> { x.TotalSeconds } });
+                series.Add(new ColumnSeries() { Title = $"Flight {dropOffCounter.ToString()}", Values = new ChartValues<int> { x.Seconds } });
             });
 
             cartesianChartBaggageProcessedByCheckin.Series = series;
@@ -583,7 +581,7 @@ namespace Procp_Form
             SeriesCollection series = new SeriesCollection();
             double failed = engine.GetCalculatePercentageFailedBaggage();
             double successed = engine.GetCalculateSuccessedBaggage();
-            series.Add(new PieSeries() { Title = "Failed", Values = new ChartValues<double> { failed }});
+            series.Add(new PieSeries() { Title = "Failed", Values = new ChartValues<double> { failed } });
             series.Add(new PieSeries() { Title = "Successed ", Values = new ChartValues<double> { successed } });
 
             pieChartPercentageAllFailedBaggage.Series = series;
@@ -600,6 +598,35 @@ namespace Procp_Form
             RefreshCheckInCombobox();
             RefreshDropOffCombobox();
             animationBox.Invalidate();
+        }
+
+        private void BtnCompare_Click(object sender, EventArgs e)
+        {
+            var scalesY = 0;
+
+            cartesianChartTimes.Series.Add(PopulateCartesianTimesChart(engine.GetFlightDepartureTimes(), "Flight time", scalesY++));
+            cartesianChartTimes.Series.Add(PopulateCartesianTimesChart(engine.GetLastBaggageTimes(), "Baggage time", scalesY));
+        }
+
+        private LineSeries PopulateCartesianTimesChart(List<DateTime> values, string lineTitle, int scalesY)
+        {
+            var lineSeries = new LineSeries() { Title = lineTitle, ScalesYAt = scalesY, Values = new ChartValues<int>() };
+            var colors = new List<Brush>() { Brushes.DodgerBlue, Brushes.HotPink };
+            var axisTitles = new List<string>() { "Flights times", "Baggages times" };
+
+            values.ForEach(v => lineSeries.Values.Add(v.Minute));
+            AddCartesianTimesChartAxis(axisTitles[scalesY], colors[scalesY]);
+
+            return lineSeries;
+        }
+
+        private void AddCartesianTimesChartAxis(string title, Brush color)
+        {
+            cartesianChartTimes.AxisY.Add(new Axis
+            {
+                Foreground = color,
+                Title = title,
+            });
         }
 
         private void buttonLoad_Click(object sender, EventArgs e)
