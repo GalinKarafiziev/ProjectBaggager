@@ -231,6 +231,10 @@ namespace Procp_Form
 
         public List<TimeSpan> GetTransferTime() => statistics.CalculateBaggageTransportationTime();
 
+        public List<DateTime> GetLastBaggageTimes() => statistics.GetBaggageTimes();
+
+        public List<DateTime> GetFlightDepartureTimes() => statistics.GetFlightDepTimes();
+
         public void GetGridTiles(Grid grid)
         {
             tiles = grid.gridTiles;

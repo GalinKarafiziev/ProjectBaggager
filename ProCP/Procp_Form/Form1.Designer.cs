@@ -74,6 +74,9 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageSimVisuals = new System.Windows.Forms.TabPage();
             this.tabPageStats = new System.Windows.Forms.TabPage();
+            this.cartesianChartCompareTimes = new System.Windows.Forms.Integration.ElementHost();
+            this.cartesianChartTimes = new LiveCharts.Wpf.CartesianChart();
+            this.btnCompare = new System.Windows.Forms.Button();
             this.buttonRefreshPercentageFailedBags = new System.Windows.Forms.Button();
             this.pieChartPercentageAllFailedBaggage = new LiveCharts.WinForms.PieChart();
             this.buttonFailedSecurityCheck = new System.Windows.Forms.Button();
@@ -623,6 +626,8 @@
             // 
             // tabPageStats
             // 
+            this.tabPageStats.Controls.Add(this.cartesianChartCompareTimes);
+            this.tabPageStats.Controls.Add(this.btnCompare);
             this.tabPageStats.Controls.Add(this.buttonRefreshPercentageFailedBags);
             this.tabPageStats.Controls.Add(this.pieChartPercentageAllFailedBaggage);
             this.tabPageStats.Controls.Add(this.buttonFailedSecurityCheck);
@@ -636,6 +641,25 @@
             this.tabPageStats.TabIndex = 2;
             this.tabPageStats.Text = "Statistics";
             this.tabPageStats.UseVisualStyleBackColor = true;
+            // 
+            // cartesianChartCompareTimes
+            // 
+            this.cartesianChartCompareTimes.Location = new System.Drawing.Point(920, 463);
+            this.cartesianChartCompareTimes.Name = "cartesianChartCompareTimes";
+            this.cartesianChartCompareTimes.Size = new System.Drawing.Size(442, 307);
+            this.cartesianChartCompareTimes.TabIndex = 32;
+            this.cartesianChartCompareTimes.Text = "elementHost1";
+            this.cartesianChartCompareTimes.Child = this.cartesianChartTimes;
+            // 
+            // btnCompare
+            // 
+            this.btnCompare.Location = new System.Drawing.Point(1311, 832);
+            this.btnCompare.Name = "btnCompare";
+            this.btnCompare.Size = new System.Drawing.Size(75, 23);
+            this.btnCompare.TabIndex = 31;
+            this.btnCompare.Text = "Load";
+            this.btnCompare.UseVisualStyleBackColor = true;
+            this.btnCompare.Click += new System.EventHandler(this.BtnCompare_Click);
             // 
             // buttonRefreshPercentageFailedBags
             // 
@@ -858,6 +882,9 @@
         private System.Windows.Forms.RadioButton rbConvSpeed2;
         private System.Windows.Forms.RadioButton rbConvSpeed1;
         private System.Windows.Forms.Button buttonLoad;
+        private System.Windows.Forms.Button btnCompare;
+        private System.Windows.Forms.Integration.ElementHost cartesianChartCompareTimes;
+        private LiveCharts.Wpf.CartesianChart cartesianChartTimes;
     }
 }
 

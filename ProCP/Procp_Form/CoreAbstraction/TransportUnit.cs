@@ -37,7 +37,7 @@ namespace Procp_Form.CoreAbstraction
                 return true;
             }
 
-            if (lastBaggage != null)
+            if (lastBaggage == null)
             {
                 return true;
             }

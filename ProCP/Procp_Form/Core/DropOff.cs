@@ -33,7 +33,6 @@ namespace Procp_Form.Core
             baggageEnteredDropOff = new List<DateTime>();
             DestinationGate = destinationGate;
             baggages.Capacity = 10;
-            timer.Start();
             timer.Elapsed += (sender, args) => UnloadBaggage();
         }
 
@@ -62,7 +61,7 @@ namespace Procp_Form.Core
                         timer.Interval = 1200;
                         break;
                     default:
-                        timer.Interval = 700;
+                        timer.Interval = 2200;
                         break;
                 }
             }
@@ -75,28 +74,35 @@ namespace Procp_Form.Core
 
         public void UnloadBaggage()
         {
+            timer.Stop();
             DateTime time = DateTime.Now;
             if (baggages.Count != 0)
             {
                 unloadBaggages.Add(baggages[0]);
+                System.Diagnostics.Debug.WriteLine(unloadBaggages.Count.ToString());
                 baggageEnteredDropOff.Add(time);
                 baggages.Remove(baggages[0]);
                 Status = BaggageStatus.Free;
-                
             }
-
+            timer.Start();
         }
         public override void PassBaggage(Baggage Lastbaggage)
         {
+            //if (!timer.Enabled)
+            //{
+            //    timer.Start();
+            //}
 
             if (baggages.Count >= baggages.Capacity)
             {
                 Status = BaggageStatus.Busy;
+                timer.Start();
             }
             else
             {
                 Status = BaggageStatus.Busy;
                 baggages.Add(Lastbaggage);
+                timer.Start();
                 Status = BaggageStatus.Free;
             }
         }

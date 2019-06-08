@@ -55,7 +55,7 @@ namespace Procp_Form.Core
             this.Stop();
             if (CanMove())
             {
-                if (lastBaggage != null && NextNode.Status == BaggageStatus.Free)
+                if (lastBaggage != null)
                 {
                     NextNode.PassBaggage(lastBaggage);
                     if (NextNode.OnNodeStatusChangedToFree != null)
@@ -63,16 +63,17 @@ namespace Procp_Form.Core
                         NextNode.OnNodeStatusChangedToFree -= Move;
                     }
                 }
-                if (lastBaggage != null && NextNode.Status == BaggageStatus.Busy)
+
+                for (int index = conveyorBelt.Length - 1; index > 0; index--)
                 {
-                    NextNode.OnNodeStatusChangedToFree += Move;
+                    conveyorBelt[index] = conveyorBelt[index - 1];
+                    conveyorBelt[index - 1] = null;
                 }
             }
-
-            for (int index = conveyorBelt.Length - 1; index > 0; index--)
+            else
             {
-                conveyorBelt[index] = conveyorBelt[index - 1];
-                conveyorBelt[index - 1] = null;
+                NextNode.OnNodeStatusChangedToFree += Move;
+                return;
             }
 
             NextNode.OnNodeStatusChangedToFree -= Move;
