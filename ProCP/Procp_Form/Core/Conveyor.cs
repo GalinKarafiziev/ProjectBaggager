@@ -38,7 +38,7 @@ namespace Procp_Form.Core
                         timer.Interval = 1200;
                         break;
                     default:
-                        timer.Interval = 700;
+                        timer.Interval = 500;
                         break;
                 }
             }
@@ -58,10 +58,6 @@ namespace Procp_Form.Core
                 if (lastBaggage != null)
                 {
                     NextNode.PassBaggage(lastBaggage);
-                    if (NextNode.OnNodeStatusChangedToFree != null)
-                    {
-                        NextNode.OnNodeStatusChangedToFree -= Move;
-                    }
                 }
 
                 for (int index = conveyorBelt.Length - 1; index > 0; index--)

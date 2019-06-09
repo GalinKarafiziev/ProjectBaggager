@@ -46,14 +46,19 @@ namespace Procp_Form
 
         public void AddCheckIn(CheckIn checkin) => checkIns.Add(checkin);
 
-        public void AddDropOff(DropOff dropOff) => dropOffs.Add(dropOff);
+        public void AddDropOff(DropOff dropOff)
+        {
+            dropOffs.Add(dropOff);
+            settings.DropOffsCapacities.Add(dropOff.baggages.Capacity);
+            settings.DropOffsEmployees.Add(dropOff.EmployeeSpeed);
+            settings.DestGates.Add(dropOff.DestinationGate);
+        }
 
         public void AddConveyorPart(Conveyor conveyor)
         {
             conveyors.Add(conveyor);
             settings.ConveyorsSpeed.Add(conveyor.ConveyorSpeed);
             settings.ConveyorsLength.Add(conveyor.conveyorBelt.Length);
-            settings.DestGates.Add(conveyor.DestinationGate);
         }
 
         public void AddSecurity(Security security) => this.securities.Add(security);
@@ -254,11 +259,11 @@ namespace Procp_Form
         public void WriteToFile()
         {
             List<Object> objectsToSerialize = new List<Object>();
+
             objectsToSerialize.Add(checkIns);
             objectsToSerialize.Add(securities);
             objectsToSerialize.Add(settings);
             objectsToSerialize.Add(mainProcessArea);
-            objectsToSerialize.Add(dropOffs);
             objectsToSerialize.Add(tiles);
             objectsToSerialize.Add(flights);
 
@@ -299,9 +304,9 @@ namespace Procp_Form
                         securities = (List<Security>)objectsToDeserialize[1];
                         settings = (Settings)objectsToDeserialize[2];
                         mainProcessArea = (MPA)objectsToDeserialize[3];
-                        dropOffs = (List<DropOff>)objectsToDeserialize[4];
-                        tiles = (List<GridTile>)objectsToDeserialize[5];
-                        flights = (List<Flight>)objectsToDeserialize[6];
+                        tiles = (List<GridTile>)objectsToDeserialize[4];
+                        flights = (List<Flight>)objectsToDeserialize[5];
+                        CreateDropOffsFromFile();
                         CreateConveyorsFromFile();
                     }
                 }
@@ -314,22 +319,36 @@ namespace Procp_Form
 
         public void CreateConveyorsFromFile()
         {
-            foreach (var length in settings.ConveyorsLength)
+            conveyors.Clear();
+            var number = 0;
+            foreach (var index in Enumerable.Range(0, settings.ConveyorsSpeed.Count))
             {
-                foreach (var speed in settings.ConveyorsSpeed)
+                var speed = settings.ConveyorsSpeed[index];
+                var length = settings.ConveyorsLength[index];
+                var next = settings.nextNodes[index];
+                var conv = new Conveyor(length, speed);
+                conv.NextNode = next;
+                if (next is DropOff)
                 {
-                    foreach (var gate in settings.DestGates)
-                    {
-                        foreach (var node in settings.nextNodes)
-                        {
-                            conveyors.Clear();
-                            var conv = new Conveyor(length, speed);
-                            conv.DestinationGate = gate;
-                            conv.NextNode = node;
-                            conveyors.Add(conv);
-                        }
-                    }
+                    var gate = settings.DestGates[number];
+                    conv.DestinationGate = gate;
+                    number++;
                 }
+                conveyors.Add(conv);
+            }
+        }
+
+        public void CreateDropOffsFromFile()
+        {
+            dropOffs.Clear();
+
+            foreach (var index in Enumerable.Range(0, settings.DestGates.Count))
+            {
+                var gate = settings.DestGates[index];
+                var nrEmp = settings.DropOffsEmployees[index];
+                var capacity = settings.DropOffsCapacities[index];
+                var drop = new DropOff();
+                dropOffs.Add(drop);
             }
         }
     }

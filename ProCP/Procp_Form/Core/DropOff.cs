@@ -14,13 +14,13 @@ namespace Procp_Form.Core
     [Serializable]
     public class DropOff : Node
     {
+        [NonSerialized]
+        private Timer timer;
         public List<Baggage> baggages;
         List<Flight> flights;
         static int destinationGate = 0;
         public List<Baggage> unloadBaggages;
         private int employeeSpeed;
-        [NonSerialized]
-        private Timer timer;
         public List<DateTime> baggageEnteredDropOff;
 
         public DropOff()
@@ -92,11 +92,6 @@ namespace Procp_Form.Core
         }
         public override void PassBaggage(Baggage Lastbaggage)
         {
-            //if (!timer.Enabled)
-            //{
-            //    timer.Start();
-            //}
-
             if (baggages.Count >= baggages.Capacity)
             {
                 Status = BaggageStatus.Busy;

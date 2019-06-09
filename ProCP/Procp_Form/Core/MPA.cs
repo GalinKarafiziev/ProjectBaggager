@@ -34,28 +34,25 @@ namespace Procp_Form.Core
 
         public override void ProcessBaggage()
         {
-            if (baggage != null)
+            foreach (var conv in nextNodes.ToList())
             {
-                lock (baggage)
+                if (baggage != null)
                 {
-                    foreach (var conv in nextNodes.ToList())
+                    if (conv.DestinationGate == baggage.DestinationGate)
                     {
-                        if (conv.DestinationGate == baggage.DestinationGate)
+                        NextNode = conv;
+                        if (NextNode.Status == BaggageStatus.Free)
                         {
-                            NextNode = conv;
-                            if (NextNode.Status == BaggageStatus.Free)
-                            {
-                                NextNode.PassBaggage(baggage);
-                                baggage = null;
-                                Status = BaggageStatus.Free;
-                                NextNode.OnNodeStatusChangedToFree -= ProcessBaggage;
-                                break;
-                            }
-                            else
-                            {
-                                NextNode.OnNodeStatusChangedToFree += ProcessBaggage;
-                                break;
-                            }
+                            NextNode.PassBaggage(baggage);
+                            baggage = null;
+                            Status = BaggageStatus.Free;
+                            NextNode.OnNodeStatusChangedToFree -= ProcessBaggage;
+                            break;
+                        }
+                        else
+                        {
+                            NextNode.OnNodeStatusChangedToFree += ProcessBaggage;
+                            break;
                         }
                     }
                 }
@@ -64,8 +61,8 @@ namespace Procp_Form.Core
 
         public override void PassBaggage(Baggage Lastbaggage)
         {
-            baggage = Lastbaggage;
             Status = BaggageStatus.Busy;
+            baggage = Lastbaggage;
             ProcessBaggage();
         }
     }

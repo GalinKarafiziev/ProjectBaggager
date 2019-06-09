@@ -41,7 +41,6 @@ namespace Procp_Form.CoreAbstraction
             {
                 return true;
             }
-
             return false;
         }
         public abstract void Move();
