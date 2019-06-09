@@ -21,7 +21,7 @@ namespace Procp_Form.Visuals
             unclickableColour = Brushes.MediumPurple;
 
             imgpath = "../../Resources/mpa.png";
-            img = Image.FromFile(imgpath);
+            img = loadImage(imgpath, img);
 
             fillBrush = Brushes.Purple;
         }
