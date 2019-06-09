@@ -436,18 +436,32 @@ namespace Procp_Form
             aTimer.Elapsed += new ElapsedEventHandler(TimerSequence);
             aTimer.Interval = 1;
             aTimer.Start();
+            btnRun.Enabled = false;
+            btnPause.Enabled = true;
+            btnStop.Enabled = true;
+            buttonResume.Enabled = false;
         }
         private void btnPause_Click(object sender, EventArgs e)
         {
             engine.Pause();
+            buttonResume.Enabled = true;
+            btnPause.Enabled = false;
         }
         private void buttonResume_Click(object sender, EventArgs e)
         {
             engine.Resume();
+            buttonResume.Enabled = false;
+            btnPause.Enabled = true;
         }
         private void btnStop_Click(object sender, EventArgs e)
         {
             engine.Stop();
+            engine.ResetCheckInDestinationGates();
+            RefreshFlightsList();
+            btnRun.Enabled = true;
+            btnStop.Enabled = false;
+            btnPause.Enabled = false;
+            buttonResume.Enabled = false;
         }
 
         private void btnAddFlight_Click(object sender, EventArgs e)
@@ -619,6 +633,7 @@ namespace Procp_Form
             this.engine = new Engine();
             RefreshCheckInCombobox();
             RefreshDropOffCombobox();
+            RefreshFlightsList();
             animationBox.Invalidate();
         }
 
