@@ -44,14 +44,12 @@
             this.tbFlightNr = new System.Windows.Forms.TextBox();
             this.lblFlightNr = new System.Windows.Forms.Label();
             this.gbFlightsInfo = new System.Windows.Forms.GroupBox();
-            this.btnAddCheckinToFlight = new System.Windows.Forms.Button();
             this.cbCheckInFlight = new System.Windows.Forms.ComboBox();
             this.lblCheckIn = new System.Windows.Forms.Label();
             this.cbDropOffDest = new System.Windows.Forms.ComboBox();
             this.lblDropOff = new System.Windows.Forms.Label();
             this.btnDeleteFlight = new System.Windows.Forms.Button();
             this.lblBaggage = new System.Windows.Forms.Label();
-            this.btnEditFlight = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.btnAddFlight = new System.Windows.Forms.Button();
             this.tbFlightTime = new System.Windows.Forms.DateTimePicker();
@@ -59,6 +57,11 @@
             this.tbFlightBaggage = new System.Windows.Forms.TextBox();
             this.btnRun = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.gbDropOffSettings = new System.Windows.Forms.GroupBox();
+            this.cbEmployees = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.cbCapacity = new System.Windows.Forms.ComboBox();
             this.buttonLoad = new System.Windows.Forms.Button();
             this.gbConveyorSpeed = new System.Windows.Forms.GroupBox();
             this.rbConvSpeed4 = new System.Windows.Forms.RadioButton();
@@ -93,6 +96,7 @@
             this.gbNodeInfo.SuspendLayout();
             this.gbFlightsInfo.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.gbDropOffSettings.SuspendLayout();
             this.gbConveyorSpeed.SuspendLayout();
             this.gbBuildType.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -130,7 +134,8 @@
             // lblBagStatus
             // 
             this.lblBagStatus.AutoSize = true;
-            this.lblBagStatus.Location = new System.Drawing.Point(125, 81);
+            this.lblBagStatus.Location = new System.Drawing.Point(94, 66);
+            this.lblBagStatus.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblBagStatus.Name = "lblBagStatus";
             this.lblBagStatus.Size = new System.Drawing.Size(13, 17);
             this.lblBagStatus.TabIndex = 6;
@@ -146,11 +151,9 @@
             this.gbNodeInfo.Controls.Add(this.lblBagStatus);
             this.gbNodeInfo.Controls.Add(this.label1);
             this.gbNodeInfo.Controls.Add(this.lblColRow);
-            this.gbNodeInfo.Location = new System.Drawing.Point(208, 105);
-            this.gbNodeInfo.Margin = new System.Windows.Forms.Padding(4);
+            this.gbNodeInfo.Location = new System.Drawing.Point(156, 85);
             this.gbNodeInfo.Name = "gbNodeInfo";
-            this.gbNodeInfo.Padding = new System.Windows.Forms.Padding(4);
-            this.gbNodeInfo.Size = new System.Drawing.Size(189, 167);
+            this.gbNodeInfo.Size = new System.Drawing.Size(142, 136);
             this.gbNodeInfo.TabIndex = 7;
             this.gbNodeInfo.TabStop = false;
             this.gbNodeInfo.Text = "Node Info:";
@@ -158,8 +161,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(8, 30);
-            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label7.Location = new System.Drawing.Point(6, 24);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(44, 17);
             this.label7.TabIndex = 11;
@@ -168,8 +170,7 @@
             // lblNextNode
             // 
             this.lblNextNode.AutoSize = true;
-            this.lblNextNode.Location = new System.Drawing.Point(85, 107);
-            this.lblNextNode.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblNextNode.Location = new System.Drawing.Point(64, 87);
             this.lblNextNode.Name = "lblNextNode";
             this.lblNextNode.Size = new System.Drawing.Size(13, 17);
             this.lblNextNode.TabIndex = 10;
@@ -178,8 +179,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(8, 107);
-            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label6.Location = new System.Drawing.Point(6, 87);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(78, 17);
             this.label6.TabIndex = 9;
@@ -188,7 +188,8 @@
             // lblNodeType
             // 
             this.lblNodeType.AutoSize = true;
-            this.lblNodeType.Location = new System.Drawing.Point(59, 30);
+            this.lblNodeType.Location = new System.Drawing.Point(44, 24);
+            this.lblNodeType.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblNodeType.Name = "lblNodeType";
             this.lblNodeType.Size = new System.Drawing.Size(13, 17);
             this.lblNodeType.TabIndex = 8;
@@ -197,7 +198,8 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(8, 81);
+            this.label2.Location = new System.Drawing.Point(6, 66);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(111, 17);
             this.label2.TabIndex = 7;
@@ -206,8 +208,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(8, 57);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(6, 46);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(118, 17);
             this.label1.TabIndex = 8;
@@ -216,8 +217,7 @@
             // lblColRow
             // 
             this.lblColRow.AutoSize = true;
-            this.lblColRow.Location = new System.Drawing.Point(133, 57);
-            this.lblColRow.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblColRow.Location = new System.Drawing.Point(100, 46);
             this.lblColRow.Name = "lblColRow";
             this.lblColRow.Size = new System.Drawing.Size(13, 17);
             this.lblColRow.TabIndex = 9;
@@ -226,8 +226,7 @@
             // lblTest
             // 
             this.lblTest.AutoSize = true;
-            this.lblTest.Location = new System.Drawing.Point(109, 18);
-            this.lblTest.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblTest.Location = new System.Drawing.Point(102, 18);
             this.lblTest.Name = "lblTest";
             this.lblTest.Size = new System.Drawing.Size(35, 17);
             this.lblTest.TabIndex = 3;
@@ -238,24 +237,25 @@
             this.lbFlights.Font = new System.Drawing.Font("Courier New", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbFlights.FormattingEnabled = true;
             this.lbFlights.ItemHeight = 22;
-            this.lbFlights.Location = new System.Drawing.Point(8, 244);
-            this.lbFlights.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.lbFlights.Location = new System.Drawing.Point(6, 198);
+            this.lbFlights.Margin = new System.Windows.Forms.Padding(2);
             this.lbFlights.Name = "lbFlights";
-            this.lbFlights.Size = new System.Drawing.Size(375, 92);
+            this.lbFlights.Size = new System.Drawing.Size(282, 70);
             this.lbFlights.TabIndex = 10;
             // 
             // tbFlightNr
             // 
-            this.tbFlightNr.Location = new System.Drawing.Point(75, 26);
-            this.tbFlightNr.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tbFlightNr.Location = new System.Drawing.Point(72, 16);
+            this.tbFlightNr.Margin = new System.Windows.Forms.Padding(2);
             this.tbFlightNr.Name = "tbFlightNr";
-            this.tbFlightNr.Size = new System.Drawing.Size(132, 22);
+            this.tbFlightNr.Size = new System.Drawing.Size(100, 22);
             this.tbFlightNr.TabIndex = 12;
             // 
             // lblFlightNr
             // 
             this.lblFlightNr.AutoSize = true;
-            this.lblFlightNr.Location = new System.Drawing.Point(7, 30);
+            this.lblFlightNr.Location = new System.Drawing.Point(5, 24);
+            this.lblFlightNr.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblFlightNr.Name = "lblFlightNr";
             this.lblFlightNr.Size = new System.Drawing.Size(61, 17);
             this.lblFlightNr.TabIndex = 13;
@@ -263,14 +263,12 @@
             // 
             // gbFlightsInfo
             // 
-            this.gbFlightsInfo.Controls.Add(this.btnAddCheckinToFlight);
             this.gbFlightsInfo.Controls.Add(this.cbCheckInFlight);
             this.gbFlightsInfo.Controls.Add(this.lblCheckIn);
             this.gbFlightsInfo.Controls.Add(this.cbDropOffDest);
             this.gbFlightsInfo.Controls.Add(this.lblDropOff);
             this.gbFlightsInfo.Controls.Add(this.btnDeleteFlight);
             this.gbFlightsInfo.Controls.Add(this.lblBaggage);
-            this.gbFlightsInfo.Controls.Add(this.btnEditFlight);
             this.gbFlightsInfo.Controls.Add(this.label3);
             this.gbFlightsInfo.Controls.Add(this.btnAddFlight);
             this.gbFlightsInfo.Controls.Add(this.tbFlightTime);
@@ -282,38 +280,25 @@
             this.gbFlightsInfo.Location = new System.Drawing.Point(5, 354);
             this.gbFlightsInfo.Margin = new System.Windows.Forms.Padding(4);
             this.gbFlightsInfo.Name = "gbFlightsInfo";
-            this.gbFlightsInfo.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.gbFlightsInfo.Size = new System.Drawing.Size(392, 342);
+            this.gbFlightsInfo.Padding = new System.Windows.Forms.Padding(2);
+            this.gbFlightsInfo.Size = new System.Drawing.Size(325, 278);
             this.gbFlightsInfo.TabIndex = 14;
             this.gbFlightsInfo.TabStop = false;
             this.gbFlightsInfo.Text = "Flights Info";
             // 
-            // btnAddCheckinToFlight
-            // 
-            this.btnAddCheckinToFlight.Enabled = false;
-            this.btnAddCheckinToFlight.Location = new System.Drawing.Point(212, 181);
-            this.btnAddCheckinToFlight.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btnAddCheckinToFlight.Name = "btnAddCheckinToFlight";
-            this.btnAddCheckinToFlight.Size = new System.Drawing.Size(177, 30);
-            this.btnAddCheckinToFlight.TabIndex = 32;
-            this.btnAddCheckinToFlight.Text = "Add Check-in to flight";
-            this.btnAddCheckinToFlight.UseVisualStyleBackColor = true;
-            this.btnAddCheckinToFlight.Click += new System.EventHandler(this.btnAddCheckinToFlight_Click);
-            // 
             // cbCheckInFlight
             // 
             this.cbCheckInFlight.FormattingEnabled = true;
-            this.cbCheckInFlight.Location = new System.Drawing.Point(113, 116);
+            this.cbCheckInFlight.Location = new System.Drawing.Point(76, 96);
             this.cbCheckInFlight.Margin = new System.Windows.Forms.Padding(4);
             this.cbCheckInFlight.Name = "cbCheckInFlight";
-            this.cbCheckInFlight.Size = new System.Drawing.Size(273, 24);
+            this.cbCheckInFlight.Size = new System.Drawing.Size(206, 24);
             this.cbCheckInFlight.TabIndex = 31;
             // 
             // lblCheckIn
             // 
             this.lblCheckIn.AutoSize = true;
-            this.lblCheckIn.Location = new System.Drawing.Point(8, 118);
-            this.lblCheckIn.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblCheckIn.Location = new System.Drawing.Point(4, 99);
             this.lblCheckIn.Name = "lblCheckIn";
             this.lblCheckIn.Size = new System.Drawing.Size(63, 17);
             this.lblCheckIn.TabIndex = 30;
@@ -322,17 +307,15 @@
             // cbDropOffDest
             // 
             this.cbDropOffDest.FormattingEnabled = true;
-            this.cbDropOffDest.Location = new System.Drawing.Point(113, 149);
-            this.cbDropOffDest.Margin = new System.Windows.Forms.Padding(4);
+            this.cbDropOffDest.Location = new System.Drawing.Point(90, 127);
             this.cbDropOffDest.Name = "cbDropOffDest";
-            this.cbDropOffDest.Size = new System.Drawing.Size(273, 24);
+            this.cbDropOffDest.Size = new System.Drawing.Size(206, 24);
             this.cbDropOffDest.TabIndex = 29;
             // 
             // lblDropOff
             // 
             this.lblDropOff.AutoSize = true;
-            this.lblDropOff.Location = new System.Drawing.Point(8, 151);
-            this.lblDropOff.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblDropOff.Location = new System.Drawing.Point(1, 128);
             this.lblDropOff.Name = "lblDropOff";
             this.lblDropOff.Size = new System.Drawing.Size(97, 17);
             this.lblDropOff.TabIndex = 24;
@@ -341,10 +324,10 @@
             // btnDeleteFlight
             // 
             this.btnDeleteFlight.Enabled = false;
-            this.btnDeleteFlight.Location = new System.Drawing.Point(312, 215);
-            this.btnDeleteFlight.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnDeleteFlight.Location = new System.Drawing.Point(207, 171);
+            this.btnDeleteFlight.Margin = new System.Windows.Forms.Padding(2);
             this.btnDeleteFlight.Name = "btnDeleteFlight";
-            this.btnDeleteFlight.Size = new System.Drawing.Size(72, 23);
+            this.btnDeleteFlight.Size = new System.Drawing.Size(80, 23);
             this.btnDeleteFlight.TabIndex = 23;
             this.btnDeleteFlight.Text = "Delete";
             this.btnDeleteFlight.UseVisualStyleBackColor = true;
@@ -353,37 +336,25 @@
             // lblBaggage
             // 
             this.lblBaggage.AutoSize = true;
-            this.lblBaggage.Location = new System.Drawing.Point(7, 57);
+            this.lblBaggage.Location = new System.Drawing.Point(5, 46);
+            this.lblBaggage.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblBaggage.Name = "lblBaggage";
             this.lblBaggage.Size = new System.Drawing.Size(65, 17);
             this.lblBaggage.TabIndex = 22;
             this.lblBaggage.Text = "Baggage";
             // 
-            // btnEditFlight
-            // 
-            this.btnEditFlight.Enabled = false;
-            this.btnEditFlight.Location = new System.Drawing.Point(224, 215);
-            this.btnEditFlight.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btnEditFlight.Name = "btnEditFlight";
-            this.btnEditFlight.Size = new System.Drawing.Size(83, 23);
-            this.btnEditFlight.TabIndex = 19;
-            this.btnEditFlight.Text = "Edit";
-            this.btnEditFlight.UseVisualStyleBackColor = true;
-            this.btnEditFlight.Click += new System.EventHandler(this.btnEditFlight_Click);
-            // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(233, 26);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Location = new System.Drawing.Point(175, 21);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(133, 28);
+            this.label3.Size = new System.Drawing.Size(100, 23);
             this.label3.TabIndex = 20;
             // 
             // btnAddFlight
             // 
             this.btnAddFlight.Enabled = false;
-            this.btnAddFlight.Location = new System.Drawing.Point(11, 215);
-            this.btnAddFlight.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnAddFlight.Location = new System.Drawing.Point(4, 171);
+            this.btnAddFlight.Margin = new System.Windows.Forms.Padding(2);
             this.btnAddFlight.Name = "btnAddFlight";
             this.btnAddFlight.Size = new System.Drawing.Size(91, 23);
             this.btnAddFlight.TabIndex = 18;
@@ -394,17 +365,16 @@
             // tbFlightTime
             // 
             this.tbFlightTime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.tbFlightTime.Location = new System.Drawing.Point(75, 84);
+            this.tbFlightTime.Location = new System.Drawing.Point(72, 70);
             this.tbFlightTime.Margin = new System.Windows.Forms.Padding(4);
             this.tbFlightTime.Name = "tbFlightTime";
-            this.tbFlightTime.Size = new System.Drawing.Size(132, 22);
+            this.tbFlightTime.Size = new System.Drawing.Size(100, 22);
             this.tbFlightTime.TabIndex = 17;
             // 
             // lblDepTime
             // 
             this.lblDepTime.AutoSize = true;
-            this.lblDepTime.Location = new System.Drawing.Point(4, 86);
-            this.lblDepTime.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblDepTime.Location = new System.Drawing.Point(3, 70);
             this.lblDepTime.Name = "lblDepTime";
             this.lblDepTime.Size = new System.Drawing.Size(69, 17);
             this.lblDepTime.TabIndex = 16;
@@ -412,10 +382,10 @@
             // 
             // tbFlightBaggage
             // 
-            this.tbFlightBaggage.Location = new System.Drawing.Point(75, 54);
+            this.tbFlightBaggage.Location = new System.Drawing.Point(72, 44);
             this.tbFlightBaggage.Margin = new System.Windows.Forms.Padding(4);
             this.tbFlightBaggage.Name = "tbFlightBaggage";
-            this.tbFlightBaggage.Size = new System.Drawing.Size(132, 22);
+            this.tbFlightBaggage.Size = new System.Drawing.Size(100, 22);
             this.tbFlightBaggage.TabIndex = 21;
             // 
             // btnRun
@@ -423,7 +393,7 @@
             this.btnRun.Location = new System.Drawing.Point(187, 15);
             this.btnRun.Margin = new System.Windows.Forms.Padding(4);
             this.btnRun.Name = "btnRun";
-            this.btnRun.Size = new System.Drawing.Size(100, 28);
+            this.btnRun.Size = new System.Drawing.Size(93, 23);
             this.btnRun.TabIndex = 15;
             this.btnRun.Text = "▷ Run";
             this.btnRun.UseVisualStyleBackColor = true;
@@ -433,6 +403,7 @@
             // 
             this.panel1.AutoSize = true;
             this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panel1.Controls.Add(this.gbDropOffSettings);
             this.panel1.Controls.Add(this.buttonLoad);
             this.panel1.Controls.Add(this.gbConveyorSpeed);
             this.panel1.Controls.Add(this.buttonSaveToFile);
@@ -449,15 +420,80 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(405, 753);
+            this.panel1.Size = new System.Drawing.Size(393, 747);
             this.panel1.TabIndex = 16;
+            // 
+            // gbDropOffSettings
+            // 
+            this.gbDropOffSettings.Controls.Add(this.cbEmployees);
+            this.gbDropOffSettings.Controls.Add(this.label5);
+            this.gbDropOffSettings.Controls.Add(this.label4);
+            this.gbDropOffSettings.Controls.Add(this.cbCapacity);
+            this.gbDropOffSettings.Location = new System.Drawing.Point(220, 270);
+            this.gbDropOffSettings.Name = "gbDropOffSettings";
+            this.gbDropOffSettings.Size = new System.Drawing.Size(169, 77);
+            this.gbDropOffSettings.TabIndex = 34;
+            this.gbDropOffSettings.TabStop = false;
+            this.gbDropOffSettings.Text = "DropOff Settings";
+            this.gbDropOffSettings.UseWaitCursor = true;
+            this.gbDropOffSettings.Visible = false;
+            // 
+            // cbEmployees
+            // 
+            this.cbEmployees.FormattingEnabled = true;
+            this.cbEmployees.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4"});
+            this.cbEmployees.Location = new System.Drawing.Point(76, 46);
+            this.cbEmployees.Name = "cbEmployees";
+            this.cbEmployees.Size = new System.Drawing.Size(51, 24);
+            this.cbEmployees.TabIndex = 3;
+            this.cbEmployees.UseWaitCursor = true;
+            this.cbEmployees.SelectedIndexChanged += new System.EventHandler(this.cbEmployees_SelectedIndexChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(10, 48);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(77, 17);
+            this.label5.TabIndex = 2;
+            this.label5.Text = "Employees";
+            this.label5.UseWaitCursor = true;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(10, 23);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(62, 17);
+            this.label4.TabIndex = 1;
+            this.label4.Text = "Capacity";
+            this.label4.UseWaitCursor = true;
+            // 
+            // cbCapacity
+            // 
+            this.cbCapacity.FormattingEnabled = true;
+            this.cbCapacity.Items.AddRange(new object[] {
+            "10",
+            "20",
+            "30"});
+            this.cbCapacity.Location = new System.Drawing.Point(76, 19);
+            this.cbCapacity.Name = "cbCapacity";
+            this.cbCapacity.Size = new System.Drawing.Size(51, 24);
+            this.cbCapacity.TabIndex = 0;
+            this.cbCapacity.Text = "10";
+            this.cbCapacity.UseWaitCursor = true;
+            this.cbCapacity.SelectedIndexChanged += new System.EventHandler(this.cbCapacity_SelectedIndexChanged);
             // 
             // buttonLoad
             // 
             this.buttonLoad.Location = new System.Drawing.Point(291, 719);
             this.buttonLoad.Margin = new System.Windows.Forms.Padding(4);
             this.buttonLoad.Name = "buttonLoad";
-            this.buttonLoad.Size = new System.Drawing.Size(100, 28);
+            this.buttonLoad.Size = new System.Drawing.Size(75, 23);
             this.buttonLoad.TabIndex = 0;
             this.buttonLoad.Text = "Load";
             this.buttonLoad.Click += new System.EventHandler(this.buttonLoad_Click);
@@ -534,7 +570,7 @@
             this.buttonSaveToFile.Location = new System.Drawing.Point(12, 719);
             this.buttonSaveToFile.Margin = new System.Windows.Forms.Padding(4);
             this.buttonSaveToFile.Name = "buttonSaveToFile";
-            this.buttonSaveToFile.Size = new System.Drawing.Size(93, 30);
+            this.buttonSaveToFile.Size = new System.Drawing.Size(70, 24);
             this.buttonSaveToFile.TabIndex = 30;
             this.buttonSaveToFile.Text = "Save";
             this.buttonSaveToFile.UseVisualStyleBackColor = true;
@@ -542,12 +578,12 @@
             // 
             // btnClearGrid
             // 
-            this.btnClearGrid.Location = new System.Drawing.Point(297, 324);
-            this.btnClearGrid.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnClearGrid.Location = new System.Drawing.Point(308, 105);
+            this.btnClearGrid.Margin = new System.Windows.Forms.Padding(2);
             this.btnClearGrid.Name = "btnClearGrid";
-            this.btnClearGrid.Size = new System.Drawing.Size(75, 23);
+            this.btnClearGrid.Size = new System.Drawing.Size(81, 33);
             this.btnClearGrid.TabIndex = 32;
-            this.btnClearGrid.Text = "Clear";
+            this.btnClearGrid.Text = "Clear Grid";
             this.btnClearGrid.UseVisualStyleBackColor = true;
             this.btnClearGrid.Click += new System.EventHandler(this.btnClearGrid_Click);
             // 
@@ -635,10 +671,11 @@
             // 
             // btnStop
             // 
+            this.btnStop.Enabled = false;
             this.btnStop.Location = new System.Drawing.Point(301, 15);
             this.btnStop.Margin = new System.Windows.Forms.Padding(4);
             this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(100, 28);
+            this.btnStop.Size = new System.Drawing.Size(88, 23);
             this.btnStop.TabIndex = 28;
             this.btnStop.Text = "◼ Stop";
             this.btnStop.UseVisualStyleBackColor = true;
@@ -646,10 +683,11 @@
             // 
             // btnPause
             // 
+            this.btnPause.Enabled = false;
             this.btnPause.Location = new System.Drawing.Point(187, 69);
             this.btnPause.Margin = new System.Windows.Forms.Padding(4);
             this.btnPause.Name = "btnPause";
-            this.btnPause.Size = new System.Drawing.Size(100, 28);
+            this.btnPause.Size = new System.Drawing.Size(93, 23);
             this.btnPause.TabIndex = 27;
             this.btnPause.Text = "❚❚ Pause";
             this.btnPause.UseVisualStyleBackColor = true;
@@ -669,10 +707,11 @@
             // 
             // buttonResume
             // 
+            this.buttonResume.Enabled = false;
             this.buttonResume.Location = new System.Drawing.Point(301, 69);
             this.buttonResume.Margin = new System.Windows.Forms.Padding(4);
             this.buttonResume.Name = "buttonResume";
-            this.buttonResume.Size = new System.Drawing.Size(100, 28);
+            this.buttonResume.Size = new System.Drawing.Size(88, 23);
             this.buttonResume.TabIndex = 23;
             this.buttonResume.Text = " ⟳ Resume";
             this.buttonResume.UseVisualStyleBackColor = true;
@@ -820,6 +859,8 @@
             this.gbFlightsInfo.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.gbDropOffSettings.ResumeLayout(false);
+            this.gbDropOffSettings.PerformLayout();
             this.gbConveyorSpeed.ResumeLayout(false);
             this.gbConveyorSpeed.PerformLayout();
             this.gbBuildType.ResumeLayout(false);
@@ -851,7 +892,6 @@
         private System.Windows.Forms.Label lblDepTime;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox tbFlightBaggage;
-        private System.Windows.Forms.Button btnEditFlight;
         private System.Windows.Forms.Button btnAddFlight;
         private System.Windows.Forms.Label lblNextNode;
         private System.Windows.Forms.Label label6;
@@ -883,7 +923,6 @@
         private System.Windows.Forms.RadioButton rbSecurity;
         private System.Windows.Forms.Button buttonSaveToFile;
         private System.Windows.Forms.Button btnClearGrid;
-        private System.Windows.Forms.Button btnAddCheckinToFlight;
         private System.Windows.Forms.GroupBox gbConveyorSpeed;
         private System.Windows.Forms.RadioButton rbConvSpeed4;
         private System.Windows.Forms.RadioButton rbConvSpeed3;
@@ -893,6 +932,11 @@
         private System.Windows.Forms.Button btnCompare;
         private System.Windows.Forms.Integration.ElementHost cartesianChartCompareTimes;
         private LiveCharts.Wpf.CartesianChart cartesianChartTimes;
+        private System.Windows.Forms.GroupBox gbDropOffSettings;
+        private System.Windows.Forms.ComboBox cbEmployees;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox cbCapacity;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button buttonTransTimePerFlight;

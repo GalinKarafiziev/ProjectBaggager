@@ -28,7 +28,7 @@ namespace Procp_Form.Visuals
             fillBrush = clickableColor;
 
             imgpath = "../../Resources/conveyor.png";
-            loadImage(imgpath);
+            img = loadImage(imgpath, img);
 
             isLastTile = false;
         }
@@ -45,8 +45,8 @@ namespace Procp_Form.Visuals
                     {
                         if (conv.conveyorBelt[i] != null)
                         {
-                            g.FillRectangle(Brushes.DarkGoldenrod, Column * width + 10, Row * height + 10, width - 20, height - 20);
-                            //System.Diagnostics.Debug.Write("con tyle" + PositionInLine + "  ");
+                            RectangleF baggageRec = new RectangleF(column * width + 3, row * height + 3, width - 6, height - 6);
+                            g.DrawImage(baggageImg, baggageRec);
                         }
                     }
                 }

@@ -95,7 +95,7 @@ namespace Procp_Form.Statistics
         }
 
         public List<DateTime> GetFlightDepTimes()
-        {
+        {            
             var flightExpectedTimes = this.flights.Select(f => f.DepartureTime).ToList();
             return flightExpectedTimes;
         }
