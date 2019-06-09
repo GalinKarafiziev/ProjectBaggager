@@ -142,7 +142,7 @@ namespace Procp_Form
 
             if (buildModeActive)
             {
-                if (t is EmptyTile && t.Unselectable == false)
+                if (t is EmptyTile && t.Unselectable == false && deleteMode == false)
                 {
                     if (buildModeType == "Conveyor")
                     {
