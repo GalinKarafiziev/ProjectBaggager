@@ -19,8 +19,6 @@ namespace Procp_Form.Visuals
         {
             this.column = column;
             this.row = row;
-            width = tileWidth;
-            height = tileHeight;
 
             clickableColor = Brushes.SeaGreen;
             unclickableColour = Brushes.DarkSeaGreen;
@@ -28,12 +26,12 @@ namespace Procp_Form.Visuals
             fillBrush = clickableColor;
 
             imgpath = "../../Resources/conveyor.png";
-            loadImage(imgpath);
+            loadImage(imgpath, tileWidth, tileHeight);
 
             isLastTile = false;
         }
 
-        protected override void DrawBaggage(Graphics g)
+        protected override void DrawBaggage(Graphics g, int tileWidth, int tileHeight)
         {
             if (nodeInGrid != null)
             {
@@ -45,7 +43,7 @@ namespace Procp_Form.Visuals
                     {
                         if (conv.conveyorBelt[i] != null)
                         {
-                            g.FillRectangle(Brushes.DarkGoldenrod, Column * width + 10, Row * height + 10, width - 20, height - 20);
+                            g.FillRectangle(Brushes.DarkGoldenrod, Column * tileWidth + 10, Row * tileHeight + 10, tileWidth - 20, tileHeight - 20);
                             //System.Diagnostics.Debug.Write("con tyle" + PositionInLine + "  ");
                         }
                     }

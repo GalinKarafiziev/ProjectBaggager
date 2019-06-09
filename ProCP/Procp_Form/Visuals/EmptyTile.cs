@@ -17,14 +17,12 @@ namespace Procp_Form.Visuals
         {
             this.column = column;
             this.row = row;
-            width = tileWidth;
-            height = tileHeight;
 
             clickableColor = Brushes.Cyan;
             unclickableColour = Brushes.DarkCyan;
 
             imgpath = "../../Resources/mpa.png";
-            loadImage(imgpath);
+            loadImage(imgpath, tileWidth, tileHeight);
 
             fillBrush = clickableColor;
         }

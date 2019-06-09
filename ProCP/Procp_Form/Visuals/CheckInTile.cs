@@ -17,21 +17,19 @@ namespace Procp_Form.Visuals
         {
             this.column = column;
             this.row = row;
-            width = tileWidth;
-            height = tileHeight;
 
             clickableColor = Brushes.PaleVioletRed;
             unclickableColour = Brushes.MediumVioletRed;
 
             imgpath = "../../Resources/checkin.png";
-            loadImage(imgpath);
+            loadImage(imgpath, tileWidth, tileHeight);
 
             fillBrush = Brushes.PaleVioletRed;
         }
 
-        protected override void DrawTileInfo(Graphics g, RectangleF r)
+        protected override void DrawTileInfo(Graphics g, RectangleF r, int tileHeight)
         {
-            Font stringFont = new Font("Arial", height/3, FontStyle.Bold, GraphicsUnit.Pixel);
+            Font stringFont = new Font("Arial", tileHeight / 3, FontStyle.Bold, GraphicsUnit.Pixel);
             CheckIn c = nodeInGrid as CheckIn;
             string s = Convert.ToString(c.Id);
             g.DrawString("ID: " + s, stringFont, Brushes.Red, r);

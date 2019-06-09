@@ -14,14 +14,12 @@ namespace Procp_Form.Visuals
         {
             this.column = column;
             this.row = row;
-            width = tileWidth;
-            height = tileHeight;
 
             clickableColor = Brushes.Yellow;
             unclickableColour = Brushes.Yellow;
 
             imgpath = "../../Resources/security2.png";
-            img = Image.FromFile(imgpath);
+            loadImage(imgpath, tileWidth, tileHeight);
 
             fillBrush = Brushes.Yellow;
         }

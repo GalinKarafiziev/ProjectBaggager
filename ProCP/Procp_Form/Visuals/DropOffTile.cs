@@ -16,21 +16,19 @@ namespace Procp_Form.Visuals
         {
             this.column = column;
             this.row = row;
-            width = tileWidth;
-            height = tileHeight;
 
             clickableColor = Brushes.SlateGray;
             unclickableColour = Brushes.DarkSlateGray;
 
             imgpath = "../../Resources/dropoff.png";
-            img = Image.FromFile(imgpath);
+            loadImage(imgpath, tileWidth, tileHeight);
 
             fillBrush = clickableColor;
         }
 
-        protected override void DrawTileInfo(Graphics g, RectangleF r)
+        protected override void DrawTileInfo(Graphics g, RectangleF r, int tileHeight)
         {
-            Font stringFont = new Font("Arial", height / 3, FontStyle.Bold, GraphicsUnit.Pixel);
+            Font stringFont = new Font("Arial", tileHeight / 3, FontStyle.Bold, GraphicsUnit.Pixel);
             DropOff d = nodeInGrid as DropOff;
             string s = Convert.ToString(d.DestinationGate);
             g.DrawString("Gate: " + s, stringFont, Brushes.Red, r);

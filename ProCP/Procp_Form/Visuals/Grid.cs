@@ -14,8 +14,8 @@ namespace Procp_Form.Visuals
     [Serializable()]
     public class Grid
     {
-        float tileWidth;
-        float tileHeight;
+        int tileWidth;
+        int tileHeight;
         int tileHorizontalCount = 12;
         int tileVerticalCount = 12;
         float animBoxWidth;
@@ -32,8 +32,8 @@ namespace Procp_Form.Visuals
 
             animBoxWidth = animBoxW;
             animBoxHeigth = abBoxH;
-            tileWidth = (animBoxWidth - 1) / tileHorizontalCount;
-            tileHeight = (animBoxHeigth - 1) / tileVerticalCount;
+            tileWidth = (int) (animBoxWidth - 1) / tileHorizontalCount;
+            tileHeight = (int) (animBoxHeigth - 1) / tileVerticalCount;
 
             topRow = 0;
             bottomRow = tileVerticalCount - 1;
@@ -56,7 +56,7 @@ namespace Procp_Form.Visuals
             {
                 for (int r = 0; r < tileVerticalCount; r++)
                 {
-                    gridTiles.Add(new EmptyTile(c, r, (int)tileWidth, (int)tileHeight));
+                    gridTiles.Add(new EmptyTile(c, r, tileWidth, tileHeight));
                 }
             }
         }
@@ -75,12 +75,12 @@ namespace Procp_Form.Visuals
 
             foreach (GridTile n in gridTiles)
             {
-                n.DrawTile(e);
+                n.DrawTile(e, tileWidth, tileHeight);
             }
         }
         public ConveyorTile AddConveyorLineAtCoordinates(GridTile toReplace)
         {
-            ConveyorTile newLineTile = new ConveyorTile(toReplace.Column, toReplace.Row, (int)tileWidth, (int)tileHeight);
+            ConveyorTile newLineTile = new ConveyorTile(toReplace.Column, toReplace.Row, tileWidth, tileHeight);
             gridTiles.Remove(toReplace);
             gridTiles.Add(newLineTile);
             return newLineTile;
@@ -114,7 +114,7 @@ namespace Procp_Form.Visuals
                 {
                     for (int y = firstTile.Row; y < firstTile.Row + rRange; y++)
                     {
-                        MPATile mpaTile = new MPATile(i, y, (int)tileWidth, (int)tileHeight);
+                        MPATile mpaTile = new MPATile(i, y, tileWidth, tileHeight);
                         GridTile temp = FindTileInRowColumnCoordinates(i, y);
                         gridTiles.Remove(temp);
                         gridTiles.Add(mpaTile);
@@ -127,7 +127,7 @@ namespace Procp_Form.Visuals
         }
         public GridTile AddCheckInAtCoordinates(GridTile toReplace, Node nodeToPlace)
         {
-            CheckInTile newCheckInTile = new CheckInTile(toReplace.Column, toReplace.Row, (int)tileWidth, (int)tileHeight);
+            CheckInTile newCheckInTile = new CheckInTile(toReplace.Column, toReplace.Row, tileWidth, tileHeight);
             gridTiles.Remove(toReplace);
             gridTiles.Add(newCheckInTile);
             newCheckInTile.nodeInGrid = nodeToPlace;
@@ -136,7 +136,7 @@ namespace Procp_Form.Visuals
 
         public GridTile AddSecurityAtCoordinates(GridTile toReplace, Node nodeToPlace)
         {
-            SecurityTile newSecurityTile = new SecurityTile(toReplace.Column, toReplace.Row, (int)tileWidth, (int)tileHeight);
+            SecurityTile newSecurityTile = new SecurityTile(toReplace.Column, toReplace.Row, tileWidth, tileHeight);
             gridTiles.Remove(toReplace);
             gridTiles.Add(newSecurityTile);
             newSecurityTile.nodeInGrid = nodeToPlace;
@@ -145,7 +145,7 @@ namespace Procp_Form.Visuals
 
         public GridTile AddDropOffAtCoordinates(GridTile toReplace, Node nodeToPlace)
         {
-            DropOffTile newDropOffTile = new DropOffTile(toReplace.Column, toReplace.Row, (int)tileWidth, (int)tileHeight);
+            DropOffTile newDropOffTile = new DropOffTile(toReplace.Column, toReplace.Row, tileWidth, tileHeight);
             gridTiles.Remove(toReplace);
             gridTiles.Add(newDropOffTile);
             newDropOffTile.nodeInGrid = nodeToPlace;
@@ -153,7 +153,7 @@ namespace Procp_Form.Visuals
         }
         public GridTile FindTileInPixelCoordinates(float targetX, float targetY)
         {
-            GridTile foundTile = new EmptyTile(-1, -1, (int)tileWidth, (int)tileHeight);
+            GridTile foundTile = new EmptyTile(-1, -1, tileWidth, tileHeight);
             foreach (GridTile n in gridTiles)
             {
                 if ((n.Column * tileWidth) <= targetX && (n.Column * tileWidth) + tileWidth >= targetX && (n.Row * tileHeight) <= targetY && (n.Row * tileHeight) + tileHeight >= targetY)
@@ -167,7 +167,7 @@ namespace Procp_Form.Visuals
         }
         public GridTile FindTileInRowColumnCoordinates(int targetColumn, int targetRow)
         {
-            GridTile foundTile = new EmptyTile(targetColumn, targetRow, (int)tileWidth, (int)tileHeight);
+            GridTile foundTile = new EmptyTile(targetColumn, targetRow, tileWidth, tileHeight);
             foreach (GridTile n in gridTiles)
             {
                 if (n.Column == targetColumn && n.Row == targetRow)
@@ -259,14 +259,14 @@ namespace Procp_Form.Visuals
                 }
             }
             int index = gridTiles.IndexOf(toRemove, 0);
-            EmptyTile empty = new EmptyTile(toRemove.Column, toRemove.Row, (int)tileWidth, (int)tileHeight);
+            EmptyTile empty = new EmptyTile(toRemove.Column, toRemove.Row, tileWidth, tileHeight);
 
             gridTiles.Remove(toRemove);
             gridTiles.Insert(index, empty);
         }
         public ConveyorTile RemoveConveyorLine(GridTile toRemove)
         {
-            ConveyorTile first = new ConveyorTile(1,1, (int)tileWidth, (int)tileHeight);
+            ConveyorTile first = new ConveyorTile(1,1, tileWidth, tileHeight);
             foreach(GridTile t in gridTiles.ToList())
             {
                 if(toRemove.nodeInGrid == t.nodeInGrid)
@@ -277,7 +277,7 @@ namespace Procp_Form.Visuals
                         first = temp;
                     }
                     int index = gridTiles.IndexOf(t, 0);
-                    EmptyTile empty = new EmptyTile(t.Column, t.Row, (int)tileWidth, (int)tileHeight);
+                    EmptyTile empty = new EmptyTile(t.Column, t.Row, tileWidth, tileHeight);
                     gridTiles.Remove(t);
                     gridTiles.Insert(index, empty);
                 }
@@ -303,7 +303,7 @@ namespace Procp_Form.Visuals
                 if(t.nodeInGrid == toRemove.nodeInGrid)
                 {
                     int index = gridTiles.IndexOf(t, 0);
-                    EmptyTile empty = new EmptyTile(t.Column, t.Row, (int)tileWidth, (int)tileHeight);
+                    EmptyTile empty = new EmptyTile(t.Column, t.Row, tileWidth, tileHeight);
                     gridTiles.Remove(t);
                     gridTiles.Insert(index, empty);
                 }
