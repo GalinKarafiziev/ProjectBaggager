@@ -147,7 +147,6 @@ namespace Procp_Form.Visuals
 
         }
 
-        //there was a point in the project where 3 methods where nesessary
         public virtual void SetNextTile(GridTile t)
         {
             nextTile = t;
