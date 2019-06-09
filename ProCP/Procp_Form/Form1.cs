@@ -115,20 +115,18 @@ namespace Procp_Form
             }
             else if (rbConvSpeed2.Checked)
             {
-                speed = 1;
+                speed = 2;
             }
             else if (rbConvSpeed3.Checked)
             {
                 speed = 3;
             }
-            else if (rbDropOff.Checked)
+            else if (rbConvSpeed4.Checked)
             {
                 speed = 4;
             }
-            foreach (var conveyor in engine.conveyors)
-            {
-                conveyor.ConveyorSpeed = speed;
-            }
+
+            engine.ChangeConveyorSpeed(speed);
 
             thisGrid.HideArea(buildModeType);
             animationBox.Invalidate();
@@ -206,7 +204,7 @@ namespace Procp_Form
                             }
                         }
                     }
-                    
+
                     else if (buildModeType == "MPA")
                     {
                         MPA mpa = new MPA();
@@ -251,7 +249,7 @@ namespace Procp_Form
                                     engine.mainProcessArea.nextNodes.Remove(c);
                                 }
                             }
-                        }                       
+                        }
                     }
                     else if (t is MPATile)
                     {
@@ -376,7 +374,7 @@ namespace Procp_Form
         {
             if (buildModeActive && isBuildingConveyor)
             {
-                Conveyor conveyor = new Conveyor(conveyorBuilding.Count, 1500);
+                Conveyor conveyor = new Conveyor(conveyorBuilding.Count, 0);
                 engine.AddConveyorPart(conveyor);
                 System.Diagnostics.Debug.WriteLine("uppress");
                 int i = 0;
@@ -434,7 +432,7 @@ namespace Procp_Form
             engine.Run();
             aTimer = new System.Timers.Timer();
             aTimer.Elapsed += new ElapsedEventHandler(TimerSequence);
-            aTimer.Interval = 500;
+            aTimer.Interval = 1;
             aTimer.Start();
             btnRun.Enabled = false;
             btnPause.Enabled = true;
@@ -648,7 +646,7 @@ namespace Procp_Form
             {
                 dropOffCounter++;
                 series.Add(new ColumnSeries() { Title = $"Estimated Departure time flight {dropOffCounter.ToString()}", Values = new ChartValues<int> { engine.GetFlightDepartureTimes()[index].Minute } });
-                series.Add(new ColumnSeries() { Title = $"Actual Departure time flight {dropOffCounter.ToString()}", Values = new ChartValues<int> { engine.GetLastBaggageTimes()[index].AddMinutes(engine.GetTransferTime()[index].Seconds).Minute} });
+                series.Add(new ColumnSeries() { Title = $"Actual Departure time flight {dropOffCounter.ToString()}", Values = new ChartValues<int> { engine.GetLastBaggageTimes()[index].AddMinutes(engine.GetTransferTime()[index].Seconds).Minute } });
             }
 
             cartesianChartTimes.Series = series;
@@ -690,11 +688,18 @@ namespace Procp_Form
 
         private void buttonLoad_Click(object sender, EventArgs e)
         {
-            engine.LoadFromFile();
-            thisGrid.LoadGrid(engine.tiles);
-            RefreshCheckInCombobox();
-            RefreshDropOffCombobox();
-            RefreshFlightsList();
+            var message = engine.LoadFromFile();
+            if (message != "")
+            {
+                MessageBox.Show(message);
+            }
+            else
+            {
+                thisGrid.LoadGrid(engine.tiles);
+                RefreshCheckInCombobox();
+                RefreshDropOffCombobox();
+                RefreshFlightsList();
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
