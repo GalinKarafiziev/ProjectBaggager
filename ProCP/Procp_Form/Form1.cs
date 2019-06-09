@@ -196,7 +196,7 @@ namespace Procp_Form
                         if (temp != null)
                         {
                             engine.LinkTwoNodes(temp.nodeInGrid, selectedTile.nodeInGrid);
-                            if(temp is ConveyorTile)
+                            if (temp is ConveyorTile)
                             {
                                 Conveyor selectedConveyor = temp.nodeInGrid as Conveyor;
                                 DropOff selectedDropOff = selectedTile.nodeInGrid as DropOff;
@@ -213,10 +213,10 @@ namespace Procp_Form
 
                         SelectTile(thisGrid.FindTileInRowColumnCoordinates(t.Column, t.Row));
                         List<GridTile> tempMPA = thisGrid.GetMPA(selectedTile);
-                        foreach(GridTile m in tempMPA)
+                        foreach (GridTile m in tempMPA)
                         {
                             GridTile temp = thisGrid.AutoConnectToPrev(m, thisGrid.GetTilesIn4Directions);
-                            if(temp != null)
+                            if (temp != null)
                             {
                                 engine.LinkTwoNodes(temp.nodeInGrid, m.nodeInGrid);
                             }
@@ -239,9 +239,9 @@ namespace Procp_Form
                     {
                         ConveyorTile first = thisGrid.RemoveConveyorLine(t);
                         engine.Remove(t.nodeInGrid);
-                        foreach(Conveyor c in engine.mainProcessArea.nextNodes.ToList())
+                        foreach (Conveyor c in engine.mainProcessArea.nextNodes.ToList())
                         {
-                            if(c == first.nodeInGrid)
+                            if (c == first.nodeInGrid)
                             {
                                 engine.mainProcessArea.nextNodes.Remove(c);
                             }
@@ -358,7 +358,7 @@ namespace Procp_Form
             if (buildModeActive && isBuildingConveyor)
             {
                 Conveyor conveyor = new Conveyor(conveyorBuilding.Count, 1500);
-                engine.AddConveyorPart(conveyor);   
+                engine.AddConveyorPart(conveyor);
                 System.Diagnostics.Debug.WriteLine("uppress");
                 int i = 0;
                 foreach (ConveyorTile t in conveyorBuilding)
@@ -373,7 +373,7 @@ namespace Procp_Form
                             MPA tempMPA = tt.nodeInGrid as MPA;
                             tempMPA.AddNextNode(t.nodeInGrid as Conveyor);
                         }
-                        else if (tt != null )
+                        else if (tt != null)
                         {
                             engine.LinkTwoNodes(tt.nodeInGrid, t.nodeInGrid);
                         }
@@ -386,7 +386,7 @@ namespace Procp_Form
                 if (temp != null)
                 {
                     engine.LinkTwoNodes(selectedTile.nodeInGrid, temp.nodeInGrid);
-                    if(temp is DropOffTile)
+                    if (temp is DropOffTile)
                     {
                         Conveyor selectedConveyor = selectedTile.nodeInGrid as Conveyor;
                         DropOff selectedDropOff = temp.nodeInGrid as DropOff;
@@ -414,7 +414,7 @@ namespace Procp_Form
             engine.Run();
             aTimer = new System.Timers.Timer();
             aTimer.Elapsed += new ElapsedEventHandler(TimerSequence);
-            aTimer.Interval = 1;
+            aTimer.Interval = 500;
             aTimer.Start();
         }
         private void btnPause_Click(object sender, EventArgs e)
@@ -601,10 +601,22 @@ namespace Procp_Form
 
         private void BtnCompare_Click(object sender, EventArgs e)
         {
-            var scalesY = 0;
 
-            cartesianChartTimes.Series.Add(PopulateCartesianTimesChart(engine.GetFlightDepartureTimes(), "Flight time", scalesY++));
-            cartesianChartTimes.Series.Add(PopulateCartesianTimesChart(engine.GetLastBaggageTimes(), "Baggage time", scalesY));
+            SeriesCollection series = new SeriesCollection();
+            int dropOffCounter = 0;
+
+            foreach (var index in Enumerable.Range(0, engine.GetFlightDepartureTimes().Count))
+            {
+                dropOffCounter++;
+                series.Add(new ColumnSeries() { Title = $"Estimated Departure time flight {dropOffCounter.ToString()}", Values = new ChartValues<int> { engine.GetFlightDepartureTimes()[index].Minute } });
+                series.Add(new ColumnSeries() { Title = $"Actual Departure time flight {dropOffCounter.ToString()}", Values = new ChartValues<int> { engine.GetLastBaggageTimes()[index].AddMinutes(engine.GetTransferTime()[index].Seconds).Minute} });
+            }
+
+            cartesianChartTimes.Series = series;
+            //var scalesY = 0;
+
+            //cartesianChartTimes.Series.Add(PopulateCartesianTimesChart(engine.GetFlightDepartureTimes(), "Flight time", scalesY++));
+            //cartesianChartTimes.Series.Add(PopulateCartesianTimesChart(engine.GetLastBaggageTimes(), "Baggage time", scalesY++));
         }
 
         private LineSeries PopulateCartesianTimesChart(List<DateTime> values, string lineTitle, int scalesY)
