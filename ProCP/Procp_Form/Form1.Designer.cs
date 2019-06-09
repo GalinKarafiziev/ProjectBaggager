@@ -429,9 +429,9 @@
             this.gbDropOffSettings.Controls.Add(this.label5);
             this.gbDropOffSettings.Controls.Add(this.label4);
             this.gbDropOffSettings.Controls.Add(this.cbCapacity);
-            this.gbDropOffSettings.Location = new System.Drawing.Point(230, 270);
+            this.gbDropOffSettings.Location = new System.Drawing.Point(220, 270);
             this.gbDropOffSettings.Name = "gbDropOffSettings";
-            this.gbDropOffSettings.Size = new System.Drawing.Size(136, 77);
+            this.gbDropOffSettings.Size = new System.Drawing.Size(169, 77);
             this.gbDropOffSettings.TabIndex = 34;
             this.gbDropOffSettings.TabStop = false;
             this.gbDropOffSettings.Text = "DropOff Settings";
@@ -671,6 +671,7 @@
             // 
             // btnStop
             // 
+            this.btnStop.Enabled = false;
             this.btnStop.Location = new System.Drawing.Point(301, 15);
             this.btnStop.Margin = new System.Windows.Forms.Padding(4);
             this.btnStop.Name = "btnStop";
@@ -682,6 +683,7 @@
             // 
             // btnPause
             // 
+            this.btnPause.Enabled = false;
             this.btnPause.Location = new System.Drawing.Point(187, 69);
             this.btnPause.Margin = new System.Windows.Forms.Padding(4);
             this.btnPause.Name = "btnPause";
@@ -705,6 +707,7 @@
             // 
             // buttonResume
             // 
+            this.buttonResume.Enabled = false;
             this.buttonResume.Location = new System.Drawing.Point(301, 69);
             this.buttonResume.Margin = new System.Windows.Forms.Padding(4);
             this.buttonResume.Name = "buttonResume";

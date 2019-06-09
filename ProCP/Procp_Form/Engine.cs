@@ -122,6 +122,13 @@ namespace Procp_Form
         {
             return flights.Any();
         }
+        public void ResetCheckInDestinationGates()
+        {
+            foreach (var checkin in checkIns)
+            {
+                checkin.DestinationGate = 0;
+            }
+        }
         public void LinkTwoNodes(Node firstNode, Node secondNode)
         {
             firstNode.NextNode = secondNode;
