@@ -15,6 +15,8 @@ namespace Procp_Form.Core
 
         public int conveyorSpeed;
 
+        public double timerInterval;
+
         public int ConveyorSpeed
         {
             get
@@ -47,6 +49,7 @@ namespace Procp_Form.Core
         public Conveyor(int capacity, int timerSpeed) : base()
         {
             ConveyorSpeed = timerSpeed;
+            timerInterval = timer.Interval;
             conveyorBelt = new Baggage[capacity];
         }
 

@@ -373,7 +373,7 @@ namespace Procp_Form.Visuals
         }
         private GridTile ConnectToConveyorPrevious(GridTile c, ConveyorTile temp)
         {
-            if (temp.isLastTile)
+            if (temp.isLastTile && temp.NextTile == null)
             {
                 ConnectTiles(temp, c);
                 return temp;
@@ -411,7 +411,7 @@ namespace Procp_Form.Visuals
                         return t;
                     }
                 }
-                else if (!(t is EmptyTile) && !(t is DropOffTile) && !(c is MPATile))
+                else if (!(t is EmptyTile) && !(t is DropOffTile) && !(c is MPATile) && (t.NextTile == null))
                 {
                     ConnectTiles(t, c);
                     return t;

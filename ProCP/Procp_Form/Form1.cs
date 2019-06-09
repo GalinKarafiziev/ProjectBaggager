@@ -308,7 +308,6 @@ namespace Procp_Form
                         thisGrid.ConnectTiles(selectedTile, t);
                         // Engine.LinkTwoNodes(selectedTile.nodeInGrid, created.nodeInGrid);
                         SelectTile(created);
-
                     }
                 }
             }
@@ -316,7 +315,16 @@ namespace Procp_Form
             {
                 if ((Math.Abs(t.Column - selectedTile.Column) == 1 && Math.Abs(t.Row - selectedTile.Row) == 0) || (Math.Abs(t.Column - selectedTile.Column) == 0 && Math.Abs(t.Row - selectedTile.Row) == 1))
                 {
-                    if (selectedTile is ConveyorTile && !(t is EmptyTile) && !(t is ConveyorTile) && !(t is CheckInTile))
+                    if(selectedTile is ConveyorTile && t is ConveyorTile) {
+                        ConveyorTile tempEnd = selectedTile as ConveyorTile;
+                        ConveyorTile tempBeg = t as ConveyorTile;
+                        if(tempEnd.isLastTile && tempBeg.PositionInLine == 0)
+                        {
+                            thisGrid.ConnectTiles(selectedTile, t);
+                            engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
+                        }
+                    }
+                    else if (selectedTile is ConveyorTile && !(t is EmptyTile)&& !(t is CheckInTile))
                     {
                         ConveyorTile temp = (ConveyorTile)selectedTile;
                         if (temp.isLastTile)
@@ -330,11 +338,6 @@ namespace Procp_Form
                                 selectedConveyor.DestinationGate = tNode.DestinationGate;
                             }
                         }
-                    }
-                    else if (selectedTile is ConveyorTile && t is SecurityTile)
-                    {
-                        engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
-                        thisGrid.ConnectTiles(selectedTile, t);
                     }
                     else if (selectedTile is CheckInTile && t is ConveyorTile)
                     {
