@@ -23,6 +23,8 @@ namespace Procp_Form.Core
             }
             set
             {
+                conveyorSpeed = value;
+
                 switch (conveyorSpeed)
                 {
                     case 1:

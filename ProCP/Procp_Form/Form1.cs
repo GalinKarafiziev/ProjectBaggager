@@ -239,13 +239,17 @@ namespace Procp_Form
                     {
                         ConveyorTile first = thisGrid.RemoveConveyorLine(t);
                         engine.Remove(t.nodeInGrid);
-                        foreach(Conveyor c in engine.mainProcessArea.nextNodes.ToList())
+
+                        if (engine.mainProcessArea != null)
                         {
-                            if(c == first.nodeInGrid)
+                            foreach (Conveyor c in engine.mainProcessArea.nextNodes.ToList())
                             {
-                                engine.mainProcessArea.nextNodes.Remove(c);
+                                if (c == first.nodeInGrid)
+                                {
+                                    engine.mainProcessArea.nextNodes.Remove(c);
+                                }
                             }
-                        }
+                        }                       
                     }
                     else if (t is MPATile)
                     {
@@ -603,15 +607,19 @@ namespace Procp_Form
         {
             var scalesY = 0;
 
-            cartesianChartTimes.Series.Add(PopulateCartesianTimesChart(engine.GetFlightDepartureTimes(), "Flight time", scalesY++));
-            cartesianChartTimes.Series.Add(PopulateCartesianTimesChart(engine.GetLastBaggageTimes(), "Baggage time", scalesY));
+            SeriesCollection series = new SeriesCollection();
+
+            series.Add(PopulateCartesianTimesChart(engine.GetFlightDepartureTimes(), "Estimated departure time", scalesY++));
+            series.Add(PopulateCartesianTimesChart(engine.GetLastBaggageTimes(), "Actual departure time", scalesY));
+
+            cartesianChartTimes.Series = series;
         }
 
         private LineSeries PopulateCartesianTimesChart(List<DateTime> values, string lineTitle, int scalesY)
         {
-            var lineSeries = new LineSeries() { Title = lineTitle, ScalesYAt = scalesY, Values = new ChartValues<int>() };
+            var lineSeries = new LineSeries() { Title = lineTitle, ScalesYAt = 2, Values = new ChartValues<int>() };
             var colors = new List<Brush>() { Brushes.DodgerBlue, Brushes.HotPink };
-            var axisTitles = new List<string>() { "Flights times", "Baggages times" };
+            var axisTitles = new List<string>() { "Estimated departure time", "Actual departure time" };
 
             values.ForEach(v => lineSeries.Values.Add(v.Minute));
             AddCartesianTimesChartAxis(axisTitles[scalesY], colors[scalesY]);
