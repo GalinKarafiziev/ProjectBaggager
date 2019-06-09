@@ -19,6 +19,35 @@ namespace UnitTest
 
             conveyor.CanMove();
 
+            Assert.IsTrue(conveyor.CanMove());
+        }
+        [TestMethod]
+        public void CanMoveIf_Test()
+        {
+            Baggage baggage = new Baggage();
+            Conveyor conveyor = new Conveyor(5, 6);
+            DropOff dropOff = new DropOff();
+            
+            conveyor.NextNode = dropOff;
+            
+            dropOff.Status = BaggageStatus.Free;
+
+            conveyor.CanMove();
+
+            Assert.IsTrue(conveyor.CanMove());
+        }
+
+        [TestMethod]
+        public void CanMoveElse_Test()
+        {
+            Baggage baggage = new Baggage();
+            Conveyor conveyor = new Conveyor(5, 6);
+            DropOff dropOff = new DropOff();
+            conveyor.NextNode = dropOff;
+            dropOff.Status = BaggageStatus.Busy;
+            conveyor.lastBaggage = baggage;
+            conveyor.CanMove();
+
             Assert.IsFalse(conveyor.CanMove());
         }
         [TestMethod]

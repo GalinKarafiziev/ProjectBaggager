@@ -5,6 +5,7 @@ using System.Threading;
 using System.Timers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Procp_Form.Core;
+using Timer = System.Threading.Timer;
 
 namespace UnitTest
 {
@@ -30,8 +31,10 @@ namespace UnitTest
             };
             dropOff.SetNumberEmployees(1);
             dropOff.baggages = baggages;
+            dropOff.UnloadBaggage();
+           
             Thread.Sleep(1000);
-
+            
             Assert.AreEqual(9, dropOff.baggages.Count);
             Assert.AreEqual(1, dropOff.unloadBaggages.Count);
         }

@@ -15,8 +15,12 @@ namespace UnitTest
             DropOff drop = new DropOff();
             MPA mpa = new MPA();
             Conveyor conveyor = new Conveyor(5,6){DestinationGate = 1};
+            Conveyor conveyor2 = new Conveyor(5, 6) { DestinationGate = 1 };
+            Conveyor conveyor3 = new Conveyor(5, 6) { DestinationGate = 1 };
             mpa.AddNextNode(conveyor);
-            Assert.AreEqual(1, mpa.nextNodes.Count);
+            mpa.AddNextNode(conveyor2);
+            mpa.AddNextNode(conveyor3);
+            Assert.AreEqual(3, mpa.nextNodes.Count);
         }
         [TestMethod]
         public void ProcessBaggageTest_IfStatement()
@@ -34,7 +38,6 @@ namespace UnitTest
             Assert.AreEqual(BaggageStatus.Free, mpa.Status);
             Assert.AreEqual(null, mpa.baggage);
         }
-
         [TestMethod]
         public void ProcessBaggageTest_IfStatementElse()
         {
@@ -55,33 +58,20 @@ namespace UnitTest
             Assert.AreEqual(var, 1);
             //Assert.AreEqual(mpa.baggagesToWait.Count, 1);
         }
-        
-        
+
         [TestMethod]
-        public void PassWaitingBaggageTest()
+        public void PassBaggage_Test()
         {
-            List<Baggage> baggages = new List<Baggage>()
-            {
-                new Baggage(){DestinationGate = 1},
-                new Baggage(){DestinationGate = 2},
-            };
-
-            List<Conveyor> conveyors = new List<Conveyor>()
-            {
-                new Conveyor(5,6){DestinationGate = 1}
-            };
-
+            Baggage baggage = new Baggage();
             MPA mpa = new MPA();
-            mpa.baggagesToWait = baggages;
-            mpa.nextNodes = conveyors;
-
-            mpa.PassWaitingBaggage(conveyors[0]);
-
-            Assert.AreEqual(BaggageStatus.Free, mpa.Status);
-            Assert.AreEqual(1, mpa.baggagesToWait.Count);
+            mpa.PassBaggage(baggage);
+            Assert.AreEqual(baggage, mpa.baggage);
+        }
+       
+       
 
 
 
         }
     }
-}
+
