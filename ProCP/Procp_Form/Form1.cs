@@ -656,12 +656,8 @@ namespace Procp_Form
 
             //cartesianChartTimes.Series.Add(PopulateCartesianTimesChart(engine.GetFlightDepartureTimes(), "Flight time", scalesY++));
             //cartesianChartTimes.Series.Add(PopulateCartesianTimesChart(engine.GetLastBaggageTimes(), "Baggage time", scalesY++));
-            SeriesCollection series = new SeriesCollection();
 
-            series.Add(PopulateCartesianTimesChart(engine.GetFlightDepartureTimes(), "Estimated departure time", scalesY++));
-            series.Add(PopulateCartesianTimesChart(engine.GetLastBaggageTimes(), "Actual departure time", scalesY));
 
-            cartesianChartTimes.Series = series;
             btnCompare.Enabled = false;
         }
 
