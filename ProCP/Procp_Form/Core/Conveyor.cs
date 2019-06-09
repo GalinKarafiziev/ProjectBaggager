@@ -23,19 +23,21 @@ namespace Procp_Form.Core
             }
             set
             {
+                conveyorSpeed = value;
+
                 switch (conveyorSpeed)
                 {
                     case 1:
-                        timer.Interval = 500;
+                        timer.Interval = 1200;
                         break;
                     case 2:
-                        timer.Interval = 800;
-                        break;
-                    case 3:
                         timer.Interval = 1000;
                         break;
+                    case 3:
+                        timer.Interval = 800;
+                        break;
                     case 4:
-                        timer.Interval = 1200;
+                        timer.Interval = 500;
                         break;
                     default:
                         timer.Interval = 500;

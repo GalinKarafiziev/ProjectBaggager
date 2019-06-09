@@ -111,7 +111,7 @@ namespace Procp_Form.Core
             {
                 timer = new Timer();
                 timers.Add(timer);
-                timer.Interval = 800;
+                timer.Interval = 1000;
 
                 timer.Elapsed += (sender, args) =>
                 {

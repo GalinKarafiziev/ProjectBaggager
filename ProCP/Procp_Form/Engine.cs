@@ -57,8 +57,16 @@ namespace Procp_Form
         public void AddConveyorPart(Conveyor conveyor)
         {
             conveyors.Add(conveyor);
-            settings.ConveyorsSpeed.Add(conveyor.ConveyorSpeed);
             settings.ConveyorsLength.Add(conveyor.conveyorBelt.Length);
+        }
+
+        public void ChangeConveyorSpeed(int speed)
+        {
+            foreach (var conv in conveyors)
+            {
+                conv.ConveyorSpeed = speed;
+                settings.ConveyorsSpeed.Add(speed);
+            }
         }
 
         public void AddSecurity(Security security) => this.securities.Add(security);
@@ -122,6 +130,13 @@ namespace Procp_Form
         {
             return flights.Any();
         }
+        public void ResetCheckInDestinationGates()
+        {
+            foreach (var checkin in checkIns)
+            {
+                checkin.DestinationGate = 0;
+            }
+        }
         public void LinkTwoNodes(Node firstNode, Node secondNode)
         {
             firstNode.NextNode = secondNode;
@@ -162,7 +177,6 @@ namespace Procp_Form
 
         public void Stop()
         {
-
             flights.Clear();
             foreach (var conveyor in conveyors)
             {
@@ -180,6 +194,7 @@ namespace Procp_Form
             foreach (var dropOff in dropOffs)
             {
                 dropOff.baggages.Clear();
+                dropOff.unloadBaggages.Clear();
                 dropOff.Status = BaggageStatus.Free;
             }
 
@@ -286,7 +301,7 @@ namespace Procp_Form
             }
         }
 
-        public void LoadFromFile()
+        public string LoadFromFile()
         {
             OpenFileDialog ofd = new OpenFileDialog();
 
@@ -296,6 +311,11 @@ namespace Procp_Form
                 {
                     using (Stream stream = File.Open(ofd.FileName, FileMode.Open))
                     {
+                        if (!ofd.FileName.Contains(".bin"))
+                        {
+                            var message = "Only .bin files supported";
+                            return message;
+                        }
                         BinaryFormatter bin = new BinaryFormatter();
                         object serializedObject = bin.Deserialize(stream);
                         List<Object> objectsToDeserialize = serializedObject as List<Object>;
@@ -315,6 +335,7 @@ namespace Procp_Form
             {
                 throw;
             }
+            return "";
         }
 
         public void CreateConveyorsFromFile()

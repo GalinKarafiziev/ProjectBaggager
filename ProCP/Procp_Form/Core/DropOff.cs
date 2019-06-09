@@ -49,6 +49,7 @@ namespace Procp_Form.Core
             set
             {
                 this.employeeSpeed = value;
+
                 switch (employeeSpeed)
                 {
                     case 1:
@@ -64,7 +65,7 @@ namespace Procp_Form.Core
                         timer.Interval = 500;
                         break;
                     default:
-                        timer.Interval = 1200;
+                        timer.Interval = 1000;
                         break;
                 }
             }
