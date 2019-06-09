@@ -26,7 +26,7 @@ namespace Procp_Form.Visuals
             fillBrush = clickableColor;
 
             imgpath = "../../Resources/conveyor.png";
-            img = loadImage(imgpath, img);
+            img = loadImage(imgpath, img, tileWidth, tileHeight);
 
             isLastTile = false;
         }
@@ -43,7 +43,7 @@ namespace Procp_Form.Visuals
                     {
                         if (conv.conveyorBelt[i] != null)
                         {
-                            RectangleF baggageRec = new RectangleF(column * width + 3, row * height + 3, width - 6, height - 6);
+                            RectangleF baggageRec = new RectangleF(column * tileWidth + 3, row * tileHeight + 3, tileWidth - 6, tileHeight - 6);
                             g.DrawImage(baggageImg, baggageRec);
                         }
                     }

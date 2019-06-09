@@ -22,7 +22,7 @@ namespace Procp_Form.Visuals
             unclickableColour = Brushes.LightGray;
 
             imgpath = "../../Resources/checkin.png";
-            img = loadImage(imgpath, img);
+            img = loadImage(imgpath, img, tileWidth, tileHeight);
 
             fillBrush = clickableColor;
         }

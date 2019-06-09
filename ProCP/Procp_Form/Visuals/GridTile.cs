@@ -40,7 +40,7 @@ namespace Procp_Form.Visuals
             this.column = column;
             this.row = row;
             baggageImgPath = "../../Resources/baggage.png";
-            baggageImg = loadImage(baggageImgPath, baggageImg);
+            baggageImg = Image.FromFile(baggageImgPath);
         }
 
         public int Column
@@ -51,7 +51,7 @@ namespace Procp_Form.Visuals
         {
             get { return row; }
         }
-        protected Image loadImage(string path, Image imig)
+        protected Image loadImage(string path, Image imig, int tileWidth, int tileHeight)
         {
             using (var srce = new Bitmap(path))
             {
@@ -140,7 +140,7 @@ namespace Procp_Form.Visuals
             {
                 if (nodeInGrid.Status == BaggageStatus.Busy)
                 {
-                    RectangleF baggageRec = new RectangleF(column * width + 10, row * height + 10, width - 20, height - 20);
+                    RectangleF baggageRec = new RectangleF(column * tileWidth + 10, row * tileHeight + 10, tileWidth - 20, tileHeight - 20);
                     g.DrawImage(baggageImg, baggageRec);
                 }
             }
