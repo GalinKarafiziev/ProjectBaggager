@@ -130,6 +130,10 @@ namespace Procp_Form
             animationBox.Invalidate();
         }
 
+        // I intended to comment these methods to explain them 
+        // I also hoped I would be able to make the code better
+        // I did not plan my time well
+        // - Boris Georgiev
         private void AnimationBox_MouseDown(object sender, MouseEventArgs e)
         {
             var mouseClick = e as MouseEventArgs;
