@@ -35,12 +35,16 @@ namespace Procp_Form.Visuals
         protected string baggageImgPath;
         protected Image baggageImg;
 
+        protected string arrowImgPath;
+        protected Image arrowImg;
         public GridTile(int column, int row, int tileWidth, int tileHeight)
         {
             this.column = column;
             this.row = row;
             baggageImgPath = "../../Resources/baggage.png";
             baggageImg = Image.FromFile(baggageImgPath);
+            arrowImgPath = "../../Resources/arrow.png";
+            arrowImg = Image.FromFile(arrowImgPath);
         }
 
         public int Column
@@ -96,6 +100,13 @@ namespace Procp_Form.Visuals
         protected virtual void DrawBackground(Pen p, Graphics g, RectangleF r, int tileWidth, int tileHeight)
         {
             //g.FillRectangle(fillBrush, r);
+
+            //this rotateflip doesnt serve any purpose
+            //we used it to test rotating images
+            //it works in mysterious ways, for some reason it is bound to mouse movement
+            //img.RotateFlip(RotateFlipType.Rotate90FlipNone);
+
+
             g.DrawImage(img, r);
             g.DrawRectangle(p, column * tileWidth, row * tileHeight, tileWidth, tileHeight);
 
@@ -110,25 +121,39 @@ namespace Procp_Form.Visuals
         {
             if (nextTile != null)
             {
+                int arrowWidth = tileWidth / 4;
+                int arrowHeight = tileHeight / 4;
+
+                //what the hell
+                int arrowX = column * tileWidth + tileWidth / 2 - arrowWidth/2;
+                int arrowY = row * tileHeight + tileHeight / 2 - arrowHeight/2;
                 if (nextTile.column < this.column)
                 {
                     p = new Pen(Color.Red);
-                    g.DrawLine(p, (column * tileWidth + tileWidth / 2), (row * tileHeight + tileHeight / 2), column * tileWidth, row * tileHeight + tileHeight / 2);
+                    //g.DrawLine(p, (column * tileWidth + tileWidth / 2), (row * tileHeight + tileHeight / 2), column * tileWidth, row * tileHeight + tileHeight / 2);
+                    Rectangle r = new Rectangle(arrowX, arrowY, arrowWidth, arrowHeight);
+                    g.DrawImage(arrowImg, r);
                 }
                 else if (nextTile.column > this.column)
                 {
                     p = new Pen(Color.Red);
-                    g.DrawLine(p, (column * tileWidth + tileWidth / 2), (row * tileHeight + tileHeight / 2), column * tileWidth + tileWidth, row * tileHeight + tileHeight / 2);
+                    Rectangle r = new Rectangle(arrowX, arrowY, arrowWidth, arrowHeight);
+                    g.DrawImage(arrowImg, r);
+                    // g.DrawLine(p, (column * tileWidth + tileWidth / 2), (row * tileHeight + tileHeight / 2), column * tileWidth + tileWidth, row * tileHeight + tileHeight / 2);
                 }
                 else if (nextTile.row < this.row)
                 {
                     p = new Pen(Color.Red);
-                    g.DrawLine(p, (column * tileWidth + tileWidth / 2), (row * tileHeight + tileHeight / 2), column * tileWidth + tileWidth / 2, row * tileHeight);
+                    Rectangle r = new Rectangle(arrowX, arrowY, arrowWidth, arrowHeight);
+                    g.DrawImage(arrowImg, r);
+                    // g.DrawLine(p, (column * tileWidth + tileWidth / 2), (row * tileHeight + tileHeight / 2), column * tileWidth + tileWidth / 2, row * tileHeight);
                 }
                 else if (nextTile.row > this.row)
                 {
                     p = new Pen(Color.Red);
-                    g.DrawLine(p, (column * tileWidth + tileWidth / 2), (row * tileHeight + tileHeight / 2), column * tileWidth + tileWidth / 2, row * tileHeight + tileHeight);
+                    Rectangle r = new Rectangle(arrowX, arrowY, arrowWidth, arrowHeight);
+                    g.DrawImage(arrowImg, r);
+                    // g.DrawLine(p, (column * tileWidth + tileWidth / 2), (row * tileHeight + tileHeight / 2), column * tileWidth + tileWidth / 2, row * tileHeight + tileHeight);
                 }
             }
         }
@@ -153,6 +178,22 @@ namespace Procp_Form.Visuals
         public virtual void SetNextTile(GridTile t)
         {
             nextTile = t;
+            if (nextTile.column < this.column)
+            {
+                arrowImg.RotateFlip(RotateFlipType.Rotate90FlipNone);
+            }
+            else if (nextTile.column > this.column)
+            {
+                arrowImg.RotateFlip(RotateFlipType.Rotate270FlipNone);
+            }
+            else if (nextTile.row < this.row)
+            {
+                arrowImg.RotateFlip(RotateFlipType.Rotate180FlipNone);
+            }
+            else if (nextTile.row > this.row)
+            {
+                
+            }
         }
         public GridTile NextTile
         {

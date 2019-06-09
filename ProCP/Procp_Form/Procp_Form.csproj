@@ -135,17 +135,17 @@
     <None Include="Resources\mpa.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\checkin.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\dropoff.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\security2.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\arrow.png" />
+    <None Include="Resources\checkin.png" />
     <Content Include="Resources\empty.png" />
     <Content Include="Resources\baggage.png" />
+    <None Include="Resources\scanner.png" />
     <Content Include="Resources\security.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

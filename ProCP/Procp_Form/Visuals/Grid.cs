@@ -16,8 +16,8 @@ namespace Procp_Form.Visuals
     {
         int tileWidth;
         int tileHeight;
-        int tileHorizontalCount = 12;
-        int tileVerticalCount = 12;
+        int tileHorizontalCount = 10;
+        int tileVerticalCount = 10;
         float animBoxWidth;
         float animBoxHeigth;
 
