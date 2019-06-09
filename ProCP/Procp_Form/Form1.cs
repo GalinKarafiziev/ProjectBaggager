@@ -211,25 +211,28 @@ namespace Procp_Form
                     else if (buildModeType == "MPA")
                     {
                         MPA mpa = new MPA();
-                        thisGrid.AddMPA(t, mpa);
-                        engine.AddMPA(mpa);
-
-                        SelectTile(thisGrid.FindTileInRowColumnCoordinates(t.Column, t.Row));
-                        List<GridTile> tempMPA = thisGrid.GetMPA(selectedTile);
-                        foreach(GridTile m in tempMPA)
+                        if (thisGrid.AddMPA(t, mpa))
                         {
-                            GridTile temp = thisGrid.AutoConnectToPrev(m, thisGrid.GetTilesIn4Directions);
-                            if(temp != null)
-                            {
-                                engine.LinkTwoNodes(temp.nodeInGrid, m.nodeInGrid);
-                            }
-                            temp = thisGrid.AutoConnectToNext(m, thisGrid.GetTilesIn4Directions);
-                            if (temp != null && temp.nodeInGrid is Conveyor)
-                            {
-                                mpa.AddNextNode(temp.nodeInGrid as Conveyor);
-                            }
-                        }
+                            engine.AddMPA(mpa);
 
+                            SelectTile(thisGrid.FindTileInRowColumnCoordinates(t.Column, t.Row));
+                            List<GridTile> tempMPA = thisGrid.GetMPA(selectedTile);
+                            foreach (GridTile m in tempMPA)
+                            {
+                                GridTile temp = thisGrid.AutoConnectToPrev(m, thisGrid.GetTilesIn4Directions);
+                                if (temp != null)
+                                {
+                                    engine.LinkTwoNodes(temp.nodeInGrid, m.nodeInGrid);
+                                }
+                                temp = thisGrid.AutoConnectToNext(m, thisGrid.GetTilesIn4Directions);
+                                if (temp != null && temp.nodeInGrid is Conveyor)
+                                {
+                                    mpa.AddNextNode(temp.nodeInGrid as Conveyor);
+                                }
+                            }
+                            rbMPA.Visible = false;
+                            rbCheckIn.Checked = true;
+                        }
                     }
                 }
                 else if (!(t is EmptyTile) && deleteMode == false)
@@ -257,6 +260,7 @@ namespace Procp_Form
                     {
                         thisGrid.RemoveMPA(t);
                         engine.Remove(t.nodeInGrid);
+                        rbMPA.Visible = true;
                     }
                     else
                     {

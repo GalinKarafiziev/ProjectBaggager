@@ -109,7 +109,7 @@ namespace Procp_Form.Visuals
             return true;
         }
 
-        public void AddMPA(GridTile firstTile, MPA mpa)
+        public bool AddMPA(GridTile firstTile, MPA mpa)
         {
             int cRange = TileVerticalCount / 4;
             int rRange = tileHorizontalCount / 4;
@@ -128,7 +128,9 @@ namespace Procp_Form.Visuals
                         mpaTile.nodeInGrid = mpa;
                     }
                 }
+                return true;
             }
+            return false;
         }
 
         public GridTile AddCheckInAtCoordinates(GridTile toReplace, Node nodeToPlace)
