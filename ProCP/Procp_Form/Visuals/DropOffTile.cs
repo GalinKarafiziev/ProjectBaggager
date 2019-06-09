@@ -16,8 +16,6 @@ namespace Procp_Form.Visuals
         {
             this.column = column;
             this.row = row;
-            width = tileWidth;
-            height = tileHeight;
 
             clickableColor = Brushes.White;
             unclickableColour = Brushes.LightGray;
@@ -28,9 +26,9 @@ namespace Procp_Form.Visuals
             fillBrush = clickableColor;
         }
 
-        protected override void DrawTileInfo(Graphics g, RectangleF r)
+        protected override void DrawTileInfo(Graphics g, RectangleF r, int tileHeight)
         {
-            Font stringFont = new Font("Arial", height / 3, FontStyle.Bold, GraphicsUnit.Pixel);
+            Font stringFont = new Font("Arial", tileHeight / 3, FontStyle.Bold, GraphicsUnit.Pixel);
             DropOff dropOff = nodeInGrid as DropOff;
             string gateId = Convert.ToString(dropOff.DestinationGate);
             string baggages = Convert.ToString(dropOff.baggages.Count());

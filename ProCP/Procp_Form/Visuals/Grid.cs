@@ -14,19 +14,17 @@ namespace Procp_Form.Visuals
     [Serializable()]
     public class Grid
     {
-        float tileWidth;
-        float tileHeight;
-        int tileHorizontalCount = 20;
-        int tileVerticalCount = 20;
+        int tileWidth;
+        int tileHeight;
+        int tileHorizontalCount = 12;
+        int tileVerticalCount = 12;
         float animBoxWidth;
         float animBoxHeigth;
 
         public List<GridTile> gridTiles;
 
-        int hideAreaNotCheckInRows = 0;
-        int hideAreaNotConveyorRowsTop;
-        int hideAreaNotConveyorRowsBottom = 0;
-        int hideAreaNotForDropOff;
+        int bottomRow;
+        int topRow;
 
         public Grid(int animBoxW, int abBoxH)
         {
@@ -34,11 +32,11 @@ namespace Procp_Form.Visuals
 
             animBoxWidth = animBoxW;
             animBoxHeigth = abBoxH;
-            tileWidth = (animBoxWidth - 1) / tileHorizontalCount;
-            tileHeight = (animBoxHeigth - 1) / tileVerticalCount;
+            tileWidth = (int) (animBoxWidth - 1) / tileHorizontalCount;
+            tileHeight = (int) (animBoxHeigth - 1) / tileVerticalCount;
 
-            hideAreaNotForDropOff = tileVerticalCount - 1;
-            hideAreaNotConveyorRowsTop = tileVerticalCount - 1;
+            topRow = 0;
+            bottomRow = tileVerticalCount - 1;
 
             CreateGrid();
         }
@@ -52,18 +50,16 @@ namespace Procp_Form.Visuals
             get { return tileVerticalCount; }
             set { tileVerticalCount = value; }
         }
-
         private void CreateGrid()
         {
             for (int c = 0; c < tileHorizontalCount; c++)
             {
                 for (int r = 0; r < tileVerticalCount; r++)
                 {
-                    gridTiles.Add(new EmptyTile(c, r, (int)tileWidth, (int)tileHeight));
+                    gridTiles.Add(new EmptyTile(c, r, tileWidth, tileHeight));
                 }
             }
         }
-
         public void LoadGrid(List<GridTile> load)
         {
             gridTiles.Clear();
@@ -72,7 +68,6 @@ namespace Procp_Form.Visuals
                 gridTiles.Add(c);
             }
         }
-
         public void DrawGrid(PaintEventArgs e)
         {
             Graphics g = e.Graphics;
@@ -80,12 +75,12 @@ namespace Procp_Form.Visuals
 
             foreach (GridTile n in gridTiles)
             {
-                n.DrawTile(e);
+                n.DrawTile(e, tileWidth, tileHeight);
             }
         }
         public ConveyorTile AddConveyorLineAtCoordinates(GridTile toReplace)
         {
-            ConveyorTile newLineTile = new ConveyorTile(toReplace.Column, toReplace.Row, (int)tileWidth, (int)tileHeight);
+            ConveyorTile newLineTile = new ConveyorTile(toReplace.Column, toReplace.Row, tileWidth, tileHeight);
             gridTiles.Remove(toReplace);
             gridTiles.Add(newLineTile);
             return newLineTile;
@@ -108,12 +103,10 @@ namespace Procp_Form.Visuals
             }
             return true;
         }
-
-        public void AddMPA(GridTile firstTile, MPA mpa)
+        public bool AddMPA(GridTile firstTile, MPA mpa)
         {
             int cRange = TileVerticalCount / 4;
             int rRange = tileHorizontalCount / 4;
-
 
             if (CheckIfTilesAreEmpty(firstTile, cRange, rRange))
             {
@@ -121,19 +114,20 @@ namespace Procp_Form.Visuals
                 {
                     for (int y = firstTile.Row; y < firstTile.Row + rRange; y++)
                     {
-                        MPATile mpaTile = new MPATile(i, y, (int)tileWidth, (int)tileHeight);
+                        MPATile mpaTile = new MPATile(i, y, tileWidth, tileHeight);
                         GridTile temp = FindTileInRowColumnCoordinates(i, y);
                         gridTiles.Remove(temp);
                         gridTiles.Add(mpaTile);
                         mpaTile.nodeInGrid = mpa;
                     }
                 }
+                return true;
             }
+            return false;
         }
-
         public GridTile AddCheckInAtCoordinates(GridTile toReplace, Node nodeToPlace)
         {
-            CheckInTile newCheckInTile = new CheckInTile(toReplace.Column, toReplace.Row, (int)tileWidth, (int)tileHeight);
+            CheckInTile newCheckInTile = new CheckInTile(toReplace.Column, toReplace.Row, tileWidth, tileHeight);
             gridTiles.Remove(toReplace);
             gridTiles.Add(newCheckInTile);
             newCheckInTile.nodeInGrid = nodeToPlace;
@@ -142,7 +136,7 @@ namespace Procp_Form.Visuals
 
         public GridTile AddSecurityAtCoordinates(GridTile toReplace, Node nodeToPlace)
         {
-            SecurityTile newSecurityTile = new SecurityTile(toReplace.Column, toReplace.Row, (int)tileWidth, (int)tileHeight);
+            SecurityTile newSecurityTile = new SecurityTile(toReplace.Column, toReplace.Row, tileWidth, tileHeight);
             gridTiles.Remove(toReplace);
             gridTiles.Add(newSecurityTile);
             newSecurityTile.nodeInGrid = nodeToPlace;
@@ -151,7 +145,7 @@ namespace Procp_Form.Visuals
 
         public GridTile AddDropOffAtCoordinates(GridTile toReplace, Node nodeToPlace)
         {
-            DropOffTile newDropOffTile = new DropOffTile(toReplace.Column, toReplace.Row, (int)tileWidth, (int)tileHeight);
+            DropOffTile newDropOffTile = new DropOffTile(toReplace.Column, toReplace.Row, tileWidth, tileHeight);
             gridTiles.Remove(toReplace);
             gridTiles.Add(newDropOffTile);
             newDropOffTile.nodeInGrid = nodeToPlace;
@@ -159,7 +153,7 @@ namespace Procp_Form.Visuals
         }
         public GridTile FindTileInPixelCoordinates(float targetX, float targetY)
         {
-            GridTile foundTile = new EmptyTile(-1, -1, (int)tileWidth, (int)tileHeight);
+            GridTile foundTile = new EmptyTile(-1, -1, tileWidth, tileHeight);
             foreach (GridTile n in gridTiles)
             {
                 if ((n.Column * tileWidth) <= targetX && (n.Column * tileWidth) + tileWidth >= targetX && (n.Row * tileHeight) <= targetY && (n.Row * tileHeight) + tileHeight >= targetY)
@@ -173,7 +167,7 @@ namespace Procp_Form.Visuals
         }
         public GridTile FindTileInRowColumnCoordinates(int targetColumn, int targetRow)
         {
-            GridTile foundTile = new EmptyTile(targetColumn, targetRow, (int)tileWidth, (int)tileHeight);
+            GridTile foundTile = new EmptyTile(targetColumn, targetRow, tileWidth, tileHeight);
             foreach (GridTile n in gridTiles)
             {
                 if (n.Column == targetColumn && n.Row == targetRow)
@@ -185,7 +179,9 @@ namespace Procp_Form.Visuals
             return foundTile;
         }
 
-        public void HideArea(string buildType)
+        //if you pass a null value, it reveal the entire area
+        //somewhat counter-intuitive 
+        public void HideAndUnhideArea(string buildType)
         {
             if (buildType == null)
             {
@@ -197,30 +193,30 @@ namespace Procp_Form.Visuals
             }
             else if(buildType == "Conveyor")
             {
-                HideAreNotForConveyorAndSecurityAndMPA();
+                Hide2SpecifiedRows(topRow, bottomRow);
             }
             else if (buildType == "Security Scanner")
             {
-                HideAreNotForConveyorAndSecurityAndMPA();
+                Hide2SpecifiedRows(topRow, bottomRow);
             }
             else if(buildType == "CheckIn")
             {
-                HideAreaNotForCheckIn();
+                HideAllRowsButOne(topRow);
             }
             else if(buildType == "DropOff")
             {
-                HideAreaNotForDropOff();
+                HideAllRowsButOne(bottomRow);
             }
             else if(buildType == "MPA")
             {
-                HideAreNotForConveyorAndSecurityAndMPA();
+                Hide2SpecifiedRows(topRow, bottomRow);
             }
         }
-        private void HideAreNotForConveyorAndSecurityAndMPA()
+        private void HideAllRowsButOne(int r)
         {
             foreach (GridTile t in gridTiles)
             {
-                if (t.Row == hideAreaNotConveyorRowsTop || t.Row == hideAreaNotConveyorRowsBottom)
+                if (t.Row != r)
                 {
                     t.Unselectable = true;
                     t.SetTileUncklicableColor();
@@ -232,11 +228,11 @@ namespace Procp_Form.Visuals
                 }
             }
         }
-        private void HideAreaNotForCheckIn()
+        private void Hide2SpecifiedRows(int r1, int r2)
         {
             foreach (GridTile t in gridTiles)
             {
-                if( t.Row != hideAreaNotCheckInRows)
+                if (t.Row == r1 || t.Row == r2)
                 {
                     t.Unselectable = true;
                     t.SetTileUncklicableColor();
@@ -248,28 +244,10 @@ namespace Procp_Form.Visuals
                 }
             }
         }
-        private void HideAreaNotForDropOff()
-        {
-            foreach (GridTile t in gridTiles)
-            {
-                if (t.Row != hideAreaNotForDropOff)
-                {
-                    t.Unselectable = true;
-                    t.SetTileUncklicableColor();
-                }
-                else
-                {
-                    t.Unselectable = false;
-                    t.SetTileUncklicableColor();
-                }
-            }
-        }
-
         public Node ReturnNodeOnPosition(GridTile clickedTile)
         {
             return clickedTile.nodeInGrid;
         }
-
         public void RemoveNode(GridTile toRemove)
         {
             foreach(GridTile t in gridTiles)
@@ -281,15 +259,14 @@ namespace Procp_Form.Visuals
                 }
             }
             int index = gridTiles.IndexOf(toRemove, 0);
-            EmptyTile empty = new EmptyTile(toRemove.Column, toRemove.Row, (int)tileWidth, (int)tileHeight);
+            EmptyTile empty = new EmptyTile(toRemove.Column, toRemove.Row, tileWidth, tileHeight);
 
             gridTiles.Remove(toRemove);
             gridTiles.Insert(index, empty);
         }
-
         public ConveyorTile RemoveConveyorLine(GridTile toRemove)
         {
-            ConveyorTile first = new ConveyorTile(1,1, (int)tileWidth, (int)tileHeight);
+            ConveyorTile first = new ConveyorTile(1,1, tileWidth, tileHeight);
             foreach(GridTile t in gridTiles.ToList())
             {
                 if(toRemove.nodeInGrid == t.nodeInGrid)
@@ -300,7 +277,7 @@ namespace Procp_Form.Visuals
                         first = temp;
                     }
                     int index = gridTiles.IndexOf(t, 0);
-                    EmptyTile empty = new EmptyTile(t.Column, t.Row, (int)tileWidth, (int)tileHeight);
+                    EmptyTile empty = new EmptyTile(t.Column, t.Row, tileWidth, tileHeight);
                     gridTiles.Remove(t);
                     gridTiles.Insert(index, empty);
                 }
@@ -315,7 +292,6 @@ namespace Procp_Form.Visuals
             }
             return first;
         }
-
         public void RemoveMPA(GridTile toRemove)
         {
             foreach(GridTile t in gridTiles.ToList())
@@ -327,44 +303,25 @@ namespace Procp_Form.Visuals
                 if(t.nodeInGrid == toRemove.nodeInGrid)
                 {
                     int index = gridTiles.IndexOf(t, 0);
-                    EmptyTile empty = new EmptyTile(t.Column, t.Row, (int)tileWidth, (int)tileHeight);
+                    EmptyTile empty = new EmptyTile(t.Column, t.Row, tileWidth, tileHeight);
                     gridTiles.Remove(t);
                     gridTiles.Insert(index, empty);
                 }
             }
         }
-
         public void ClearGrid()
         {
             gridTiles.Clear();
             CreateGrid();
         }
-
         public void ConnectTiles(GridTile sender, GridTile receiver)
         {
             sender.SetNextTile(receiver);
         }
-
-        public List<GridTile> GetTilesIn4Directions(GridTile c)
-        {
-            List<GridTile> tempTiles = new List<GridTile>();
-            tempTiles.Add(FindTileInRowColumnCoordinates(c.Column, c.Row - 1));
-            tempTiles.Add(FindTileInRowColumnCoordinates(c.Column, c.Row + 1));
-            tempTiles.Add(FindTileInRowColumnCoordinates(c.Column + 1, c.Row));
-            tempTiles.Add(FindTileInRowColumnCoordinates(c.Column - 1, c.Row));
-
-            foreach(GridTile t in tempTiles.ToList())
-            {
-                if(t == null)
-                {
-                    tempTiles.Remove(t);
-                }
-            }
-            return tempTiles;
-        }
+      
         private GridTile ConnectToConveyorBeginning(GridTile c, ConveyorTile temp)
         {
-            if (temp.PositionInLine == 0)
+            if (temp.PositionInLine == 0 && temp.NextTile != c)
             {
                 c.SetNextTile(temp);
                 return temp;
@@ -373,7 +330,7 @@ namespace Procp_Form.Visuals
         }
         private GridTile ConnectToConveyorPrevious(GridTile c, ConveyorTile temp)
         {
-            if (temp.isLastTile)
+            if (temp.isLastTile && temp.NextTile == null)
             {
                 ConnectTiles(temp, c);
                 return temp;
@@ -382,7 +339,23 @@ namespace Procp_Form.Visuals
         }
 
         public delegate List<GridTile> GetNeighboursHandler(GridTile c);
+        public List<GridTile> GetNeighboursIn4Directions(GridTile c)
+        {
+            List<GridTile> tempTiles = new List<GridTile>();
+            tempTiles.Add(FindTileInRowColumnCoordinates(c.Column, c.Row - 1));
+            tempTiles.Add(FindTileInRowColumnCoordinates(c.Column, c.Row + 1));
+            tempTiles.Add(FindTileInRowColumnCoordinates(c.Column + 1, c.Row));
+            tempTiles.Add(FindTileInRowColumnCoordinates(c.Column - 1, c.Row));
 
+            foreach (GridTile t in tempTiles.ToList())
+            {
+                if (t == null)
+                {
+                    tempTiles.Remove(t);
+                }
+            }
+            return tempTiles;
+        }
         public List<GridTile> GetTopNeighbour(GridTile c)
         {
             GridTile temp = FindTileInRowColumnCoordinates(c.Column, c.Row - 1);
@@ -390,7 +363,6 @@ namespace Procp_Form.Visuals
             tempList.Add(temp);
             return tempList;
         }
-
         public List<GridTile> GetBottomNeighbour(GridTile c)
         {
             GridTile temp = FindTileInRowColumnCoordinates(c.Column, c.Row + 1);
@@ -398,7 +370,6 @@ namespace Procp_Form.Visuals
             tempList.Add(temp);
             return tempList;
         }
-
         public GridTile AutoConnectToPrev(GridTile c, GetNeighboursHandler del)
         {
             List<GridTile> tempList = del(c);
@@ -411,7 +382,7 @@ namespace Procp_Form.Visuals
                         return t;
                     }
                 }
-                else if (!(t is EmptyTile) && !(t is DropOffTile) && !(c is MPATile))
+                else if (!(t is EmptyTile) && !(t is DropOffTile) && !(c is MPATile) && (t.NextTile == null))
                 {
                     ConnectTiles(t, c);
                     return t;

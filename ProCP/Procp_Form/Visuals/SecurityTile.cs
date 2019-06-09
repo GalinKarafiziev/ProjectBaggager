@@ -14,8 +14,6 @@ namespace Procp_Form.Visuals
         {
             this.column = column;
             this.row = row;
-            width = tileWidth;
-            height = tileHeight;
 
             clickableColor = Brushes.SlateGray;
             unclickableColour = Brushes.LightGray;

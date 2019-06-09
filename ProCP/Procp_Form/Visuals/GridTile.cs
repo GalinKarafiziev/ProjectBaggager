@@ -14,8 +14,6 @@ namespace Procp_Form.Visuals
     {
         protected int column;
         protected int row;
-        protected int width;
-        protected int height;
 
         public Node nodeInGrid;
 
@@ -41,9 +39,6 @@ namespace Procp_Form.Visuals
         {
             this.column = column;
             this.row = row;
-            width = tileWidth;
-            height = tileHeight;
-
             baggageImgPath = "../../Resources/baggage.png";
             baggageImg = loadImage(baggageImgPath, baggageImg);
         }
@@ -60,7 +55,7 @@ namespace Procp_Form.Visuals
         {
             using (var srce = new Bitmap(path))
             {
-                var dest = new Bitmap(width,height, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+                var dest = new Bitmap(tileWidth, tileHeight, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
                 using (var gr = Graphics.FromImage(dest))
                 {
                     gr.DrawImage(srce, new Rectangle(Point.Empty, dest.Size));
@@ -75,16 +70,16 @@ namespace Procp_Form.Visuals
             get { return unclickable; }
             set { unclickable = value; }
         }
-        public virtual void DrawTile(PaintEventArgs e)
+        public virtual void DrawTile(PaintEventArgs e, int tileWidth, int tileHeight)
         {
             Graphics g = e.Graphics;
             Pen p = new Pen(Color.LightSteelBlue);
-            RectangleF r = new RectangleF(Column * width, Row * height, width, height);
+            RectangleF r = new RectangleF(column * tileWidth, row * tileHeight, tileWidth, tileHeight);
 
-            DrawBackground(p, g, r);
-            DrawArrowNext(p, g);
-            DrawBaggage(g);
-            DrawTileInfo(g, r);
+            DrawBackground(p, g, r, tileWidth, tileHeight);
+            DrawArrowNext(p, g, tileWidth, tileHeight);
+            DrawBaggage(g, tileWidth, tileHeight);
+            DrawTileInfo(g, r, tileHeight);
         }
         public virtual void SetTileUncklicableColor()
         {
@@ -98,48 +93,48 @@ namespace Procp_Form.Visuals
             }
         }
 
-        protected virtual void DrawBackground(Pen p, Graphics g, RectangleF r)
+        protected virtual void DrawBackground(Pen p, Graphics g, RectangleF r, int tileWidth, int tileHeight)
         {
             //g.FillRectangle(fillBrush, r);
             g.DrawImage(img, r);
-            g.DrawRectangle(p, column * width, row * height, width, height);
+            g.DrawRectangle(p, column * tileWidth, row * tileHeight, tileWidth, tileHeight);
 
             if (selected)
             {
                 p = new Pen(Color.Yellow);
-                g.DrawRectangle(p, column * width, row * height, width, height);
+                g.DrawRectangle(p, column * tileWidth, row * tileHeight, tileWidth, tileHeight);
             }
         }
 
-        protected virtual void DrawArrowNext(Pen p, Graphics g)
+        protected virtual void DrawArrowNext(Pen p, Graphics g, int tileWidth, int tileHeight)
         {
             if (nextTile != null)
             {
                 if (nextTile.column < this.column)
                 {
                     p = new Pen(Color.Red);
-                    g.DrawLine(p, (column * width + width / 2), (row * height + height / 2), column * width, row * height + height / 2);
+                    g.DrawLine(p, (column * tileWidth + tileWidth / 2), (row * tileHeight + tileHeight / 2), column * tileWidth, row * tileHeight + tileHeight / 2);
                 }
                 else if (nextTile.column > this.column)
                 {
                     p = new Pen(Color.Red);
-                    g.DrawLine(p, (column * width + width / 2), (row * height + height / 2), column * width + width, row * height + height / 2);
+                    g.DrawLine(p, (column * tileWidth + tileWidth / 2), (row * tileHeight + tileHeight / 2), column * tileWidth + tileWidth, row * tileHeight + tileHeight / 2);
                 }
                 else if (nextTile.row < this.row)
                 {
                     p = new Pen(Color.Red);
-                    g.DrawLine(p, (column * width + width / 2), (row * height + height / 2), column * width + width / 2, row * height);
+                    g.DrawLine(p, (column * tileWidth + tileWidth / 2), (row * tileHeight + tileHeight / 2), column * tileWidth + tileWidth / 2, row * tileHeight);
                 }
                 else if (nextTile.row > this.row)
                 {
                     p = new Pen(Color.Red);
-                    g.DrawLine(p, (column * width + width / 2), (row * height + height / 2), column * width + width / 2, row * height + height);
+                    g.DrawLine(p, (column * tileWidth + tileWidth / 2), (row * tileHeight + tileHeight / 2), column * tileWidth + tileWidth / 2, row * tileHeight + tileHeight);
                 }
             }
         }
         // Baggage moves in different ways through the nodes
         // Therefore checking wether to draw also happens in different ways
-        protected virtual void DrawBaggage(Graphics g)
+        protected virtual void DrawBaggage(Graphics g, int tileWidth, int tileHeight)
         {
             if (nodeInGrid != null)
             {
@@ -150,12 +145,11 @@ namespace Procp_Form.Visuals
                 }
             }
         }
-        protected virtual void DrawTileInfo(Graphics g, RectangleF r)
+        protected virtual void DrawTileInfo(Graphics g, RectangleF r, int tileHeight)
         {
 
         }
 
-        //there was a point in the project where 3 methods where nesessary
         public virtual void SetNextTile(GridTile t)
         {
             nextTile = t;
