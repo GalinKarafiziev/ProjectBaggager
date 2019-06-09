@@ -436,6 +436,7 @@ namespace Procp_Form
             aTimer.Elapsed += new ElapsedEventHandler(TimerSequence);
             aTimer.Interval = 1;
             aTimer.Start();
+            btnCompare.Enabled = true;
         }
         private void btnPause_Click(object sender, EventArgs e)
         {
@@ -632,11 +633,12 @@ namespace Procp_Form
             series.Add(PopulateCartesianTimesChart(engine.GetLastBaggageTimes(), "Actual departure time", scalesY));
 
             cartesianChartTimes.Series = series;
+            btnCompare.Enabled = false;
         }
 
         private LineSeries PopulateCartesianTimesChart(List<DateTime> values, string lineTitle, int scalesY)
         {
-            var lineSeries = new LineSeries() { Title = lineTitle, ScalesYAt = 2, Values = new ChartValues<int>() };
+            var lineSeries = new LineSeries() { Title = lineTitle, ScalesYAt = scalesY, Values = new ChartValues<int>() };
             var colors = new List<Brush>() { Brushes.DodgerBlue, Brushes.HotPink };
             var axisTitles = new List<string>() { "Estimated departure time", "Actual departure time" };
 
@@ -652,6 +654,7 @@ namespace Procp_Form
             {
                 Foreground = color,
                 Title = title,
+                Position = AxisPosition.LeftBottom
             });
         }
         private void buttonSaveToFile_Click(object sender, EventArgs e)

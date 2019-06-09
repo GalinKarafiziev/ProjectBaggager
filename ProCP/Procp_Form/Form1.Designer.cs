@@ -429,7 +429,7 @@
             this.gbDropOffSettings.Controls.Add(this.label5);
             this.gbDropOffSettings.Controls.Add(this.label4);
             this.gbDropOffSettings.Controls.Add(this.cbCapacity);
-            this.gbDropOffSettings.Location = new System.Drawing.Point(240, 270);
+            this.gbDropOffSettings.Location = new System.Drawing.Point(230, 270);
             this.gbDropOffSettings.Name = "gbDropOffSettings";
             this.gbDropOffSettings.Size = new System.Drawing.Size(136, 77);
             this.gbDropOffSettings.TabIndex = 34;
