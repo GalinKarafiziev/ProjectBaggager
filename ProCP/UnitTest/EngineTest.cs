@@ -62,5 +62,117 @@ namespace UnitTest
 
             
         }
+        [TestMethod]
+        public void RemoveFlight_Test()
+        {
+            DateTime date = new DateTime(2019, 6, 9, 16, 40, 0);
+
+            bool cond = false;
+            Engine engine = new Engine();
+
+            engine.AddFlight(date, "bbb", 5, 5);
+            engine.RemoveFlight("bbb");
+            Assert.AreEqual(0, engine.flights.Count);
+        }
+        [TestMethod]
+        public void Remove_Test()
+        {
+            //works for the others as well
+           CheckIn checkIn = new CheckIn();
+           Engine engine = new Engine();
+           engine.AddCheckIn(checkIn);
+           engine.Remove(checkIn);
+           Assert.AreEqual(0, engine.checkIns.Count);
+        }
+        [TestMethod]
+        public void Pause_Test()
+        {
+            Engine engine = new Engine();
+            CheckIn checkIn = new CheckIn() { DestinationGate = 1, Status = BaggageStatus.Free };
+            DropOff dropOff = new DropOff() { DestinationGate = 1, Status = BaggageStatus.Free, };
+            MPA mpa = new MPA();
+            DateTime date = new DateTime(2019, 6, 9, 16, 40, 0);
+
+            Conveyor conveyor = new Conveyor(1, 1000) { DestinationGate = 1, Status = BaggageStatus.Free };
+
+
+            engine.AddFlight(date, "bbb", 3, 1);
+            engine.AddDispatcher();
+            engine.AddCheckIn(checkIn);
+            engine.AddConveyorPart(conveyor);
+
+            engine.AddDropOff(dropOff);
+
+            engine.LinkTwoNodes(checkIn, conveyor);
+            engine.LinkTwoNodes(conveyor, dropOff);
+
+            engine.Run();
+
+            engine.Pause();
+
+            Assert.IsFalse(conveyor.timer.Enabled);
+            Assert.IsFalse(engine.dispatcher.timers[0].Enabled);
+
+
+            
+        }
+        [TestMethod]
+        public void Resume_Test()
+        {
+            Engine engine = new Engine();
+            CheckIn checkIn = new CheckIn() { DestinationGate = 1, Status = BaggageStatus.Free };
+            DropOff dropOff = new DropOff() { DestinationGate = 1, Status = BaggageStatus.Free, };
+            MPA mpa = new MPA();
+            DateTime date = new DateTime(2019, 6, 9, 16, 40, 0);
+
+            Conveyor conveyor = new Conveyor(1, 1000) { DestinationGate = 1, Status = BaggageStatus.Free };
+
+
+            engine.AddFlight(date, "bbb", 3, 1);
+            engine.AddDispatcher();
+            engine.AddCheckIn(checkIn);
+            engine.AddConveyorPart(conveyor);
+
+            engine.AddDropOff(dropOff);
+
+            engine.LinkTwoNodes(checkIn, conveyor);
+            engine.LinkTwoNodes(conveyor, dropOff);
+
+            engine.Run();
+
+            engine.Pause();
+            engine.Resume();
+            Assert.IsTrue(conveyor.timer.Enabled);
+            Assert.IsTrue(engine.dispatcher.timers[0].Enabled);
+        }
+        [TestMethod]
+        public void Stop_Test()
+        {
+            Engine engine = new Engine();
+            CheckIn checkIn = new CheckIn() { DestinationGate = 1, Status = BaggageStatus.Free };
+            DropOff dropOff = new DropOff() { DestinationGate = 1, Status = BaggageStatus.Free, };
+            MPA mpa = new MPA();
+            DateTime date = new DateTime(2019, 6, 9, 16, 40, 0);
+
+            Conveyor conveyor = new Conveyor(1, 1000) { DestinationGate = 1, Status = BaggageStatus.Free };
+
+
+            engine.AddFlight(date, "bbb", 3, 1);
+            engine.AddDispatcher();
+            engine.AddCheckIn(checkIn);
+            engine.AddConveyorPart(conveyor);
+
+            engine.AddDropOff(dropOff);
+
+            engine.LinkTwoNodes(checkIn, conveyor);
+            engine.LinkTwoNodes(conveyor, dropOff);
+
+            engine.Run();
+            engine.Stop();
+            //works with other components as well
+            Assert.AreEqual(BaggageStatus.Free, conveyor.Status);
+            Assert.AreEqual(BaggageStatus.Free, checkIn.Status);
+            Assert.AreEqual(BaggageStatus.Free, dropOff.Status);
+        }
     }
 }
