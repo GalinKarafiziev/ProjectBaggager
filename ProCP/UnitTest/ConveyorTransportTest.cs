@@ -38,19 +38,6 @@ namespace UnitTest
         }
 
         [TestMethod]
-        public void CanMoveElse_Test()
-        {
-            Baggage baggage = new Baggage();
-            Conveyor conveyor = new Conveyor(5, 6);
-            DropOff dropOff = new DropOff();
-            conveyor.NextNode = dropOff;
-            dropOff.Status = BaggageStatus.Busy;
-            conveyor.lastBaggage = baggage;
-            conveyor.CanMove();
-
-            Assert.IsFalse(conveyor.CanMove());
-        }
-        [TestMethod]
         public void Move_If_Statement()
         {
             Baggage baggage = new Baggage();
