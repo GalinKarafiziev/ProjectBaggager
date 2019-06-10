@@ -52,6 +52,7 @@ namespace Procp_Form
             thisGrid.DrawGrid(e);
         }
 
+        // entering and exiting build mode
         private void ChbBuildMode_CheckedChanged(object sender, EventArgs e)
         {
             if (chbBuildMode.Checked)
@@ -79,6 +80,7 @@ namespace Procp_Form
             animationBox.Invalidate();
         }
 
+        //setting the type of tile with node that is going to be build
         private void BuildType_CheckedChanged(object sender, EventArgs e)
         {
             if (rbCheckIn.Checked)
@@ -105,6 +107,7 @@ namespace Procp_Form
             animationBox.Invalidate();
         }
 
+        //changing conveyor speed
         private void ConveyorSpeed_CheckedChanged(object sender, EventArgs e)
         {
             int speed = 0;
@@ -129,11 +132,12 @@ namespace Procp_Form
             thisGrid.HideAndUnhideArea(buildModeType);
             animationBox.Invalidate();
         }
-
+        /**
         // I intended to comment these methods to explain them 
         // I also hoped I would be able to make the code better
         // I did not plan my time well
         // - Boris Georgiev
+        **/
         private void AnimationBox_MouseDown(object sender, MouseEventArgs e)
         {
             var mouseClick = e as MouseEventArgs;
@@ -143,8 +147,10 @@ namespace Procp_Form
 
             if (buildModeActive)
             {
+                //here we build the different elements
                 if (t is EmptyTile && t.Unselectable == false && deleteMode == false)
                 {
+                    //because a single conveyor can consist of many tiles, we do not add the nodes when we begin building it, unlike the other elements
                     if (buildModeType == "Conveyor")
                     {
                         SelectTile(thisGrid.AddConveyorLineAtCoordinates(t));
@@ -198,6 +204,8 @@ namespace Procp_Form
                         if (temp != null)
                         {
                             engine.LinkTwoNodes(temp.nodeInGrid, selectedTile.nodeInGrid);
+                            //each conveyor can contain the destination gate of the drop off it is connected too
+                            //here we assign the destination gate to the previous conveyor
                             if (temp is ConveyorTile)
                             {
                                 Conveyor selectedConveyor = temp.nodeInGrid as Conveyor;
@@ -210,6 +218,7 @@ namespace Procp_Form
                     else if (buildModeType == "MPA")
                     {
                         MPA mpa = new MPA();
+                        // AddMPA() first checks if there is available space to build it from the selected starting point
                         if (thisGrid.AddMPA(t, mpa))
                         {
                             engine.AddMPA(mpa);
@@ -229,15 +238,22 @@ namespace Procp_Form
                                     mpa.AddNextNode(temp.nodeInGrid as Conveyor);
                                 }
                             }
+                            // we disable the ability to create another MPA
                             rbMPA.Visible = false;
                             rbCheckIn.Checked = true;
                         }
                     }
                 }
+                /**
+                // isConnectingTiles is used in the MouseMove Event
+                // since delete mode is enabled only if build mode is enabled, 
+                // we must ensure delete mode is not enabled when attempting to connect elements
+                **/
                 else if (!(t is EmptyTile) && deleteMode == false)
                 {
                     isConnectingTiles = true;
                 }
+                //here we delete tiles
                 else if (!(t is EmptyTile) && deleteMode == true)
                 {
                     if (t is ConveyorTile)
@@ -246,6 +262,7 @@ namespace Procp_Form
                         engine.Remove(t.nodeInGrid);
                         if (engine.mainProcessArea != null)
                         {
+                            //here we check if the main process area is linked to the deleted conveyor and remove any connections
                             foreach (Conveyor c in engine.mainProcessArea.nextNodes.ToList())
                             {
                                 if (c == first.nodeInGrid)
@@ -270,6 +287,7 @@ namespace Procp_Form
                     RefreshDropOffCombobox();
                 }
             }
+            //getting information about the clicked tile when not building (buildModeActive == false)
             else
             {
                 if (!(t is EmptyTile))
@@ -289,6 +307,7 @@ namespace Procp_Form
             }
             lblColRow.Text = t.Column + " " + t.Row;
 
+            //accessing special options for dropoffs
             if (selectedTile is DropOffTile)
             {
                 selectedDropOffForSettings = selectedTile.nodeInGrid as DropOff;
@@ -301,7 +320,6 @@ namespace Procp_Form
             {
                 gbDropOffSettings.Visible = false;
             }
-            //gbDropOffSettings.Visible = false;
             animationBox.Invalidate();
         }
 
@@ -310,19 +328,18 @@ namespace Procp_Form
             var mouseClick = e as MouseEventArgs;
             GridTile t = thisGrid.FindTileInPixelCoordinates(mouseClick.X, mouseClick.Y);
 
+            //each conveyor can consist of multiple tiles with one node, as opposed to the other elements(checkin, security, dropoff) 
+            //which all take a single position on the grid, with the exception of the MPA
             if (isBuildingConveyor)
             {
                 if ((Math.Abs(t.Column - selectedTile.Column) == 1 && Math.Abs(t.Row - selectedTile.Row) == 0) || (Math.Abs(t.Column - selectedTile.Column) == 0 && Math.Abs(t.Row - selectedTile.Row) == 1))
                 {
                     if (t is EmptyTile && t.Unselectable == false)
                     {
-                        //Conveyor conveyor = new Conveyor();
                         GridTile created = thisGrid.AddConveyorLineAtCoordinates(t);
-                        //Engine.AddConveyorPart(conveyor);
                         conveyorBuilding.Add((ConveyorTile)created);
 
                         thisGrid.ConnectTiles(selectedTile, t);
-                        // Engine.LinkTwoNodes(selectedTile.nodeInGrid, created.nodeInGrid);
                         SelectTile(created);
                     }
                 }
@@ -331,6 +348,11 @@ namespace Procp_Form
             {
                 if ((Math.Abs(t.Column - selectedTile.Column) == 1 && Math.Abs(t.Row - selectedTile.Row) == 0) || (Math.Abs(t.Column - selectedTile.Column) == 0 && Math.Abs(t.Row - selectedTile.Row) == 1))
                 {
+                    /**
+                    //it is impossible to connect one conveyor to the middle of the other
+                    //you must connect the end of the conveyor with the beginning of the next one
+                    //that is why we have special checks
+                     **/
                     if(selectedTile is ConveyorTile && t is ConveyorTile) {
                         ConveyorTile tempEnd = selectedTile as ConveyorTile;
                         ConveyorTile tempBeg = t as ConveyorTile;
@@ -340,6 +362,7 @@ namespace Procp_Form
                             engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
                         }
                     }
+                    //here we must ensure that the selected conveyor tile is the last tile in the conveyor
                     else if (selectedTile is ConveyorTile && !(t is EmptyTile)&& !(t is CheckInTile))
                     {
                         ConveyorTile temp = (ConveyorTile)selectedTile;
@@ -365,6 +388,7 @@ namespace Procp_Form
                         engine.LinkTwoNodes(selectedTile.nodeInGrid, t.nodeInGrid);
                         thisGrid.ConnectTiles(selectedTile, t);
                     }
+                    //since the mpa is the only element that can have multiple nextNodes, special checking needs to be performed
                     else if (selectedTile is MPATile && t is ConveyorTile)
                     {
                         var selectedMPA = selectedTile.nodeInGrid as MPA;
@@ -380,12 +404,22 @@ namespace Procp_Form
 
         private void AnimationBox_MouseUp(object sender, MouseEventArgs e)
         {
+            //if a conveyor has been built, there are a number of things that need checking
             if (buildModeActive && isBuildingConveyor)
             {
                 Conveyor conveyor = new Conveyor(conveyorBuilding.Count, 0);
                 engine.AddConveyorPart(conveyor);
                 System.Diagnostics.Debug.WriteLine("uppress");
                 int i = 0;
+                /**
+                //foreach tile in the newly build conveyor we:
+                // add a node - the same node for all of course
+                // assing positions to each tile in the conveyor
+                // check if there are any tiles connected to the beginning and end of the conveyor
+                //and automatically connect to them
+                // for the other elements, auto connection checks and adding the node is performed on the mouse down event
+                // the hature of the conveyor requires this different implementation 
+                **/
                 foreach (ConveyorTile t in conveyorBuilding)
                 {
                     t.nodeInGrid = conveyor;
@@ -393,6 +427,7 @@ namespace Procp_Form
                     if (t.PositionInLine == 0)
                     {
                         GridTile tt = thisGrid.AutoConnectToPrev(t, thisGrid.GetNeighboursIn4Directions);
+                        //if the previous tile was a mpa
                         if (tt != null && tt is MPATile)
                         {
                             MPA tempMPA = tt.nodeInGrid as MPA;
@@ -411,6 +446,7 @@ namespace Procp_Form
                 if (temp != null)
                 {
                     engine.LinkTwoNodes(selectedTile.nodeInGrid, temp.nodeInGrid);
+                    //setting the destination gate of the conveyor if it connects to any drop offs
                     if (temp is DropOffTile)
                     {
                         Conveyor selectedConveyor = selectedTile.nodeInGrid as Conveyor;
@@ -420,6 +456,7 @@ namespace Procp_Form
                 }
             }
 
+            // resetting all values needed to return the user to the state before the mouse down 
             isConnectingTiles = false;
             if (selectedTile != null)
             {
@@ -603,6 +640,9 @@ namespace Procp_Form
             animationBox.Invalidate();
         }
 
+        //because each tile is responsible for knowing what to draw about itself
+        //each tile contains a selected boolean
+        //when a tile is selected, it will know to give the appropriate visual feedback
         private void SelectTile(GridTile t)
         {
             if (selectedTile != null)
@@ -630,7 +670,7 @@ namespace Procp_Form
             animationBox.Invalidate();
         }
 
-
+        //clearing the grid
         private void btnClearGrid_Click(object sender, EventArgs e)
         {
             gbDropOffSettings.Visible = false;
@@ -656,12 +696,6 @@ namespace Procp_Form
             }
 
             cartesianChartTimes.Series = series;
-            //var scalesY = 0;
-
-            //cartesianChartTimes.Series.Add(PopulateCartesianTimesChart(engine.GetFlightDepartureTimes(), "Flight time", scalesY++));
-            //cartesianChartTimes.Series.Add(PopulateCartesianTimesChart(engine.GetLastBaggageTimes(), "Baggage time", scalesY++));
-
-
             btnCompare.Enabled = false;
         }
 

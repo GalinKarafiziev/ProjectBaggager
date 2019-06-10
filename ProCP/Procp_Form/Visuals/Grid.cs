@@ -71,8 +71,6 @@ namespace Procp_Form.Visuals
         public void DrawGrid(PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            //g.FillRectangle(Brushes.Cyan, 0, 0, animBoxWidth, animBoxHeigth);
-
             foreach (GridTile n in gridTiles)
             {
                 n.DrawTile(e, tileWidth, tileHeight);
@@ -84,24 +82,6 @@ namespace Procp_Form.Visuals
             gridTiles.Remove(toReplace);
             gridTiles.Add(newLineTile);
             return newLineTile;
-        }
-
-        public bool CheckIfTilesAreEmpty(GridTile firstTile, int cRange, int rRange)
-        {
-            int firstC = firstTile.Column;
-            int firstR = firstTile.Row;
-            for(int i = firstC; i < firstC + cRange; i++)
-            {
-                for(int y = firstR; y < firstR + rRange; y++)
-                {
-                    GridTile temp = FindTileInRowColumnCoordinates(i, y);
-                    if(!(temp is EmptyTile) || temp.Unselectable)
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
         }
         public bool AddMPA(GridTile firstTile, MPA mpa)
         {
@@ -159,7 +139,6 @@ namespace Procp_Form.Visuals
                 if ((n.Column * tileWidth) <= targetX && (n.Column * tileWidth) + tileWidth >= targetX && (n.Row * tileHeight) <= targetY && (n.Row * tileHeight) + tileHeight >= targetY)
                 {
                     foundTile = n;
-                   // MessageBox.Show(n.Column + " " + n.Row + " FOUND");
                     break;
                 }
             }
@@ -178,9 +157,25 @@ namespace Procp_Form.Visuals
             }
             return foundTile;
         }
+        public bool CheckIfTilesAreEmpty(GridTile firstTile, int cRange, int rRange)
+        {
+            int firstC = firstTile.Column;
+            int firstR = firstTile.Row;
+            for (int i = firstC; i < firstC + cRange; i++)
+            {
+                for (int y = firstR; y < firstR + rRange; y++)
+                {
+                    GridTile temp = FindTileInRowColumnCoordinates(i, y);
+                    if (!(temp is EmptyTile) || temp.Unselectable)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
 
-        //if you pass a null value, it reveal the entire area
-        //somewhat counter-intuitive 
+        //if you pass a null value, it reveals the entire area
         public void HideAndUnhideArea(string buildType)
         {
             if (buildType == null)
@@ -411,7 +406,6 @@ namespace Procp_Form.Visuals
             }
             return null;
         }
-
         public List<GridTile> GetMPA(GridTile c)
         {
             List<GridTile> tempList = new List<GridTile>();
